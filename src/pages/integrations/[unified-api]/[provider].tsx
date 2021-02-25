@@ -1,4 +1,4 @@
-import { ConnectionForm, ErrorBlock, Placeholder } from 'components'
+import { ConnectionForm, ConnectionPlaceholder, ErrorBlock } from 'components'
 import { applySession } from 'next-session'
 import { useRouter } from 'next/router'
 import { IConnection } from 'types/Connection'
@@ -21,7 +21,7 @@ const Connection = ({ connections, setConnections, loading, token, jwt, connecti
   )[0]
 
   if (loading) {
-    return <Placeholder />
+    return <ConnectionPlaceholder />
   }
 
   if (!connection) {

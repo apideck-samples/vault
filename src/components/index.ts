@@ -1,4 +1,5 @@
-export { ConnectionForm, OAuthButtons, Placeholder } from './Connection'
+export { ConfigurableResources, ResourceForm, ResourcePlaceholder } from './ConfigurableResource'
+export { ConnectionForm, ConnectionPlaceholder, OAuthButtons } from './Connection'
 export { ConnectionCard, ConnectionsList, ListPlaceholder } from './Connections'
 export { Button, Select, SelectInput, TextInput } from './Inputs'
 export { AddModal, ConfirmModal, SessionExpiredModal } from './Modals'

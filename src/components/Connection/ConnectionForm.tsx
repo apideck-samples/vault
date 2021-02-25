@@ -1,4 +1,12 @@
-import { Button, ConfirmModal, ErrorBlock, OAuthButtons, Select, TextInput } from 'components'
+import {
+  Button,
+  ConfigurableResources,
+  ConfirmModal,
+  ErrorBlock,
+  OAuthButtons,
+  Select,
+  TextInput
+} from 'components'
 import { Formik, FormikProps } from 'formik'
 import client from 'lib/axios'
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
@@ -10,7 +18,6 @@ import { Fragment, useContext, useState } from 'react'
 import { IConnection, UpdateConnectionInput } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
 import { isConnected, SessionExpiredModalContext } from 'utils'
-import { ConfigurableResources } from './'
 
 interface IProps {
   connection: IConnection
