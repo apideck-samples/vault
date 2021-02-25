@@ -86,7 +86,7 @@
     }
   },
   "lint-staged": {
-    "*.(ts|js)": [
+    "src/**/*.{js,jsx,ts,tsx}": [
       "yarn format",
       "yarn typecheck",
       "yarn lint:cache"
