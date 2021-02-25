@@ -87,9 +87,8 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
-      "yarn format",
-      "yarn typecheck",
-      "yarn lint:cache"
+      "prettier --config .prettierrc 'src/**/*.ts' --write",
+      "eslint ./ --ext ts,js --cache --fix"
     ]
   }
 }

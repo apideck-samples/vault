@@ -31,11 +31,14 @@
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
     "jsx-quotes": ["warn", "prefer-double"],
-    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_", "ignoreRestSiblings": true }
+    ],
     "@typescript-eslint/no-var-requires": 2,
     "@typescript-eslint/explicit-module-boundary-types": "off",
     // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-use-before-define.md#how-to-use
     "no-use-before-define": "off",
-    "@typescript-eslint/no-use-before-define": ["error", { "ignoreRestSiblings": true }]
+    "@typescript-eslint/no-use-before-define": ["error"]
   }
 }
