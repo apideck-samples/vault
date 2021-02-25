@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'basier_circle';
+  src: url('/fonts/basier_circle_regular-webfont.woff2') format('woff2'),
+    url('/fonts/basier_circle_regular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'basier_circle';
+  src: url('/fonts/basier_circle_medium-webfont.woff2') format('woff2'),
+    url('/fonts/basier_circle_medium-webfont.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+}
+
+body {
+  @apply font-basier-circle antialiased text-gray-800;
+  min-width: 1024px;
+}
+
+a {
+  @apply transition duration-150 ease-in-out;
+}
+
+.skeleton-loading {
+  position: relative;
+}
+
+.skeleton-loading::before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: -150px;
+  top: -2px;
+  bottom: -2px;
+  height: 100%;
+  width: 200px;
+  background: linear-gradient(to right, transparent 0%, #ffffff 30%, transparent 100%);
+  animation: load 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.react-icons {
+  vertical-align: middle;
+}
+
+@keyframes load {
+  from {
+    left: -150px;
+  }
+  to {
+    left: 100%;
+  }
+}
