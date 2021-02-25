@@ -9,7 +9,7 @@
     "lint": "eslint ./ --ext ts,js",
     "lint:fix": "eslint ./ --ext ts,js --fix",
     "lint:cache": "eslint ./ --ext ts,js --cache --fix",
-    "format": "prettier --config .prettierrc 'src/**/*.js' 'src/**/*.ts' --write",
+    "format": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "typecheck": "tsc",
     "postbuild": "./scripts/upload-sourcemaps.sh",
     "test:e2e": "jest --detectOpenHandles --verbose --reporters=default --selectProjects=E2E --maxConcurrency=100",
