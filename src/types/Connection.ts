@@ -24,6 +24,7 @@ export interface IConnection {
   enabled?: boolean
   settings?: Settings
   settings_required_for_authorization?: string[]
+  configurable_resources: string[]
   form_fields: FormField[]
   created_at: number
 }

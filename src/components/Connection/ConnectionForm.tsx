@@ -1,16 +1,16 @@
 import { Button, ConfirmModal, ErrorBlock, OAuthButtons, Select, TextInput } from 'components'
 import { Formik, FormikProps } from 'formik'
-import { Fragment, useContext, useState } from 'react'
-import { IConnection, UpdateConnectionInput } from 'types/Connection'
-import { SessionExpiredModalContext, isConnected } from 'utils'
-
+import client from 'lib/axios'
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
 import CheckIcon from 'mdi-react/CheckIcon'
-import { JWTSession } from 'types/JWTSession'
 import Link from 'next/link'
-import client from 'lib/axios'
 import { useRouter } from 'next/router'
+import { Fragment, useContext, useState } from 'react'
+import { IConnection, UpdateConnectionInput } from 'types/Connection'
+import { JWTSession } from 'types/JWTSession'
+import { isConnected, SessionExpiredModalContext } from 'utils'
+import { ConfigurableResources } from './'
 
 interface IProps {
   connection: IConnection
@@ -75,6 +75,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
   const updateConnection = async (values: Record<string, string | boolean | unknown>) => {
     setFormError(false)
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { enabled, apiKey, ...rest } = values
     const body = {
       unifiedApi,
@@ -158,13 +159,18 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
           <span className="transition duration-150 ease-in-out">Integrations</span>
         </button>
       </Link>
+
       <div className="border rounded-md">
-        <div className="flex items-center justify-between px-5 py-4">
-          <div className="flex items-center justify-start">
+        <div className="flex items-top justify-between px-5 py-4">
+          <div className="flex items-top justify-start">
             <img className="mr-4" style={{ width: '40px', height: '40px' }} src={icon} alt={name} />
             <div>
               <h1 className="text-xl font-medium text-gray-800">{name}</h1>
               <div className="text-sm text-gray-700 capitalize">{`${unifiedApi} integration`}</div>
+
+              {tagLine && (
+                <p className="text-sm text-gray-800 my-4 border-t pt-4 mr-4">{tagLine}</p>
+              )}
             </div>
           </div>
           <div>
@@ -181,12 +187,9 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
         )}
       </div>
 
-      {tagLine && (
-        <div className="px-5 py-4 mt-10 border rounded-md">
-          <h2 className="mb-2 font-medium">About</h2>
-          <p className="text-sm text-gray-800" style={{ fontSize: '0.9735rem' }}>
-            {tagLine}
-          </p>
+      {connection?.configurable_resources?.length > 0 && (
+        <div className="mt-10">
+          <ConfigurableResources connection={connection} />
         </div>
       )}
 
@@ -274,6 +277,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
           }}
         </Formik>
       )}
+
       <ConfirmModal
         open={modalOpen}
         setOpen={setModalOpen}

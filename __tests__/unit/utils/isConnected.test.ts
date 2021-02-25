@@ -14,6 +14,7 @@ describe('isConnected()', () => {
         authorize_url: 'https://example.com/authorize',
         revoke_url: 'https://example.com/revoke',
         form_fields: [],
+        configurable_resources: [],
         added: true,
         configured: true,
         created_at: 1606221287456
@@ -33,6 +34,7 @@ describe('isConnected()', () => {
         authorize_url: 'https://example.com/authorize',
         revoke_url: null,
         form_fields: [],
+        configurable_resources: [],
         added: true,
         configured: true,
         created_at: 1606221287456
@@ -64,6 +66,7 @@ describe('isConnected()', () => {
             disabled: false
           }
         ],
+        configurable_resources: [],
         added: true,
         configured: true,
         created_at: 1606221287456
@@ -92,6 +95,7 @@ describe('isConnected()', () => {
             disabled: false
           }
         ],
+        configurable_resources: [],
         added: true,
         configured: false,
         created_at: 1606221287456
@@ -108,6 +112,7 @@ describe('isConnected()', () => {
         icon: 'https://example.com/icon128x128.png',
         auth_type: '',
         form_fields: [],
+        configurable_resources: [],
         service_id: 'drift',
         unified_api: 'script',
         added: true,
