@@ -17,11 +17,7 @@ const ConfigurableResources = ({ connection }: IProps) => {
               className="px-4 py-4 sm:px-6 capitalize flex items-center justify-between"
             >
               <span>{resource}</span>
-              <ChevronRightIcon
-                className="transition duration-150 ease-in-out"
-                color="currentColor"
-                size={24}
-              />
+              <ChevronRightIcon className="transition ease-in-out" color="currentColor" size={24} />
             </li>
           )
         })}
