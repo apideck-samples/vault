@@ -6,7 +6,7 @@ Building integrations starts with handling user credentials and generating acces
 
 Built with [Next.js](https://nextjs.org/), [TypeScript](https://www.typescriptlang.org/), and [Tailwind](https://tailwindcss.com/).
 
-![](https://app.apideck.com/images/hosted-vault.png)
+![](/public/img/vault.png)
 
 ## Run the sample locally
 
