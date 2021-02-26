@@ -57,3 +57,7 @@ a {
     left: 100%;
   }
 }
+
+.react-select [type='text']:focus {
+  --tw-ring-color: none;
+}
