@@ -1,4 +1,5 @@
 import { Button, ErrorBlock, ResourcePlaceholder, Select, TextInput } from 'components'
+import TextArea from 'components/Inputs/TextArea'
 import { Formik, FormikProps } from 'formik'
 import client from 'lib/axios'
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
@@ -102,7 +103,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
             color="currentColor"
             size={16}
           />
-          <span className="transition duration-150 ease-in-out capitalize">
+          <span className="capitalize transition duration-150 ease-in-out">
             {connection.service_id} Settings
           </span>
         </button>
@@ -140,6 +141,14 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                             <TextInput
                               field={id}
                               type={type as string}
+                              required={required}
+                              placeholder={placeholder}
+                              formikProps={formikProps}
+                            />
+                          )}
+                          {type === 'textarea' && (
+                            <TextArea
+                              field={id}
                               required={required}
                               placeholder={placeholder}
                               formikProps={formikProps}

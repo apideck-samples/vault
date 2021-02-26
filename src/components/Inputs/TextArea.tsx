@@ -1,23 +1,21 @@
 import { FormikProps } from 'formik'
 
-interface TextInputProps {
+interface TextAreaProps {
   field: string
-  type: string
   required: boolean
   placeholder: string | undefined
   formikProps: FormikProps<Record<string, readonly string[]>>
 }
 
-const TextInput = ({ field, type, required = false, placeholder, formikProps }: TextInputProps) => {
+const TextArea = ({ field, required = false, placeholder, formikProps }: TextAreaProps) => {
   const { handleChange, handleBlur, values } = formikProps
 
   return (
-    <input
-      className="block w-full max-w-sm text-gray-600 border-gray-300 rounded-md sm:text-sm"
+    <textarea
+      className="block w-full max-w-sm border-gray-300 rounded-md sm:text-sm"
       value={values[field]}
       onChange={handleChange}
       onBlur={handleBlur}
-      type={type}
       name={field}
       required={required}
       placeholder={placeholder}
@@ -26,4 +24,4 @@ const TextInput = ({ field, type, required = false, placeholder, formikProps }: 
   )
 }
 
-export default TextInput
+export default TextArea
