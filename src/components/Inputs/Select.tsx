@@ -1,14 +1,10 @@
 import React from 'react'
-
-interface FormOption {
-  value: string | number | null | undefined
-  label: string
-}
+import { FormFieldOption } from 'types/FormField'
 
 interface IProps {
   field: string
   required: boolean
-  options: FormOption[] | null | undefined
+  options: FormFieldOption[]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formikProps: any
 }
@@ -32,11 +28,11 @@ const Select = ({ field, required = false, options = [], formikProps }: IProps) 
       </option>
 
       {options &&
-        options?.map((option) => {
+        options?.map((option, index) => {
           const { value, label } = option
 
           return (
-            <option key={value} value={value || ''}>
+            <option key={`${label}-${index}`} value={value || ''}>
               {label}
             </option>
           )

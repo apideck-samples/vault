@@ -90,7 +90,6 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
     }
   }
 
-  console.log(connection)
   return (
     <>
       <Link href={`/integrations/${unifiedApi}/${serviceId}/`}>
@@ -135,10 +134,12 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                           {required && <span className="ml-1 text-red-600">*</span>}
                         </div>
                         <div className="w-2/3 pl-2">
-                          {['text', 'email', 'url', 'date', 'phone', 'number'].includes(type) && (
+                          {['text', 'email', 'url', 'date', 'phone', 'number'].includes(
+                            type as string
+                          ) && (
                             <TextInput
                               field={id}
-                              type={type}
+                              type={type as string}
                               required={required}
                               placeholder={placeholder}
                               formikProps={formikProps}
