@@ -1,23 +1,49 @@
-import { Fragment, memo } from 'react'
+import React, { Fragment, memo } from 'react'
 
 const Placeholder = () => {
   return (
     <Fragment>
-      <div className="mt-2 border rounded-md">
+      <div className="inline-flex items-center self-start justify-start mb-4 text-sm leading-none">
+        <div className="bg-gray-100 mr-1 rounded-md" style={{ height: '18px', width: '18px' }} />
+
+        <div
+          className="bg-gray-100 skeleton-loading rounded-md"
+          style={{ height: '18px', width: '200px' }}
+        />
+      </div>
+
+      <div className="mt-4 border rounded-md">
         <div className="px-5 py-4">
           <div
             className="skeleton-loading bg-gray-100 rounded mt-1"
-            style={{ height: '16px', width: '240px' }}
+            style={{ height: '18px', width: '240px' }}
           ></div>
         </div>
 
         <div className="px-5 py-6 border-t border-b">
-          <div className="p-5 flex items-center justify-between">
-            <div className="flex items-center justify-center">
+          <div className="items-center justify-center flex flex-col">
+            <div className="flex items-center justify-start mb-3">
               <div
-                className="bg-gray-100 rounded mt-1"
-                style={{ height: '14px', width: '240px' }}
+                className="bg-gray-100 rounded mt-1 mr-4"
+                style={{ height: '18px', width: '160px' }}
               />
+              <div className="border rounded mt-1" style={{ height: '33px', width: '275px' }} />
+            </div>
+
+            <div className="flex items-center justify-start mb-3">
+              <div
+                className="bg-gray-100 rounded mt-1 mr-4"
+                style={{ height: '18px', width: '160px' }}
+              />
+              <div className="border rounded mt-1" style={{ height: '33px', width: '275px' }} />
+            </div>
+
+            <div className="flex items-center justify-start mb-3">
+              <div
+                className="bg-gray-100 rounded mt-1 mr-4"
+                style={{ height: '18px', width: '160px' }}
+              />
+              <div className="border rounded mt-1" style={{ height: '33px', width: '275px' }} />
             </div>
           </div>
         </div>
