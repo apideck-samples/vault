@@ -1,20 +1,24 @@
+import { FormikProps } from 'formik'
 import React from 'react'
-import { FormFieldOption } from 'types/FormField'
+
+interface FormOption {
+  value: string | number | null | undefined
+  label: string
+}
 
 interface IProps {
   field: string
   required: boolean
-  options: FormFieldOption[]
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  formikProps: any
+  options: FormOption[]
+  formikProps: FormikProps<{ [key: string]: string | number }>
 }
+
 const Select = ({ field, required = false, options = [], formikProps }: IProps) => {
   const { handleChange, handleBlur, values } = formikProps
 
   return (
     <select
-      className="block max-w-full px-2 py-1 border rounded focus:outline-none focus:ring"
-      style={{ fontSize: '0.9375rem', width: '320px', height: '38px' }}
+      className="block w-full max-w-sm py-2 pl-3 pr-10 mt-1 text-base text-gray-600 border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
       name={field}
       id={field}
       data-testid={field}
@@ -28,11 +32,11 @@ const Select = ({ field, required = false, options = [], formikProps }: IProps) 
       </option>
 
       {options &&
-        options?.map((option, index) => {
+        options?.map((option) => {
           const { value, label } = option
 
           return (
-            <option key={`${label}-${index}`} value={value || ''}>
+            <option key={value} value={value || ''}>
               {label}
             </option>
           )

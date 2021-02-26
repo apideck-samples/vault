@@ -13,8 +13,7 @@ const TextInput = ({ field, type, required = false, placeholder, formikProps }: 
 
   return (
     <input
-      className="block max-w-full px-2 py-1 border rounded focus:outline-none focus:shadow-outline"
-      style={{ fontSize: '0.9375rem', width: '320px', height: '38px' }}
+      className="block w-full max-w-sm text-gray-600 border-gray-300 rounded-md ocus:ring-primary focus:border-primary sm:text-sm"
       value={values[field]}
       onChange={handleChange}
       onBlur={handleBlur}

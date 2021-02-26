@@ -129,7 +129,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
 
                     return (
                       <div key={id} className="flex items-start justify-center mb-4">
-                        <div className="w-1/3 pt-2 pr-2 text-sm font-medium text-right">
+                        <div className="w-1/3 pt-2 pr-2 text-sm font-medium text-right text-gray-600">
                           {label}
                           {required && <span className="ml-1 text-red-600">*</span>}
                         </div>
