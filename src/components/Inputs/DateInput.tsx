@@ -152,7 +152,12 @@ const DateInput: React.FC<IProps> = ({
         <div className="flex items-center justify-between mb-2">
           <div>
             <span className="text-lg font-bold text-gray-800">{monthNames[month]}</span>
-            <span className="ml-1 text-lg font-normal text-gray-600">{year}</span>
+            <input
+              className="inline-block w-20 px-2 py-1 ml-1 text-lg font-normal text-gray-600 border-none rounded focus:border-none"
+              value={year}
+              type="number"
+              onChange={(e) => setYear(+e.target.value)}
+            />
           </div>
           <div>
             <button
