@@ -163,8 +163,9 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                               formikProps={formikProps}
                             />
                           )}
-                          {type === 'date' && <DateInput />}
-
+                          {type === 'date' && (
+                            <DateInput field={id} required={required} formikProps={formikProps} />
+                          )}
                           {description && (
                             <small className="inline-block mt-2 text-gray-600">{description}</small>
                           )}

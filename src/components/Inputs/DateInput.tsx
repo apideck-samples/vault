@@ -1,7 +1,20 @@
 import classNames from 'classnames'
+import { FormikProps } from 'formik'
 import { useEffect, useRef, useState } from 'react'
+interface IProps {
+  field: string
+  formikProps: FormikProps<Record<string, readonly string[]>>
+  required?: boolean
+  placeholder?: string | undefined
+}
 
-const DateInput: React.FC = () => {
+const DateInput: React.FC<IProps> = ({
+  field,
+  required = false,
+  placeholder = 'Select date',
+  formikProps
+}) => {
+  const { handleChange } = formikProps
   const inputRef = useRef<HTMLInputElement>(null)
   const [showDatePicker, setShowDatePicker] = useState(false)
   const [datePickerValue, setDatePickerValue] = useState('')
@@ -60,8 +73,9 @@ const DateInput: React.FC = () => {
 
   const isToday = (day: number) => {
     const today = new Date()
-    const d = new Date(year, month, day)
-    return today.toDateString() === d.toDateString() ? true : false
+    const selectedDay = new Date(year, month, day)
+
+    return today.toDateString() === selectedDay.toDateString()
   }
 
   const getDateValue = (day: number) => {
@@ -71,7 +85,13 @@ const DateInput: React.FC = () => {
       (selectedDate.getMonth() + 1)
     ).slice(-2)}-${('0' + selectedDate.getDate()).slice(-2)}`
 
-    if (inputRef && inputRef.current) inputRef.current.value = formattedDate
+    if (inputRef?.current) {
+      const event = new Event('input', { bubbles: true })
+      inputRef.current.value = formattedDate
+      inputRef.current.dispatchEvent(event)
+      handleChange(event)
+    }
+
     setDatePickerValue(formattedDate)
     setShowDatePicker(false)
   }
@@ -98,14 +118,16 @@ const DateInput: React.FC = () => {
 
   return (
     <div className="relative w-full max-w-xs">
-      <input type="hidden" name="date" ref={inputRef} />
       <input
         type="text"
         readOnly
+        ref={inputRef}
         onClick={() => setShowDatePicker(!showDatePicker)}
         value={datePickerValue}
+        name={field}
+        required={required}
         className="block w-full max-w-xs text-gray-600 border-gray-300 rounded-md sm:text-sm"
-        placeholder="Select date"
+        placeholder={placeholder}
       />
       <div className="absolute top-0 right-0 z-10 px-3 py-2">
         <svg
