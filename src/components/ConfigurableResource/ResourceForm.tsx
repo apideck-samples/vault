@@ -71,14 +71,9 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
     } as UpdateConnectionConfigInput
 
     try {
-      const response = await client.patch(
-        `/vault/connections/${unifiedApi}/${serviceId}/${resource}/config`,
-        body,
-        {
-          headers
-        }
-      )
-      console.log(response)
+      await client.patch(`/vault/connections/${unifiedApi}/${serviceId}/${resource}/config`, body, {
+        headers
+      })
       setSaved(true)
     } catch (error) {
       setFormError(true)
@@ -118,7 +113,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
           validateOnBlur={false}
         >
           {(formikProps: FormikProps<Record<string, readonly string[]>>) => {
-            const { handleSubmit, isSubmitting } = formikProps
+            const { handleSubmit, isSubmitting, handleChange, handleBlur } = formikProps
 
             return (
               <form className="mt-2 border rounded-md" onSubmit={handleSubmit}>
@@ -132,26 +127,38 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                       <div key={id} className="flex items-start justify-center mb-4">
                         <div className="w-1/3 pt-2 pr-2 text-sm font-medium text-right text-gray-600">
                           {label}
-                          {required && <span className="ml-1 text-red-600">*</span>}
+                          {required && (
+                            <span className="ml-1 text-red-600" data-testid="required">
+                              *
+                            </span>
+                          )}
                         </div>
                         <div className="w-2/3 pl-2">
-                          {['boolean', 'text', 'email', 'url', 'phone', 'number'].includes(
-                            type as string
-                          ) && (
+                          {[
+                            'text',
+                            'checkbox',
+                            'email',
+                            'url',
+                            'phone',
+                            'number',
+                            'time',
+                            'location'
+                          ].includes(type as string) && (
                             <TextInput
-                              field={id}
-                              type={type === 'boolean' ? 'checkbox' : (type as string)}
+                              name={id}
+                              type={type as string}
                               required={required}
                               placeholder={placeholder}
-                              formikProps={formikProps}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
                             />
                           )}
                           {type === 'textarea' && (
                             <TextArea
-                              field={id}
+                              name={id}
                               required={required}
                               placeholder={placeholder}
-                              formikProps={formikProps}
+                              onChange={handleChange}
                             />
                           )}
                           {(type === 'select' || type === 'multi-select') && (
@@ -163,7 +170,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                               formikProps={formikProps}
                             />
                           )}
-                          {type === 'date' && (
+                          {(type === 'date' || type === 'datetime') && (
                             <DateInput field={id} required={required} formikProps={formikProps} />
                           )}
                           {description && (

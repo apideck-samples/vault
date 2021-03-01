@@ -1,36 +1,28 @@
-import { FormikProps } from 'formik'
+import { ChangeEvent } from 'react'
 import classNames from 'classnames'
 
 interface TextInputProps {
-  field: string
+  name: string
   type: string
-  required: boolean
-  placeholder: string | undefined
-  formikProps: FormikProps<Record<string, readonly string[]>>
+  required?: boolean
+  placeholder?: string | undefined
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void
+  onBlur: (e: ChangeEvent<HTMLInputElement>) => void
 }
-
-const TextInput = ({ field, type, required = false, placeholder, formikProps }: TextInputProps) => {
-  const { handleChange, handleBlur, values } = formikProps
-
+const TextInput = (props: TextInputProps) => {
   return (
     <input
       className={classNames(
         'block text-gray-600 rounded-md border-gray-300',
         {
-          'w-full max-w-xs sm:text-sm': type !== 'checkbox'
+          'w-full max-w-sm sm:text-sm': props.type !== 'checkbox'
         },
         {
-          'h-5 w-5 mt-2': type === 'checkbox'
+          'h-5 w-5 mt-2': props.type === 'checkbox'
         }
       )}
-      value={values[field]}
-      onChange={handleChange}
-      onBlur={handleBlur}
-      type={type}
-      name={field}
-      required={required}
-      placeholder={placeholder}
-      data-testid={field}
+      data-testid={props.name}
+      {...props}
     />
   )
 }

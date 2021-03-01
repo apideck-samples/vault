@@ -117,7 +117,7 @@ const DateInput: React.FC<IProps> = ({
   }
 
   return (
-    <div className="relative w-full max-w-xs">
+    <div className="relative w-full max-w-sm">
       <input
         type="text"
         readOnly
@@ -126,7 +126,7 @@ const DateInput: React.FC<IProps> = ({
         value={datePickerValue}
         name={field}
         required={required}
-        className="block w-full max-w-xs text-gray-600 border-gray-300 rounded-md sm:text-sm"
+        className="block w-full max-w-sm text-gray-600 border-gray-300 rounded-md sm:text-sm"
         placeholder={placeholder}
       />
       <div className="absolute top-0 right-0 z-10 px-3 py-2">

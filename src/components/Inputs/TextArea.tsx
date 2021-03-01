@@ -1,25 +1,18 @@
-import { FormikProps } from 'formik'
+import { ChangeEvent } from 'react'
 
 interface TextAreaProps {
-  field: string
+  name: string
   required: boolean
   placeholder: string | undefined
-  formikProps: FormikProps<Record<string, readonly string[]>>
+  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void
 }
 
-const TextArea = ({ field, required = false, placeholder, formikProps }: TextAreaProps) => {
-  const { handleChange, handleBlur, values } = formikProps
-
+const TextArea = (props: TextAreaProps) => {
   return (
     <textarea
       className="block w-full max-w-sm border-gray-300 rounded-md sm:text-sm"
-      value={values[field]}
-      onChange={handleChange}
-      onBlur={handleBlur}
-      name={field}
-      required={required}
-      placeholder={placeholder}
-      data-testid={field}
+      data-testid={props.name}
+      {...props}
     />
   )
 }
