@@ -1,0 +1,111 @@
+{
+  "id": "crm+salesforce",
+  "name": "Salesforce",
+  "tag_line": "CRM software solutions and enterprise cloud computing from Salesforce, the leader in customer relationship management (CRM) and PaaS. Free 30 day trial.",
+  "icon": "https://res.cloudinary.com/apideck/image/upload/v1529456047/catalog/salesforce/icon128x128.png",
+  "logo": "https://c1.sfdcstatic.com/content/dam/web/en_us/www/images/home/logo-salesforce-m.svg",
+  "website": "https://www.salesforce.com",
+  "unified_api": "crm",
+  "service_id": "salesforce",
+  "auth_type": "oauth2",
+  "form_fields": [
+    {
+      "id": "instance_url",
+      "label": "Instance url",
+      "value": "https://eu26.salesforce.com",
+      "placeholder": "",
+      "mask": false,
+      "type": "text",
+      "required": true,
+      "disabled": false,
+      "custom_field": false
+    }
+  ],
+  "configuration": [
+    {
+      "id": "DeliveryInstallationStatus__c",
+      "label": "Delivery/Installation Status",
+      "custom_field": true,
+      "default_value": null,
+      "description": null,
+      "mask": null,
+      "required": false,
+      "type": "select",
+      "options": [
+        {
+          "label": "In progress",
+          "value": "In progress"
+        },
+        {
+          "label": "Yet to begin",
+          "value": "Yet to begin"
+        },
+        {
+          "label": "Completed",
+          "value": "Completed"
+        }
+      ],
+      "value": null
+    },
+    {
+      "id": "TrackingNumber__c",
+      "label": "Tracking Number",
+      "custom_field": true,
+      "default_value": null,
+      "description": null,
+      "mask": null,
+      "required": false,
+      "type": "text",
+      "options": [],
+      "value": null
+    },
+    {
+      "id": "OrderNumber__c",
+      "label": "Order Number",
+      "custom_field": true,
+      "default_value": null,
+      "description": null,
+      "mask": null,
+      "required": false,
+      "type": "text",
+      "options": [],
+      "value": null
+    },
+    {
+      "id": "CurrentGenerators__c",
+      "label": "Current Generator(s)",
+      "custom_field": true,
+      "default_value": null,
+      "description": null,
+      "mask": null,
+      "required": false,
+      "type": "text",
+      "options": [],
+      "value": null
+    },
+    {
+      "id": "MainCompetitors__c",
+      "label": "Main Competitor(s)",
+      "custom_field": true,
+      "default_value": null,
+      "description": null,
+      "mask": null,
+      "required": false,
+      "type": "text",
+      "options": [],
+      "value": null
+    }
+  ],
+  "configurable_resources": ["opportunities", "companies", "contacts", "leads"],
+  "settings_required_for_authorization": [],
+  "added": true,
+  "configured": true,
+  "settings": {
+    "instance_url": "https://eu26.salesforce.com"
+  },
+  "created_at": 1608729585144,
+  "updated_at": 1614600944427,
+  "enabled": true,
+  "authorize_url": "http://localhost:3050/vault/authorize/salesforce/1111?state=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb25zdW1lcl9pZCI6InRlc3RfdXNlcl9pZCIsInVuaWZpZWRfYXBpIjoiY3JtIiwic2VydmljZV9pZCI6InNhbGVzZm9yY2UiLCJhcHBsaWNhdGlvbl9pZCI6IjExMTEiLCJpYXQiOjE2MTQ2MDA5NDQsImV4cCI6MTYxNDYwMjc0NH0.KvXQ2C_fL0EIHH4WBekTImfOAa13XCZp1LER2oK4TvM",
+  "revoke_url": "http://localhost:3050/vault/revoke/salesforce/1111?state=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb25zdW1lcl9pZCI6InRlc3RfdXNlcl9pZCIsInVuaWZpZWRfYXBpIjoiY3JtIiwic2VydmljZV9pZCI6InNhbGVzZm9yY2UiLCJhcHBsaWNhdGlvbl9pZCI6IjExMTEiLCJpYXQiOjE2MTQ2MDA5NDQsImV4cCI6MTYxNDYwMjc0NH0.KvXQ2C_fL0EIHH4WBekTImfOAa13XCZp1LER2oK4TvM"
+}

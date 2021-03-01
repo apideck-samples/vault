@@ -28,9 +28,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
   if (loading) return <ResourcePlaceholder />
 
   if (!connection) {
-    const error = {
-      status: 404
-    }
+    const error = { status: 404 }
     return <ErrorBlock error={error} />
   }
 

@@ -1,11 +1,12 @@
 import { ErrorBlock, ResourceForm } from 'components'
-import client from 'lib/axios'
-import { applySession } from 'next-session'
 import React, { useEffect, useState } from 'react'
-import useSWR from 'swr'
+
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
+import { applySession } from 'next-session'
+import client from 'lib/axios'
 import { options } from 'utils/sessionOptions'
+import useSWR from 'swr'
 
 interface IProps {
   connection: IConnection

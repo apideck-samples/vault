@@ -1,13 +1,13 @@
-import React, { Fragment, memo } from 'react'
+import React, { memo } from 'react'
 
 const Placeholder = () => {
   return (
-    <Fragment>
+    <div data-testid="resource-placeholder">
       <div className="inline-flex items-center self-start justify-start mb-4 text-sm leading-none">
-        <div className="bg-gray-200 mr-1 rounded-md" style={{ height: '18px', width: '18px' }} />
+        <div className="mr-1 bg-gray-200 rounded-md" style={{ height: '18px', width: '18px' }} />
 
         <div
-          className="bg-gray-200 skeleton-loading rounded-md"
+          className="bg-gray-200 rounded-md skeleton-loading"
           style={{ height: '18px', width: '200px' }}
         />
       </div>
@@ -15,44 +15,44 @@ const Placeholder = () => {
       <div className="mt-4 border rounded-md">
         <div className="px-5 py-4">
           <div
-            className="skeleton-loading bg-gray-200 rounded mt-1"
+            className="mt-1 bg-gray-200 rounded skeleton-loading"
             style={{ height: '18px', width: '240px' }}
           ></div>
         </div>
 
         <div className="px-5 py-6 border-t border-b">
-          <div className="items-center justify-center flex flex-col">
+          <div className="flex flex-col items-center justify-center">
             <div className="flex items-center justify-start mb-3">
               <div
-                className="bg-gray-200 rounded mt-1 mr-4"
+                className="mt-1 mr-4 bg-gray-200 rounded"
                 style={{ height: '18px', width: '160px' }}
               />
-              <div className="border rounded mt-1" style={{ height: '33px', width: '275px' }} />
+              <div className="mt-1 border rounded" style={{ height: '33px', width: '275px' }} />
             </div>
 
             <div className="flex items-center justify-start mb-3">
               <div
-                className="bg-gray-200 rounded mt-1 mr-4"
+                className="mt-1 mr-4 bg-gray-200 rounded"
                 style={{ height: '18px', width: '160px' }}
               />
-              <div className="border rounded mt-1" style={{ height: '33px', width: '275px' }} />
+              <div className="mt-1 border rounded" style={{ height: '33px', width: '275px' }} />
             </div>
 
             <div className="flex items-center justify-start mb-3">
               <div
-                className="bg-gray-200 rounded mt-1 mr-4"
+                className="mt-1 mr-4 bg-gray-200 rounded"
                 style={{ height: '18px', width: '160px' }}
               />
-              <div className="border rounded mt-1" style={{ height: '33px', width: '275px' }} />
+              <div className="mt-1 border rounded" style={{ height: '33px', width: '275px' }} />
             </div>
           </div>
         </div>
 
         <div className="flex items-center justify-end">
-          <div className="bg-gray-200 rounded m-2 mr-5" style={{ height: '36px', width: '80px' }} />
+          <div className="m-2 mr-5 bg-gray-200 rounded" style={{ height: '36px', width: '80px' }} />
         </div>
       </div>
-    </Fragment>
+    </div>
   )
 }
 
