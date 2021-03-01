@@ -182,7 +182,9 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                             />
                           )}
                           {description && (
-                            <small className="inline-block mt-2 text-gray-600">{description}</small>
+                            <small className="inline-block pt-2 ml-2 text-gray-600">
+                              {description}
+                            </small>
                           )}
                         </div>
                       </div>

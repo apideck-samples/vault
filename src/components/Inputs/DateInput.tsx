@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 
 interface IProps {
   name: string
+  type: 'date' | 'datetime'
   value?: readonly string[] | string
   required?: boolean
   placeholder?: string | undefined
@@ -12,6 +13,7 @@ interface IProps {
 const DateInput: React.FC<IProps> = ({
   name,
   value,
+  type = 'date',
   required = false,
   placeholder = 'Select date',
   onChange
@@ -19,8 +21,10 @@ const DateInput: React.FC<IProps> = ({
   const inputRef = useRef<HTMLInputElement>(null)
   const [showDatePicker, setShowDatePicker] = useState(false)
   const [datePickerValue, setDatePickerValue] = useState(value || '')
-  const [year, setYear] = useState(1)
-  const [month, setMonth] = useState(2021)
+  const [year, setYear] = useState(new Date().getFullYear())
+  const [month, setMonth] = useState(new Date().getMonth())
+  const [day, setDay] = useState(new Date().getDay())
+  const [time, setTime] = useState('00:00')
   const [numberOfDays, setNumberOfDays] = useState<number[]>([])
   const [blankDays, setBlankDays] = useState<number[]>([])
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -40,12 +44,6 @@ const DateInput: React.FC<IProps> = ({
   ]
 
   useEffect(() => {
-    const today = new Date()
-    setYear(today.getFullYear())
-    setMonth(today.getMonth())
-  }, [])
-
-  useEffect(() => {
     const getNumberOfDays = () => {
       const daysInMonth = new Date(year, month + 1, 0).getDate()
       const dayOfWeek = new Date(year, month).getDay()
@@ -61,6 +59,33 @@ const DateInput: React.FC<IProps> = ({
     getNumberOfDays()
   }, [month, year])
 
+  useEffect(() => {
+    const formattedDate = (day: number): string => {
+      const selectedDate = new Date(year, month, day)
+      let formattedDate = `${selectedDate.getFullYear()}-${(
+        '0' +
+        (selectedDate.getMonth() + 1)
+      ).slice(-2)}-${('0' + selectedDate.getDate()).slice(-2)}`
+
+      if (type === 'datetime') {
+        formattedDate = `${formattedDate} ${time}:${('0' + selectedDate.getSeconds()).slice(-2)}`
+      }
+      return formattedDate
+    }
+
+    const handleValueChanged = () => {
+      if (inputRef?.current) {
+        const event = new Event('input', { bubbles: true })
+        inputRef.current.value = formattedDate(day)
+        inputRef.current.dispatchEvent(event)
+        onChange(event)
+      }
+      setDatePickerValue(formattedDate(day))
+    }
+
+    handleValueChanged()
+  }, [time, day, onChange, year, month, type])
+
   const isToday = (day: number) => {
     const today = new Date()
     const selectedDay = new Date(year, month, day)
@@ -68,21 +93,8 @@ const DateInput: React.FC<IProps> = ({
     return today.toDateString() === selectedDay.toDateString()
   }
 
-  const getDateValue = (day: number) => {
-    const selectedDate = new Date(year, month, day)
-    const formattedDate = `${selectedDate.getFullYear()}-${(
-      '0' +
-      (selectedDate.getMonth() + 1)
-    ).slice(-2)}-${('0' + selectedDate.getDate()).slice(-2)}`
-
-    if (inputRef?.current) {
-      const event = new Event('input', { bubbles: true })
-      inputRef.current.value = formattedDate
-      inputRef.current.dispatchEvent(event)
-      onChange(event)
-    }
-
-    setDatePickerValue(formattedDate)
+  const selectDay = (day: number) => {
+    setDay(day)
     setShowDatePicker(false)
   }
 
@@ -145,11 +157,19 @@ const DateInput: React.FC<IProps> = ({
           <div>
             <span className="text-lg font-bold text-gray-800">{monthNames[month]}</span>
             <input
-              className="inline-block w-20 px-2 py-1 ml-1 text-lg font-normal text-gray-600 border-none rounded focus:border-none"
+              className="inline-block w-16 p-1 ml-1 text-lg font-normal text-gray-600 border-none rounded focus:border-none"
               value={year}
               type="number"
               onChange={(e) => setYear(+e.target.value)}
             />
+            {type === 'datetime' && (
+              <input
+                className="inline-block p-1 ml-1 font-normal text-gray-600 border-none rounded focus:border-none"
+                value={time}
+                type="time"
+                onChange={(e) => setTime(e.target.value)}
+              />
+            )}
           </div>
           <div>
             <button
@@ -218,7 +238,7 @@ const DateInput: React.FC<IProps> = ({
               <div style={{ width: '14.28%' }} className="px-1 mb-1" key={index}>
                 <div
                   data-testid={`day-${day}`}
-                  onClick={() => getDateValue(day)}
+                  onClick={() => selectDay(day)}
                   className={classNames(
                     'text-sm leading-loose text-center transition duration-100 ease-in-out rounded-md cursor-pointer',
                     {
