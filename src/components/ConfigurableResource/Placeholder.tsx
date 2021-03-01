@@ -2,7 +2,7 @@ import React, { memo } from 'react'
 
 const Placeholder = () => {
   return (
-    <div data-testid="resource-placeholder">
+    <div data-testid="resourcePlaceholder">
       <div className="inline-flex items-center self-start justify-start mb-4 text-sm leading-none">
         <div className="mr-1 bg-gray-200 rounded-md" style={{ height: '18px', width: '18px' }} />
 

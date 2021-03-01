@@ -1,23 +1,24 @@
 import classNames from 'classnames'
-import { FormikProps } from 'formik'
 import { useEffect, useRef, useState } from 'react'
+
 interface IProps {
-  field: string
-  formikProps: FormikProps<Record<string, readonly string[]>>
+  name: string
+  value?: readonly string[] | string
   required?: boolean
   placeholder?: string | undefined
+  onChange: (e: Event) => void
 }
 
 const DateInput: React.FC<IProps> = ({
-  field,
+  name,
+  value,
   required = false,
   placeholder = 'Select date',
-  formikProps
+  onChange
 }) => {
-  const { handleChange } = formikProps
   const inputRef = useRef<HTMLInputElement>(null)
   const [showDatePicker, setShowDatePicker] = useState(false)
-  const [datePickerValue, setDatePickerValue] = useState('')
+  const [datePickerValue, setDatePickerValue] = useState(value || '')
   const [year, setYear] = useState(1)
   const [month, setMonth] = useState(2021)
   const [numberOfDays, setNumberOfDays] = useState<number[]>([])
@@ -39,7 +40,9 @@ const DateInput: React.FC<IProps> = ({
   ]
 
   useEffect(() => {
-    initDate()
+    const today = new Date()
+    setYear(today.getFullYear())
+    setMonth(today.getMonth())
   }, [])
 
   useEffect(() => {
@@ -57,19 +60,6 @@ const DateInput: React.FC<IProps> = ({
 
     getNumberOfDays()
   }, [month, year])
-
-  const initDate = () => {
-    const today = new Date()
-    const year = today.getFullYear()
-    const month = today.getMonth()
-
-    setMonth(month)
-    setYear(year)
-    const formattedDate = `${year}-${('0' + (month + 1)).slice(-2)}-${('0' + today.getDate()).slice(
-      -2
-    )}`
-    setDatePickerValue(formattedDate)
-  }
 
   const isToday = (day: number) => {
     const today = new Date()
@@ -89,7 +79,7 @@ const DateInput: React.FC<IProps> = ({
       const event = new Event('input', { bubbles: true })
       inputRef.current.value = formattedDate
       inputRef.current.dispatchEvent(event)
-      handleChange(event)
+      onChange(event)
     }
 
     setDatePickerValue(formattedDate)
@@ -119,15 +109,16 @@ const DateInput: React.FC<IProps> = ({
   return (
     <div className="relative w-full max-w-sm">
       <input
-        type="text"
         readOnly
+        type="text"
+        name={name}
         ref={inputRef}
-        onClick={() => setShowDatePicker(!showDatePicker)}
         value={datePickerValue}
-        name={field}
         required={required}
-        className="block w-full max-w-sm text-gray-600 border-gray-300 rounded-md sm:text-sm"
+        onClick={() => setShowDatePicker(!showDatePicker)}
         placeholder={placeholder}
+        data-testid={name}
+        className="block w-full max-w-sm text-gray-600 border-gray-300 rounded-md sm:text-sm"
       />
       <div className="absolute top-0 right-0 z-10 px-3 py-2">
         <svg
@@ -145,6 +136,7 @@ const DateInput: React.FC<IProps> = ({
         </svg>
       </div>
       <div
+        data-testid="datePicker"
         className={classNames('absolute top-0 left-0 z-20 p-4 mt-12 bg-white rounded-md shadow', {
           hidden: !showDatePicker
         })}
@@ -225,6 +217,7 @@ const DateInput: React.FC<IProps> = ({
             return (
               <div style={{ width: '14.28%' }} className="px-1 mb-1" key={index}>
                 <div
+                  data-testid={`day-${day}`}
                   onClick={() => getDateValue(day)}
                   className={classNames(
                     'text-sm leading-loose text-center transition duration-100 ease-in-out rounded-md cursor-pointer',

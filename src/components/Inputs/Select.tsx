@@ -13,7 +13,7 @@ const Select = ({ field, type, required = false, options = [], formikProps }: IP
 
   return (
     <select
-      className="block w-full max-w-xs px-3 py-2 mt-1 text-base text-gray-600 border-gray-300 rounded-md focus:outline-none sm:text-sm "
+      className="block w-full max-w-sm px-3 py-2 mt-1 text-base text-gray-600 border-gray-300 rounded-md focus:outline-none sm:text-sm "
       name={field}
       id={field}
       data-testid={field}

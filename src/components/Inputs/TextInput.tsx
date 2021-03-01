@@ -4,10 +4,11 @@ import classNames from 'classnames'
 interface TextInputProps {
   name: string
   type: string
+  value?: readonly string[]
   required?: boolean
   placeholder?: string | undefined
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void
-  onBlur: (e: ChangeEvent<HTMLInputElement>) => void
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void
+  onBlur?: (e: ChangeEvent<HTMLInputElement>) => void
 }
 const TextInput = (props: TextInputProps) => {
   return (

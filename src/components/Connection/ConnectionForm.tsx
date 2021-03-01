@@ -168,15 +168,15 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
       </Link>
 
       <div className="border rounded-md">
-        <div className="flex items-top justify-between px-5 py-4">
-          <div className="flex items-top justify-start">
+        <div className="flex justify-between px-5 py-4 items-top">
+          <div className="flex justify-start items-top">
             <img className="mr-4" style={{ width: '40px', height: '40px' }} src={icon} alt={name} />
             <div>
               <h1 className="text-xl font-medium text-gray-800">{name}</h1>
               <div className="text-sm text-gray-700 capitalize">{`${unifiedApi} integration`}</div>
 
               {tagLine && (
-                <p className="text-sm text-gray-800 my-4 border-t pt-4 mr-4">{tagLine}</p>
+                <p className="pt-4 my-4 mr-4 text-sm text-gray-800 border-t">{tagLine}</p>
               )}
             </div>
           </div>
@@ -208,7 +208,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
           validateOnBlur={false}
         >
           {(formikProps: FormikProps<Record<string, readonly string[]>>) => {
-            const { handleSubmit, isSubmitting } = formikProps
+            const { handleSubmit, isSubmitting, handleBlur, handleChange, values } = formikProps
 
             return (
               <form className="mt-10 border rounded-md" onSubmit={handleSubmit}>
@@ -228,11 +228,13 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
                         <div className="w-2/3 pl-2">
                           {type === 'text' && (
                             <TextInput
-                              field={id}
+                              name={id}
+                              value={values[id]}
                               type="text"
                               required={required}
                               placeholder={placeholder}
-                              formikProps={formikProps}
+                              onChange={handleChange}
+                              onBlur={handleBlur}
                             />
                           )}
                           {type === 'select' && (

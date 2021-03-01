@@ -2,8 +2,9 @@ import { ChangeEvent } from 'react'
 
 interface TextAreaProps {
   name: string
-  required: boolean
   placeholder: string | undefined
+  required?: boolean
+  value?: readonly string[]
   onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void
 }
 

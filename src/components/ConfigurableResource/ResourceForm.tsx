@@ -111,7 +111,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
           validateOnBlur={false}
         >
           {(formikProps: FormikProps<Record<string, readonly string[]>>) => {
-            const { handleSubmit, isSubmitting, handleChange, handleBlur } = formikProps
+            const { handleSubmit, isSubmitting, handleChange, handleBlur, values } = formikProps
 
             return (
               <form className="mt-2 border rounded-md" onSubmit={handleSubmit}>
@@ -121,6 +121,9 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                 <div className="px-5 py-6 bg-gray-100 border-t border-b">
                   {formFields?.map((field) => {
                     const { id, label, required, placeholder, description, type, options } = field
+                    let fieldType = type
+                    if (type === 'phone') fieldType = 'tel'
+                    if (type === 'location') fieldType = 'text'
                     return (
                       <div key={id} className="flex items-start justify-center mb-4">
                         <div className="w-1/3 pt-2 pr-2 text-sm font-medium text-right text-gray-600">
@@ -144,7 +147,8 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                           ].includes(type as string) && (
                             <TextInput
                               name={id}
-                              type={type as string}
+                              value={values[id] || ''}
+                              type={fieldType as string}
                               required={required}
                               placeholder={placeholder}
                               onChange={handleChange}
@@ -154,6 +158,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                           {type === 'textarea' && (
                             <TextArea
                               name={id}
+                              value={values[id]}
                               required={required}
                               placeholder={placeholder}
                               onChange={handleChange}
@@ -169,7 +174,12 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                             />
                           )}
                           {(type === 'date' || type === 'datetime') && (
-                            <DateInput field={id} required={required} formikProps={formikProps} />
+                            <DateInput
+                              name={id}
+                              value={values[id]}
+                              required={required}
+                              onChange={handleChange}
+                            />
                           )}
                           {description && (
                             <small className="inline-block mt-2 text-gray-600">{description}</small>

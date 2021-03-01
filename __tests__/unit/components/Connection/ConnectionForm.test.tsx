@@ -1,9 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { ConnectionForm } from 'components'
-import client from 'lib/axios'
-import { IConnection } from 'types/Connection'
-import INTEGRATIONS from '../../../fixtures/integrations.json'
-import { jwt, token } from '../../../fixtures/session'
 import {
   fireEvent,
   render,
@@ -12,6 +6,13 @@ import {
   waitForElementToBeRemoved,
   within
 } from '../../../testUtils/testing-utils'
+import { jwt, token } from '../../../fixtures/session'
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ConnectionForm } from 'components'
+import { IConnection } from 'types/Connection'
+import INTEGRATIONS from '../../../fixtures/integrations.json'
+import client from 'lib/axios'
 
 describe('Connection Form', () => {
   const handleSubmit = jest.fn()
@@ -36,7 +37,9 @@ describe('Connection Form', () => {
             type: 'text',
             required: true,
             description: '',
-            disabled: false
+            disabled: false,
+            options: [],
+            custom_field: false
           }
         ]
       }

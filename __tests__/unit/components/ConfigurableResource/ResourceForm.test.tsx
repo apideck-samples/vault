@@ -28,7 +28,7 @@ describe('Resource Form', () => {
         />
       )
 
-      const placeholder = screen.getByTestId('resource-placeholder')
+      const placeholder = screen.getByTestId('resourcePlaceholder')
       expect(placeholder).toBeInTheDocument()
     })
 
