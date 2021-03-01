@@ -1,4 +1,5 @@
 import { FormikProps } from 'formik'
+import classNames from 'classnames'
 
 interface TextInputProps {
   field: string
@@ -13,7 +14,15 @@ const TextInput = ({ field, type, required = false, placeholder, formikProps }: 
 
   return (
     <input
-      className="block w-full max-w-sm text-gray-600 border-gray-300 rounded-md sm:text-sm"
+      className={classNames(
+        'block text-gray-600 rounded-md border-gray-300',
+        {
+          'w-full max-w-xs sm:text-sm': type !== 'checkbox'
+        },
+        {
+          'h-5 w-5 mt-2': type === 'checkbox'
+        }
+      )}
       value={values[field]}
       onChange={handleChange}
       onBlur={handleBlur}

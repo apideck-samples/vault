@@ -1,4 +1,5 @@
 import { Button, ErrorBlock, ResourcePlaceholder, Select, TextInput } from 'components'
+import { DateInput } from 'components/Inputs'
 import TextArea from 'components/Inputs/TextArea'
 import { Formik, FormikProps } from 'formik'
 import client from 'lib/axios'
@@ -127,7 +128,6 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                 <div className="px-5 py-6 bg-gray-100 border-t border-b">
                   {formFields?.map((field) => {
                     const { id, label, required, placeholder, description, type, options } = field
-
                     return (
                       <div key={id} className="flex items-start justify-center mb-4">
                         <div className="w-1/3 pt-2 pr-2 text-sm font-medium text-right text-gray-600">
@@ -135,12 +135,12 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                           {required && <span className="ml-1 text-red-600">*</span>}
                         </div>
                         <div className="w-2/3 pl-2">
-                          {['text', 'email', 'url', 'date', 'phone', 'number'].includes(
+                          {['boolean', 'text', 'email', 'url', 'phone', 'number'].includes(
                             type as string
                           ) && (
                             <TextInput
                               field={id}
-                              type={type as string}
+                              type={type === 'boolean' ? 'checkbox' : (type as string)}
                               required={required}
                               placeholder={placeholder}
                               formikProps={formikProps}
@@ -154,14 +154,17 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                               formikProps={formikProps}
                             />
                           )}
-                          {type === 'select' && (
+                          {(type === 'select' || type === 'multi-select') && (
                             <Select
                               field={id}
+                              type={type}
                               required={required}
                               options={options}
                               formikProps={formikProps}
                             />
                           )}
+                          {type === 'date' && <DateInput />}
+
                           {description && (
                             <small className="inline-block mt-2 text-gray-600">{description}</small>
                           )}
