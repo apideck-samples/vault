@@ -121,9 +121,6 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                 <div className="px-5 py-6 bg-gray-100 border-t border-b">
                   {formFields?.map((field) => {
                     const { id, label, required, placeholder, description, type, options } = field
-                    let fieldType = type
-                    if (type === 'phone') fieldType = 'tel'
-                    if (type === 'location') fieldType = 'text'
                     return (
                       <div key={id} className="flex items-start justify-center mb-4">
                         <div className="w-1/3 pt-2 pr-2 text-sm font-medium text-right text-gray-600">
@@ -140,7 +137,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                             'checkbox',
                             'email',
                             'url',
-                            'phone',
+                            'tel',
                             'number',
                             'time',
                             'location'
@@ -148,7 +145,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                             <TextInput
                               name={id}
                               value={values[id] || ''}
-                              type={fieldType as string}
+                              type={type as string}
                               required={required}
                               placeholder={placeholder}
                               onChange={handleChange}

@@ -12,7 +12,7 @@ interface IProps {
 
 const DateInput: React.FC<IProps> = ({
   name,
-  value,
+  value = '',
   type = 'date',
   required = false,
   placeholder = 'Select date',
@@ -20,7 +20,7 @@ const DateInput: React.FC<IProps> = ({
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [showDatePicker, setShowDatePicker] = useState(false)
-  const [datePickerValue, setDatePickerValue] = useState(value || '')
+  const [datePickerValue, setDatePickerValue] = useState(value)
   const [year, setYear] = useState(new Date().getFullYear())
   const [month, setMonth] = useState(new Date().getMonth())
   const [day, setDay] = useState(new Date().getDay())
@@ -74,13 +74,16 @@ const DateInput: React.FC<IProps> = ({
     }
 
     const handleValueChanged = () => {
+      setDatePickerValue(formattedDate(day))
+
       if (inputRef?.current) {
         const event = new Event('input', { bubbles: true })
-        inputRef.current.value = formattedDate(day)
+        let inputValue = formattedDate(day)
+        if (type === 'datetime') inputValue = new Date(formattedDate(day)).toISOString()
+        inputRef.current.value = inputValue
         inputRef.current.dispatchEvent(event)
         onChange(event)
       }
-      setDatePickerValue(formattedDate(day))
     }
 
     handleValueChanged()
@@ -120,11 +123,10 @@ const DateInput: React.FC<IProps> = ({
 
   return (
     <div className="relative w-full max-w-sm">
+      <input hidden readOnly type="text" name={name} ref={inputRef} value={datePickerValue} />
       <input
-        readOnly
         type="text"
-        name={name}
-        ref={inputRef}
+        readOnly
         value={datePickerValue}
         required={required}
         onClick={() => setShowDatePicker(!showDatePicker)}
@@ -163,18 +165,21 @@ const DateInput: React.FC<IProps> = ({
               onChange={(e) => setYear(+e.target.value)}
             />
             {type === 'datetime' && (
-              <input
-                className="inline-block p-1 ml-1 font-normal text-gray-600 border-none rounded focus:border-none"
-                value={time}
-                type="time"
-                onChange={(e) => setTime(e.target.value)}
-              />
+              <>
+                <input
+                  className="inline-block w-20 p-1 pr-0 ml-1 font-normal text-gray-600 border-none rounded focus:border-none"
+                  value={time}
+                  type="time"
+                  onChange={(e) => setTime(e.target.value)}
+                />
+                <span className="ml-1 text-gray-500">(UTC)</span>
+              </>
             )}
           </div>
           <div>
             <button
               type="button"
-              className="inline-flex p-1 transition duration-100 ease-in-out rounded-full cursor-pointer hover:bg-gray-200"
+              className="inline-flex transition duration-100 ease-in-out rounded-full cursor-pointer hover:bg-gray-200"
               onClick={() => prevMonth()}
             >
               <svg
