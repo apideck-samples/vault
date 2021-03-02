@@ -14,7 +14,7 @@ const ConfigurableResources = ({ connection }: IProps) => {
           return (
             <li key={`resource-${index}`}>
               <Link href={`/integrations/${unified_api}/${service_id}/${resource}`}>
-                <a className="flex items-center justify-between px-4 py-4 text-gray-800 capitalize sm:px-6 hover:bg-gray-50 group">
+                <a className="flex items-center justify-between px-4 py-3 text-gray-800 capitalize text-sm font-medium sm:px-6 hover:bg-gray-50 group">
                   <span>{resource}</span>
                   <ChevronRightIcon
                     className="transition duration-150 ease-in-out transform group-hover:translate-x-1"
