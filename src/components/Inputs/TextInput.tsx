@@ -1,5 +1,4 @@
 import { ChangeEvent } from 'react'
-import classNames from 'classnames'
 
 interface TextInputProps {
   name: string
@@ -13,15 +12,7 @@ interface TextInputProps {
 const TextInput = (props: TextInputProps) => {
   return (
     <input
-      className={classNames(
-        'inline-block text-gray-600 rounded-md border-gray-300',
-        {
-          'w-full max-w-sm sm:text-sm': props.type !== 'checkbox'
-        },
-        {
-          'h-5 w-5': props.type === 'checkbox'
-        }
-      )}
+      className="inline-block w-full max-w-sm text-gray-600 border-gray-300 rounded-md sm:text-sm"
       data-testid={props.name}
       {...props}
     />
