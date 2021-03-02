@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import { useEffect, useRef, useState } from 'react'
+import useOnClickOutside from 'utils/useOutsideClick'
 
 interface IProps {
   name: string
@@ -19,6 +20,7 @@ const DateInput: React.FC<IProps> = ({
   onChange
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
+  const datePickerRef = useRef<HTMLDivElement>(null)
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false)
   const [datePickerValue, setDatePickerValue] = useState<string | readonly string[]>(value)
   const [year, setYear] = useState<number>(new Date().getFullYear())
@@ -42,6 +44,8 @@ const DateInput: React.FC<IProps> = ({
     'November',
     'December'
   ]
+
+  useOnClickOutside(datePickerRef, () => setShowDatePicker(false))
 
   useEffect(() => {
     const getNumberOfDays = () => {
@@ -172,6 +176,7 @@ const DateInput: React.FC<IProps> = ({
       </div>
       <div
         data-testid="datePicker"
+        ref={datePickerRef}
         className={classNames('absolute top-0 left-0 z-20 p-4 mt-12 bg-white rounded-md shadow', {
           hidden: !showDatePicker
         })}
