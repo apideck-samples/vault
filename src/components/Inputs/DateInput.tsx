@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 interface IProps {
   name: string
   type: 'date' | 'datetime'
-  value?: readonly string[] | string
+  value?: readonly string[] | string // yyyy-mm-dd or yyyy-mm-ddT00:00:00.000Z
   required?: boolean
   placeholder?: string | undefined
   onChange: (e: Event) => void
@@ -24,7 +24,7 @@ const DateInput: React.FC<IProps> = ({
   const [year, setYear] = useState<number>(new Date().getFullYear())
   const [month, setMonth] = useState<number>(new Date().getMonth())
   const [day, setDay] = useState<number>(new Date().getDay())
-  const [time, setTime] = useState<string | undefined>('00:00')
+  const [time, setTime] = useState<string>('00:00')
   const [numberOfDays, setNumberOfDays] = useState<number[]>([])
   const [blankDays, setBlankDays] = useState<number[]>([])
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -77,12 +77,18 @@ const DateInput: React.FC<IProps> = ({
       setDatePickerValue(formattedDate(day))
 
       if (inputRef?.current) {
-        const event = new Event('input', { bubbles: true })
         let inputValue = formattedDate(day)
+        const event = new Event('input', { bubbles: true })
         if (type === 'datetime' && time) {
-          inputValue = new Date(inputValue).toISOString()
+          const dateTime = new Date(
+            year,
+            month,
+            day,
+            parseInt(time.substring(0, 2)),
+            parseInt(time.substring(3, 5))
+          )
+          inputValue = dateTime.toISOString()
         }
-        console.log(inputValue)
         inputRef.current.value = inputValue
         inputRef.current.dispatchEvent(event)
         onChange(event)
