@@ -180,7 +180,8 @@ const DateInput: React.FC<IProps> = ({
           <div>
             <span className="text-lg font-bold text-gray-800">{monthNames[month]}</span>
             <input
-              className="inline-block w-16 p-1 ml-1 text-lg font-normal text-gray-600 border-none rounded focus:border-none"
+              className="inline-block p-1 ml-1 text-lg font-normal text-gray-600 border-none rounded focus:border-none"
+              style={{ width: 70 }}
               value={year}
               type="number"
               onChange={(e) => setYear(+e.target.value)}
@@ -193,18 +194,18 @@ const DateInput: React.FC<IProps> = ({
                   type="time"
                   onChange={(e) => setTime(e.target.value)}
                 />
-                <span className="ml-1 text-gray-500">(UTC)</span>
+                <span className="ml-1 text-sm text-gray-500">(UTC)</span>
               </>
             )}
           </div>
           <div>
             <button
               type="button"
-              className="inline-flex transition duration-100 ease-in-out rounded-full cursor-pointer hover:bg-gray-200"
+              className="inline-flex p-1 transition duration-100 ease-in-out rounded-full cursor-pointer hover:bg-gray-200"
               onClick={() => prevMonth()}
             >
               <svg
-                className="inline-flex w-6 h-6 text-gray-500"
+                className="inline-flex w-5 h-5 text-gray-500"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -223,7 +224,7 @@ const DateInput: React.FC<IProps> = ({
               onClick={() => nextMonth()}
             >
               <svg
-                className="inline-flex w-6 h-6 text-gray-500"
+                className="inline-flex w-5 h-5 text-gray-500"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
