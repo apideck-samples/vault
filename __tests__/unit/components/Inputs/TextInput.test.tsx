@@ -63,34 +63,6 @@ describe('Text Area', () => {
       expect(input.value).toBe('')
     })
   })
-  describe('When type is checkbox', () => {
-    const props = {
-      name: 'CheckBox',
-      type: 'checkbox',
-      required: true,
-      placeholder: 'Test Placeholder',
-      onChange: () => {},
-      onBlur: () => {}
-    }
-
-    it('should render the component', async () => {
-      render(<TextInput {...props} />)
-
-      const input = screen.getByTestId('CheckBox')
-      expect(input).toBeInTheDocument()
-    })
-
-    it('should toggle the checkbox', async () => {
-      render(<TextInput {...props} />)
-
-      const input = screen.getByTestId('CheckBox') as HTMLInputElement
-      expect(input.checked).toEqual(false)
-      fireEvent.click(input)
-      expect(input.checked).toEqual(true)
-      fireEvent.click(input)
-      expect(input.checked).toEqual(false)
-    })
-  })
   describe('When type is email', () => {
     const props = {
       name: 'EmailInput',
