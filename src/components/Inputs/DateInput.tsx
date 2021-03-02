@@ -19,12 +19,12 @@ const DateInput: React.FC<IProps> = ({
   onChange
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
-  const [showDatePicker, setShowDatePicker] = useState(false)
-  const [datePickerValue, setDatePickerValue] = useState(value)
-  const [year, setYear] = useState(new Date().getFullYear())
-  const [month, setMonth] = useState(new Date().getMonth())
-  const [day, setDay] = useState(new Date().getDay())
-  const [time, setTime] = useState('00:00')
+  const [showDatePicker, setShowDatePicker] = useState<boolean>(false)
+  const [datePickerValue, setDatePickerValue] = useState<string | readonly string[]>(value)
+  const [year, setYear] = useState<number>(new Date().getFullYear())
+  const [month, setMonth] = useState<number>(new Date().getMonth())
+  const [day, setDay] = useState<number>(new Date().getDay())
+  const [time, setTime] = useState<string | undefined>('00:00')
   const [numberOfDays, setNumberOfDays] = useState<number[]>([])
   const [blankDays, setBlankDays] = useState<number[]>([])
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -68,7 +68,7 @@ const DateInput: React.FC<IProps> = ({
       ).slice(-2)}-${('0' + selectedDate.getDate()).slice(-2)}`
 
       if (type === 'datetime') {
-        formattedDate = `${formattedDate} ${time}:${('0' + selectedDate.getSeconds()).slice(-2)}`
+        formattedDate = `${formattedDate} ${time}`
       }
       return formattedDate
     }
@@ -79,7 +79,10 @@ const DateInput: React.FC<IProps> = ({
       if (inputRef?.current) {
         const event = new Event('input', { bubbles: true })
         let inputValue = formattedDate(day)
-        if (type === 'datetime') inputValue = new Date(formattedDate(day)).toISOString()
+        if (type === 'datetime' && time) {
+          inputValue = new Date(inputValue).toISOString()
+        }
+        console.log(inputValue)
         inputRef.current.value = inputValue
         inputRef.current.dispatchEvent(event)
         onChange(event)
@@ -88,6 +91,18 @@ const DateInput: React.FC<IProps> = ({
 
     handleValueChanged()
   }, [time, day, onChange, year, month, type])
+
+  useEffect(() => {
+    // If value is provided for a datetime, set the correct state for time
+    if (value && type === 'datetime' && time === '00:00') {
+      const timeString = new Date(value.toString()).toLocaleTimeString('en', {
+        timeStyle: 'short',
+        hour12: false,
+        timeZone: 'UTC'
+      })
+      setTime(timeString)
+    }
+  }, [time, type, value])
 
   const isToday = (day: number) => {
     const today = new Date()
@@ -167,7 +182,7 @@ const DateInput: React.FC<IProps> = ({
             {type === 'datetime' && (
               <>
                 <input
-                  className="inline-block w-20 p-1 pr-0 ml-1 font-normal text-gray-600 border-none rounded focus:border-none"
+                  className="inline-block p-1 pr-0 ml-1 font-normal text-gray-600 border-none rounded focus:border-none"
                   value={time}
                   type="time"
                   onChange={(e) => setTime(e.target.value)}
