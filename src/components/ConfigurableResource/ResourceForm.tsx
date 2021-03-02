@@ -176,6 +176,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                           {(type === 'date' || type === 'datetime') && (
                             <DateInput
                               name={id}
+                              type={type}
                               value={values[id]}
                               required={required}
                               onChange={handleChange}
