@@ -124,7 +124,13 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
               return (
                 <form className="mt-2 border rounded-md" onSubmit={handleSubmit}>
                   <div className="px-5 py-4">
-                    <h2 className="font-medium capitalize">{resource} Configuration</h2>
+                    <h2 className="font-medium">
+                      <span className="capitalize">{resource}</span> configuration
+                    </h2>
+                    <h3 className="text-sm text-gray-700 mt-2">
+                      Please provide default values for the fields below. These will be applied when
+                      creating new {resource} through our integration.
+                    </h3>
                   </div>
                   <div className="px-5 py-6 bg-gray-100 border-t border-b">
                     {formFields?.map((field) => {
