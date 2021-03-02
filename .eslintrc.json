@@ -37,8 +37,6 @@
     ],
     "@typescript-eslint/no-var-requires": 2,
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-use-before-define.md#how-to-use
-    "no-use-before-define": "off",
-    "@typescript-eslint/no-use-before-define": ["error"]
+    "@typescript-eslint/no-use-before-define": "off"
   }
 }

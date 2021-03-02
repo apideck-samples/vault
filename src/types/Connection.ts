@@ -24,6 +24,8 @@ export interface IConnection {
   enabled?: boolean
   settings?: Settings
   settings_required_for_authorization?: string[]
+  configurable_resources: string[]
+  configuration?: FormField[]
   form_fields: FormField[]
   created_at: number
 }
@@ -38,4 +40,13 @@ export interface UpdateConnectionInput {
   serviceId: string
   enabled: boolean
   settings?: Settings
+}
+
+export interface UpdateConnectionConfigInput {
+  configuration: ResourceConfig[]
+}
+
+export interface ResourceConfig {
+  resource: string
+  defaults: Partial<FormField>[]
 }

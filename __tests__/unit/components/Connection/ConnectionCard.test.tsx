@@ -15,6 +15,7 @@ describe('Connection Card', () => {
       revoke_url: null,
       created_at: 1606215640025,
       form_fields: [],
+      configurable_resources: [],
       enabled: true,
       added: true,
       configured: false
@@ -42,6 +43,7 @@ describe('Connection Card', () => {
       revoke_url: 'https://revoke.me',
       created_at: 1606215640025,
       form_fields: [],
+      configurable_resources: [],
       enabled: true,
       added: true,
       configured: true

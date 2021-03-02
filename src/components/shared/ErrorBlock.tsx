@@ -59,9 +59,12 @@ const ErrorBlock = ({ error, token = {} }: IErrorProps) => {
         <h1 className="mb-4 text-2xl font-medium text-gray-800">{errorTitle}</h1>
         <ErrorMessage redirectUri={redirectUri} message={errorMessage} />
         {process.env.NODE_ENV !== 'production' && (
-          <code className="p-3 mt-4 text-sm border rounded">
-            <pre>{JSON.stringify(error, null, 2)}</pre>
-          </code>
+          <div className="p-4 mt-4 text-sm border rounded">
+            <h2 className="mb-2 font-medium">DEVELOPMENT ONLY</h2>
+            <code className="text-sm">
+              <pre>{JSON.stringify(error, null, 2)}</pre>
+            </code>
+          </div>
         )}
       </div>
     </div>

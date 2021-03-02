@@ -1,9 +1,8 @@
-import Select, { OptionProps, OptionsType, components } from 'react-select'
-
-import { GroupTypeBase } from 'react-select/src/types'
 import MenuDownIcon from 'mdi-react/MenuDownIcon'
-import theme from 'utils/theme'
 import { useRef } from 'react'
+import Select, { components, OptionProps, OptionsType } from 'react-select'
+import { GroupTypeBase } from 'react-select/src/types'
+import theme from 'utils/theme'
 
 export interface IOptionType {
   value: string
@@ -88,6 +87,7 @@ const SelectInput = ({ field, placeholder, value, handleChange, options }: ISele
       onChange={(option) => handleChange(option)}
       placeholder={placeholder}
       options={options}
+      className="react-select"
       onKeyDown={(e: React.KeyboardEvent<HTMLElement>) => {
         if (e.keyCode === 27) {
           e.stopPropagation()

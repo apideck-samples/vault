@@ -1,10 +1,9 @@
-import { ThemeContext, ThemeContextType } from 'utils/context'
-
-import Head from 'next/head'
-import MenuLeftIcon from 'mdi-react/MenuLeftIcon'
 import { Transition } from 'components'
-import { useContext } from 'react'
+import MenuLeftIcon from 'mdi-react/MenuLeftIcon'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { useContext } from 'react'
+import { ThemeContext, ThemeContextType } from 'utils/context'
 
 interface IProps {
   consumerMetadata: { [key: string]: string }
@@ -125,10 +124,7 @@ const Layout: React.FC<IProps> = ({
         </div>
       </aside>
       <main className="relative w-full px-20 overflow-x-hidden bg-white rounded-l-2xl shadow-main">
-        <div
-          className="flex flex-col py-32 m-auto"
-          style={{ maxWidth: '900px', minHeight: 'calc(100vh - 4px)' }}
-        >
+        <div className="flex flex-col max-w-4xl min-h-screen py-32 m-auto">
           <Transition location={router.pathname}>{children}</Transition>
         </div>
       </main>

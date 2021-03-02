@@ -28,6 +28,7 @@ a {
 
 .skeleton-loading {
   position: relative;
+  overflow: hidden;
 }
 
 .skeleton-loading::before {
@@ -41,6 +42,7 @@ a {
   width: 200px;
   background: linear-gradient(to right, transparent 0%, #ffffff 30%, transparent 100%);
   animation: load 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  opacity: 0.5;
 }
 
 .react-icons {
@@ -54,4 +56,8 @@ a {
   to {
     left: 100%;
   }
+}
+
+.react-select [type='text']:focus {
+  --tw-ring-color: none;
 }

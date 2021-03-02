@@ -1,14 +1,32 @@
-import { ReactText } from 'react'
-
 export interface FormField {
   id: string
   label: string
-  value: string | string[] | number | boolean | undefined
+  value: string | string[] | number | boolean | undefined | null
+  default_value?: string | string[] | number | boolean | undefined | null
   placeholder: string
   mask: boolean
-  type: string
+  type:
+    | 'select'
+    | 'multi-select'
+    | 'text'
+    | 'textarea'
+    | 'number'
+    | 'phone'
+    | 'email'
+    | 'url'
+    | 'boolean'
+    | 'hidden'
+    | 'date'
+    | 'datetime'
+    | unknown
   required: boolean
   description?: string
   disabled: boolean
-  options?: { value: ReactText; label: string }[] | null
+  options: FormFieldOption[]
+  custom_field: boolean
+}
+
+export interface FormFieldOption {
+  label: string
+  value: string | number | readonly string[] | undefined
 }
