@@ -7,6 +7,7 @@ import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
 import CheckIcon from 'mdi-react/CheckIcon'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React, { useContext, useState } from 'react'
 import { IConnection, UpdateConnectionConfigInput } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
@@ -24,6 +25,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
   const [saved, setSaved] = useState(false)
   const [formError, setFormError] = useState(false)
   const { setSessionExpired } = useContext(SessionExpiredModalContext)
+  const { query } = useRouter()
 
   if (loading) return <ResourcePlaceholder />
 
@@ -102,6 +104,10 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
           </span>
         </button>
       </Link>
+
+      {!loading && !formFields.length && (
+        <div className="p-5 mt-2 text-center border rounded-md">{`There are no settings for ${query.resource}`}</div>
+      )}
 
       {formFields.length > 0 && (
         <Formik
