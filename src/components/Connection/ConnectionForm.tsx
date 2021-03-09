@@ -196,7 +196,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
 
       {isAuthorized && connection?.configurable_resources?.length > 0 && (
         <div className="mt-10">
-          <ConfigurableResources connection={connection} />
+          <ConfigurableResources connection={connection} token={token} jwt={jwt} />
         </div>
       )}
 
