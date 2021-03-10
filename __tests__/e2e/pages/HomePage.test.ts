@@ -1,7 +1,8 @@
 import 'expect-playwright'
-import { StatusCodes } from 'http-status-codes'
 import 'jest-playwright-preset'
+
 import INTEGRATIONS from '../../fixtures/integrations.json'
+import { StatusCodes } from 'http-status-codes'
 
 const mockResponseWith = async (status: number, data: unknown) => {
   await jestPlaywright.resetPage()
@@ -38,7 +39,7 @@ describe('Hosted Vault HomePage', () => {
       await expect(page).toHaveText('H1', 'Manage your integrations')
       await expect(page).toHaveText('button.spec-add-integration', '+ Add')
       await expect(page).toHaveSelector('.spec-connection', { state: 'visible' })
-      await expect(page).toHaveText('.spec-connection-name', INTEGRATIONS.data[0].name)
+      await expect(page).toHaveText('.spec-connection-name', INTEGRATIONS.data[1].name)
     })
   })
 

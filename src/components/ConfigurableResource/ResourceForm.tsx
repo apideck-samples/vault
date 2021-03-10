@@ -26,8 +26,8 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
   const [saved, setSaved] = useState(false)
   const [formError, setFormError] = useState(false)
   const { setSessionExpired } = useContext(SessionExpiredModalContext)
-  const { query } = useRouter()
   const { primary_color } = useContext(ThemeContext) as ThemeContextType
+  const router = useRouter()
 
   if (loading) return <ResourcePlaceholder />
 
@@ -108,7 +108,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
       </Link>
 
       {!loading && !formFields.length && (
-        <div className="p-5 mt-2 text-center border rounded-md">{`There are no settings for ${query.resource}`}</div>
+        <div className="p-5 mt-2 text-center border rounded-md">{`There are no settings for ${router.query?.resource}`}</div>
       )}
 
       {formFields.length > 0 && (
