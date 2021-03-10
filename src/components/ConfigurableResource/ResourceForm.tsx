@@ -1,17 +1,18 @@
 import { Button, ErrorBlock, ResourcePlaceholder, Select, TextInput } from 'components'
 import { CheckBox, DateInput } from 'components/Inputs'
-import TextArea from 'components/Inputs/TextArea'
 import { Formik, FormikProps } from 'formik'
-import client from 'lib/axios'
+import { IConnection, UpdateConnectionConfigInput } from 'types/Connection'
+import React, { useContext, useState } from 'react'
+
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
 import CheckIcon from 'mdi-react/CheckIcon'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import React, { useContext, useState } from 'react'
-import { IConnection, UpdateConnectionConfigInput } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
+import Link from 'next/link'
 import { SessionExpiredModalContext } from 'utils'
+import TextArea from 'components/Inputs/TextArea'
+import client from 'lib/axios'
+import { useRouter } from 'next/router'
 
 interface IProps {
   connection?: IConnection
@@ -25,7 +26,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
   const [saved, setSaved] = useState(false)
   const [formError, setFormError] = useState(false)
   const { setSessionExpired } = useContext(SessionExpiredModalContext)
-  const { query } = useRouter()
+  const router = useRouter()
 
   if (loading) return <ResourcePlaceholder />
 
@@ -106,7 +107,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
       </Link>
 
       {!loading && !formFields.length && (
-        <div className="p-5 mt-2 text-center border rounded-md">{`There are no settings for ${query.resource}`}</div>
+        <div className="p-5 mt-2 text-center border rounded-md">{`There are no settings for ${router.query?.resource}`}</div>
       )}
 
       {formFields.length > 0 && (
@@ -127,7 +128,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                     <h2 className="font-medium">
                       <span className="capitalize">{resource}</span> configuration
                     </h2>
-                    <h3 className="text-sm text-gray-700 mt-2">
+                    <h3 className="mt-2 text-sm text-gray-700">
                       Please provide default values for the fields below. These will be applied when
                       creating new {resource} through our integration.
                     </h3>
