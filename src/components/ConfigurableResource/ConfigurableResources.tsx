@@ -14,15 +14,14 @@ const ConfigurableResources = ({ connection, jwt, token }: IProps) => {
   return (
     <div className="overflow-hidden bg-white border rounded-md">
       <ul className="divide-y divide-gray-200">
+        <li className="px-5 py-4">
+          <h2 className="font-medium">Configurable Resources</h2>
+        </li>
         {configurable_resources.map((resource: string, index: number) => {
           return (
-            <ResourceLink
-              key={`resource-${index}`}
-              connection={connection}
-              resource={resource}
-              jwt={jwt}
-              token={token}
-            />
+            <li key={`resource-${index}`}>
+              <ResourceLink connection={connection} resource={resource} jwt={jwt} token={token} />
+            </li>
           )
         })}
       </ul>
