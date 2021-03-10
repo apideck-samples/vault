@@ -1,4 +1,9 @@
-export { ConfigurableResources, ResourceForm, ResourcePlaceholder } from './ConfigurableResource'
+export {
+  ConfigurableResources,
+  ResourceForm,
+  ResourceLink,
+  ResourcePlaceholder
+} from './ConfigurableResource'
 export { ConnectionForm, ConnectionPlaceholder, OAuthButtons } from './Connection'
 export { ConnectionCard, ConnectionsList, ListPlaceholder } from './Connections'
 export { Button, CheckBox, DateInput, Select, SelectInput, TextArea, TextInput } from './Inputs'
