@@ -1,4 +1,5 @@
-import { Button, ErrorBlock, ResourcePlaceholder, Select, TextInput } from 'components'
+import { Button } from '@apideck/components'
+import { ErrorBlock, ResourcePlaceholder, Select, TextInput } from 'components'
 import { CheckBox, DateInput } from 'components/Inputs'
 import TextArea from 'components/Inputs/TextArea'
 import { Formik, FormikProps } from 'formik'
@@ -11,7 +12,7 @@ import { useRouter } from 'next/router'
 import React, { useContext, useState } from 'react'
 import { IConnection, UpdateConnectionConfigInput } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
-import { SessionExpiredModalContext } from 'utils'
+import { SessionExpiredModalContext, ThemeContext, ThemeContextType } from 'utils'
 
 interface IProps {
   connection?: IConnection
@@ -26,6 +27,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
   const [formError, setFormError] = useState(false)
   const { setSessionExpired } = useContext(SessionExpiredModalContext)
   const { query } = useRouter()
+  const { primary_color } = useContext(ThemeContext) as ThemeContextType
 
   if (loading) return <ResourcePlaceholder />
 
@@ -127,7 +129,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                     <h2 className="font-medium">
                       <span className="capitalize">{resource}</span> configuration
                     </h2>
-                    <h3 className="text-sm text-gray-700 mt-2">
+                    <h3 className="mt-2 text-sm text-gray-700">
                       Please provide default values for the fields below. These will be applied when
                       creating new {resource} through our integration.
                     </h3>
@@ -230,8 +232,10 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                     </div>
                     <Button
                       type="submit"
-                      text={isSubmitting ? 'Saving..' : 'Save'}
-                      disabled={isSubmitting}
+                      text="Save"
+                      isLoading={isSubmitting}
+                      isDisabled={isSubmitting}
+                      style={primary_color ? { backgroundColor: primary_color } : {}}
                     />
                   </div>
                 </form>

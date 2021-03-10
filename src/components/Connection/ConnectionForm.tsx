@@ -1,5 +1,5 @@
+import { Button } from '@apideck/components'
 import {
-  Button,
   ConfigurableResources,
   ConfirmModal,
   ErrorBlock,
@@ -181,7 +181,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
             </div>
           </div>
           <div>
-            <Button variant="danger" text="Delete" handleClick={() => setModalOpen(true)} />
+            <Button variant="danger-outline" text="Delete" onClick={() => setModalOpen(true)} />
           </div>
         </div>
         {authType === 'oauth2' && (
@@ -275,11 +275,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
                       </Fragment>
                     )}
                   </div>
-                  <Button
-                    type="submit"
-                    text={isSubmitting ? 'Saving..' : 'Save'}
-                    disabled={isSubmitting}
-                  />
+                  <Button type="submit" text="Save" isLoading={isSubmitting} />
                 </div>
               </form>
             )

@@ -1,4 +1,6 @@
-import { Button } from 'components'
+import { Button } from '@apideck/components'
+import { useContext } from 'react'
+import { ThemeContext, ThemeContextType } from 'utils'
 import ModalContainer from './ModalContainer'
 
 interface IProps {
@@ -13,6 +15,7 @@ const SessionExpiredModal = ({
   redirectUri = 'https://app.apideck.com'
 }: IProps) => {
   const handleClick = () => (window.location.href = redirectUri)
+  const { primary_color } = useContext(ThemeContext) as ThemeContextType
 
   return (
     <ModalContainer open={open} setOpen={setOpen} width={380} disableClose>
@@ -23,7 +26,11 @@ const SessionExpiredModal = ({
         Looks like your current session is expired. Please try again.
       </div>
       <div className="flex items-center justify-end px-5 py-2">
-        <Button text="Return to application" variant="primary" handleClick={() => handleClick()} />
+        <Button
+          text="Return to application"
+          onClick={() => handleClick()}
+          style={primary_color ? { backgroundColor: primary_color } : {}}
+        />
       </div>
     </ModalContainer>
   )
