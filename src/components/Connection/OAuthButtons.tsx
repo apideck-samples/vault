@@ -1,8 +1,9 @@
-import { Button } from '@apideck/components'
-import classNames from 'classnames'
 import React, { memo, useContext } from 'react'
+import { ThemeContext, ThemeContextType, authorizationVariablesRequired } from 'utils'
+
+import { Button } from '@apideck/components'
 import { IConnection } from 'types/Connection'
-import { authorizationVariablesRequired, ThemeContext, ThemeContextType } from 'utils'
+import classNames from 'classnames'
 
 interface IProps {
   connection: IConnection
@@ -41,7 +42,7 @@ const OAuthButtons = ({ connection, isAuthorized, authorizeUrl, revokeUrl }: IPr
         ) : (
           <Button
             text="Authorize"
-            isDisabled={true}
+            disabled={true}
             style={primary_color ? { backgroundColor: primary_color } : {}}
           />
         )}

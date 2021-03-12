@@ -1,4 +1,7 @@
-module.exports = {
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const config = require('@apideck/components/config')
+
+module.exports = config({
   purge: ['./**/*.js', './**/*.tsx'],
   theme: {
     fontFamily: {
@@ -31,5 +34,5 @@ module.exports = {
     textColor: ['responsive', 'hover', 'focus', 'group-hover'],
     translate: ['group-hover']
   },
-  plugins: [require('@tailwindcss/forms')]
-}
+  plugins: []
+})

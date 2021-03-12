@@ -1,12 +1,13 @@
-import { Button } from '@apideck/components'
-import { SelectInput } from 'components'
-import { IOptionType } from 'components/Inputs/SelectInput'
-import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
-import { useRouter } from 'next/router'
 import { Fragment, useContext, useEffect, useState } from 'react'
 import { IConnection, UpdateConnectionInput } from 'types/Connection'
 import { ThemeContext, ThemeContextType } from 'utils'
+
+import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
+import { Button } from '@apideck/components'
+import { IOptionType } from 'components/Inputs/SelectInput'
 import ModalContainer from './ModalContainer'
+import { SelectInput } from 'components'
+import { useRouter } from 'next/router'
 
 interface IProps {
   open: boolean
@@ -123,7 +124,7 @@ const AddModal = ({
             <Button
               text="Add"
               isLoading={loading}
-              isDisabled={!value}
+              disabled={!value}
               onClick={() => handleClick()}
               className="w-20"
               style={primary_color ? { backgroundColor: primary_color } : {}}

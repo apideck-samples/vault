@@ -44,7 +44,7 @@ const ListPlaceholder = () => {
           onClick={() => {
             return false
           }}
-          isDisabled
+          disabled
         />
       </div>
       <ConnectionCardLoadingPlaceholder />
