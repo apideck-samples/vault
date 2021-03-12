@@ -1,18 +1,17 @@
-import { Button } from '@apideck/components'
-import { ErrorBlock, ResourcePlaceholder, Select, TextInput } from 'components'
-import { CheckBox, DateInput } from 'components/Inputs'
-import TextArea from 'components/Inputs/TextArea'
+import { Button, CheckBox, DateInput, Select, TextArea, TextInput } from '@apideck/components'
+import { ErrorBlock, ResourcePlaceholder } from 'components'
 import { Formik, FormikProps } from 'formik'
-import client from 'lib/axios'
+import { IConnection, UpdateConnectionConfigInput } from 'types/Connection'
+import React, { useContext, useState } from 'react'
+import { SessionExpiredModalContext, ThemeContext, ThemeContextType } from 'utils'
+
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
 import CheckIcon from 'mdi-react/CheckIcon'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import React, { useContext, useState } from 'react'
-import { IConnection, UpdateConnectionConfigInput } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
-import { SessionExpiredModalContext, ThemeContext, ThemeContextType } from 'utils'
+import Link from 'next/link'
+import client from 'lib/axios'
+import { useRouter } from 'next/router'
 
 interface IProps {
   connection?: IConnection
@@ -159,6 +158,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                                 placeholder={placeholder}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
+                                className="max-w-sm"
                               />
                             )}
                             {type === 'checkbox' && (
@@ -178,15 +178,19 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                                 required={required}
                                 placeholder={placeholder}
                                 onChange={handleChange}
+                                className="max-w-sm"
                               />
                             )}
                             {(type === 'select' || type === 'multi-select') && (
                               <Select
-                                field={id}
-                                type={type}
+                                name={id}
                                 required={required}
                                 options={options}
-                                formikProps={formikProps}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                defaultValue={values[id]}
+                                multiple={type === 'multi-select'}
+                                className="max-w-sm"
                               />
                             )}
                             {(type === 'date' || type === 'datetime') && (
@@ -196,6 +200,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                                 value={values[id]}
                                 required={required}
                                 onChange={handleChange}
+                                containerClassName="max-w-sm"
                               />
                             )}
                             {description && (
@@ -234,7 +239,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                       type="submit"
                       text="Save"
                       isLoading={isSubmitting}
-                      isDisabled={isSubmitting}
+                      disabled={isSubmitting}
                       style={primary_color ? { backgroundColor: primary_color } : {}}
                     />
                   </div>
