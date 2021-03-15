@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const config = require('@apideck/components/config')
+const config = require('@apideck/components/tailwind-config')
 
 module.exports = config({
   purge: ['./**/*.js', './**/*.tsx'],
