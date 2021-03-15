@@ -17,7 +17,7 @@ import { useRouter } from 'next/router'
 import { Fragment, useContext, useState } from 'react'
 import { IConnection, UpdateConnectionInput } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
-import { isConnected, SessionExpiredModalContext } from 'utils'
+import { isConnected, SessionExpiredModalContext, ThemeContext, ThemeContextType } from 'utils'
 
 interface IProps {
   connection: IConnection
@@ -35,6 +35,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
   const [deleteSuccess, setDeleteSuccess] = useState(false)
   const [deleteError, setDeleteError] = useState(false)
   const { setSessionExpired } = useContext(SessionExpiredModalContext)
+  const { primary_color } = useContext(ThemeContext) as ThemeContextType
   const router = useRouter()
 
   if (!connection) {
@@ -275,7 +276,12 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
                       </Fragment>
                     )}
                   </div>
-                  <Button type="submit" text="Save" isLoading={isSubmitting} />
+                  <Button
+                    type="submit"
+                    text="Save"
+                    isLoading={isSubmitting}
+                    style={primary_color ? { backgroundColor: primary_color } : {}}
+                  />
                 </div>
               </form>
             )
