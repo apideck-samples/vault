@@ -1,5 +1,6 @@
-import classNames from 'classnames'
 import { useEffect, useRef, useState } from 'react'
+
+import classNames from 'classnames'
 import useOnClickOutside from 'utils/useOutsideClick'
 
 interface IProps {
@@ -274,7 +275,7 @@ const DateInput: React.FC<IProps> = ({
                   className={classNames(
                     'text-sm leading-loose text-center transition duration-100 ease-in-out rounded-md cursor-pointer',
                     {
-                      'bg-primary text-white': isToday(day),
+                      'bg-main text-white': isToday(day),
                       'text-gray-700 hover:bg-indigo-200': !isToday(day)
                     }
                   )}

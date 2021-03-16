@@ -221,7 +221,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                     <div className="flex items-center justify-start">
                       {saved && (
                         <>
-                          <span className="mr-2 text-primary">
+                          <span className="mr-2 text-main">
                             <CheckIcon size={20} color="currentColor" />
                           </span>
                           <span className="text-sm">Your changes have been saved.</span>
