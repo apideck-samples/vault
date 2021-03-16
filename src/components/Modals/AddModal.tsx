@@ -1,10 +1,12 @@
-import { Button, SelectInput } from 'components'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useContext, useEffect, useState } from 'react'
 import { IConnection, UpdateConnectionInput } from 'types/Connection'
+import { ThemeContext, ThemeContextType } from 'utils'
 
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
-import { IOptionType } from 'components/Inputs/SelectInput.tsx'
+import { Button } from '@apideck/components'
+import { IOptionType } from 'components/Inputs/SelectInput'
 import ModalContainer from './ModalContainer'
+import { SelectInput } from 'components'
 import { useRouter } from 'next/router'
 
 interface IProps {
@@ -30,6 +32,7 @@ const AddModal = ({
   const [value, setValue] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
+  const { primary_color } = useContext(ThemeContext) as ThemeContextType
   const connectionsOptions = availableConnections.map((connection) => {
     const { id, name, service_id: serviceId, icon } = connection
 
@@ -110,13 +113,21 @@ const AddModal = ({
         </div>
         <div className="flex items-center">
           <div className="mr-4">
-            <Button text="Cancel" handleClick={() => setOpen(false)} variant="cancel" />
+            <Button
+              text="Cancel"
+              onClick={() => setOpen(false)}
+              variant="outline"
+              className="w-20"
+            />
           </div>
           <div>
             <Button
-              text={loading ? 'Adding..' : 'Add'}
-              disabled={!value || loading}
-              handleClick={() => handleClick()}
+              text="Add"
+              isLoading={loading}
+              disabled={!value}
+              onClick={() => handleClick()}
+              className="w-20"
+              style={primary_color ? { backgroundColor: primary_color } : {}}
             />
           </div>
         </div>

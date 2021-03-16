@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ConnectionsList, ListPlaceholder } from 'components'
-import { CreateConnectionInput, IConnection } from 'types/Connection'
+import client from 'lib/axios'
+import { applySession } from 'next-session'
 import { Fragment, useContext } from 'react'
-
+import { CreateConnectionInput, IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
 import { SessionExpiredModalContext } from 'utils/context'
-import { applySession } from 'next-session'
-import client from 'lib/axios'
 import { options } from 'utils/sessionOptions'
 
 interface IProps {

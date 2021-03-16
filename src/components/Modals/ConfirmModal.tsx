@@ -1,5 +1,5 @@
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
-import { Button } from 'components'
+import { Button } from '@apideck/components'
 import { Fragment } from 'react'
 import ModalContainer from './ModalContainer'
 
@@ -54,16 +54,16 @@ const ConfirmModal = ({
               <Button
                 text="Cancel"
                 disabled={loading}
-                handleClick={() => setOpen(false)}
-                variant="cancel"
+                onClick={() => setOpen(false)}
+                variant="outline"
               />
             </div>
             <div>
               <Button
-                text={loading ? 'Deleting..' : 'Delete'}
-                disabled={loading}
-                variant="danger-full"
-                handleClick={() => onConfirm()}
+                text="Delete"
+                isLoading={loading}
+                variant="danger"
+                onClick={() => onConfirm()}
               />
             </div>
           </div>

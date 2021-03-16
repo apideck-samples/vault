@@ -1,5 +1,5 @@
+import { Button } from '@apideck/components'
 import {
-  Button,
   ConfigurableResources,
   ConfirmModal,
   ErrorBlock,
@@ -17,7 +17,7 @@ import { useRouter } from 'next/router'
 import { Fragment, useContext, useState } from 'react'
 import { IConnection, UpdateConnectionInput } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
-import { isConnected, SessionExpiredModalContext } from 'utils'
+import { isConnected, SessionExpiredModalContext, ThemeContext, ThemeContextType } from 'utils'
 
 interface IProps {
   connection: IConnection
@@ -35,6 +35,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
   const [deleteSuccess, setDeleteSuccess] = useState(false)
   const [deleteError, setDeleteError] = useState(false)
   const { setSessionExpired } = useContext(SessionExpiredModalContext)
+  const { primary_color } = useContext(ThemeContext) as ThemeContextType
   const router = useRouter()
 
   if (!connection) {
@@ -181,7 +182,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
             </div>
           </div>
           <div>
-            <Button variant="danger" text="Delete" handleClick={() => setModalOpen(true)} />
+            <Button variant="danger-outline" text="Delete" onClick={() => setModalOpen(true)} />
           </div>
         </div>
         {authType === 'oauth2' && (
@@ -277,8 +278,9 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
                   </div>
                   <Button
                     type="submit"
-                    text={isSubmitting ? 'Saving..' : 'Save'}
-                    disabled={isSubmitting}
+                    text="Save"
+                    isLoading={isSubmitting}
+                    style={primary_color ? { backgroundColor: primary_color } : {}}
                   />
                 </div>
               </form>

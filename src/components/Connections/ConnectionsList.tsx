@@ -1,7 +1,8 @@
-import { AddModal, Button, ConnectionCard } from 'components'
+import { Button } from '@apideck/components'
+import { AddModal, ConnectionCard } from 'components'
+import { useContext, useState } from 'react'
 import { CreateConnectionInput, IConnection } from 'types/Connection'
-
-import { useState } from 'react'
+import { ThemeContext, ThemeContextType } from 'utils'
 
 interface IProps {
   unifiedApi: string
@@ -18,6 +19,7 @@ const ConnectionsList = ({ unifiedApi, connections = [], updateConnection }: IPr
   const addedConnections = connections.filter((connection) => connection.added)
   const availableConnections = connections.filter((connection) => !connection.added)
   const noConnectionsAdded = addedConnections.length === 0
+  const { primary_color } = useContext(ThemeContext) as ThemeContextType
 
   return (
     <section className="mt-12" data-testid={'connections-list'}>
@@ -25,8 +27,9 @@ const ConnectionsList = ({ unifiedApi, connections = [], updateConnection }: IPr
         <h2 className="text-sm font-medium uppercase">{unifiedApi} integrations</h2>
         <Button
           text="+ Add"
-          handleClick={() => setModalOpen(true)}
-          cssClass={'spec-add-integration'}
+          onClick={() => setModalOpen(true)}
+          className="spec-add-integration"
+          style={primary_color ? { backgroundColor: primary_color } : {}}
         />
       </div>
       {addedConnections.map((connection) => {

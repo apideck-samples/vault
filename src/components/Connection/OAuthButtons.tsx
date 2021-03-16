@@ -1,8 +1,8 @@
-import React, { memo } from 'react'
+import React, { memo, useContext } from 'react'
+import { ThemeContext, ThemeContextType, authorizationVariablesRequired } from 'utils'
 
-import { Button } from 'components'
+import { Button } from '@apideck/components'
 import { IConnection } from 'types/Connection'
-import { authorizationVariablesRequired } from 'utils'
 import classNames from 'classnames'
 
 interface IProps {
@@ -14,6 +14,7 @@ interface IProps {
 
 const OAuthButtons = ({ connection, isAuthorized, authorizeUrl, revokeUrl }: IProps) => {
   const requiredAuth = authorizationVariablesRequired(connection)
+  const { primary_color } = useContext(ThemeContext) as ThemeContextType
 
   return (
     <div className="flex items-center justify-between px-5 py-2 bg-gray-100 border-t rounded-bl-md rounded-br-md">
@@ -35,18 +36,23 @@ const OAuthButtons = ({ connection, isAuthorized, authorizeUrl, revokeUrl }: IPr
         {!requiredAuth ? (
           <Button
             text={isAuthorized ? 'Re-authorize' : 'Authorize'}
-            handleClick={() => (window.location.href = authorizeUrl)}
+            onClick={() => (window.location.href = authorizeUrl)}
+            style={primary_color ? { backgroundColor: primary_color } : {}}
           />
         ) : (
-          <Button text={'Authorize'} disabled={true} />
+          <Button
+            text="Authorize"
+            disabled={true}
+            style={primary_color ? { backgroundColor: primary_color } : {}}
+          />
         )}
 
         {isAuthorized && (
           <div className="inline-block ml-4">
             <Button
-              variant="cancel"
+              variant="outline"
               text="Disconnect"
-              handleClick={() => (window.location.href = revokeUrl)}
+              onClick={() => (window.location.href = revokeUrl)}
             />
           </div>
         )}

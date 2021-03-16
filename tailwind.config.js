@@ -1,4 +1,6 @@
-module.exports = {
+const config = require('@apideck/components/tailwind-config')
+
+module.exports = config({
   purge: ['./**/*.js', './**/*.tsx'],
   theme: {
     fontFamily: {
@@ -31,5 +33,5 @@ module.exports = {
     textColor: ['responsive', 'hover', 'focus', 'group-hover'],
     translate: ['group-hover']
   },
-  plugins: [require('@tailwindcss/forms')]
-}
+  plugins: []
+})
