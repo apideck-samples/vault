@@ -188,7 +188,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                                 options={options}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                defaultValue={values[id]}
+                                defaultValue={values[id] || (type === 'multi-select' ? [] : '')}
                                 multiple={type === 'multi-select'}
                                 className="max-w-sm"
                               />
