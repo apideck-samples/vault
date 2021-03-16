@@ -143,11 +143,13 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                         <div key={id} className="flex items-start justify-center mb-4">
                           <div className="w-1/3 pt-2 pr-2 text-sm font-medium text-right text-gray-600">
                             {label}
-                            {required && (
-                              <span className="ml-1 text-red-600" data-testid="required">
-                                *
-                              </span>
-                            )}
+                            {required &&
+                              type !==
+                                'checkbox'(
+                                  <span className="ml-1 text-red-600" data-testid="required">
+                                    *
+                                  </span>
+                                )}
                           </div>
                           <div className="w-2/3 pl-2">
                             {['text', 'email', 'url', 'tel', 'number', 'time', 'location'].includes(
