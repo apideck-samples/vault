@@ -168,7 +168,6 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                               <CheckBox
                                 name={id}
                                 value={values[id] || false}
-                                required={required}
                                 placeholder={placeholder}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
