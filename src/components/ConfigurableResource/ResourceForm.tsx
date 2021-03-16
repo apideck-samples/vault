@@ -42,11 +42,14 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
   } = connection
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const initialValues = formFields.reduce((acc: any, formField) => {
+  const sortedFormFields = formFields.sort((a: any, b: any) => b.required - a.required)
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const initialValues = sortedFormFields.reduce((acc: any, formField) => {
     const { id, value } = formField
     acc[id] = value || undefined
     return acc
-  }, {}) as Record<string, readonly string[]>
+  }, {})
 
   const headers = {
     Authorization: `Bearer ${jwt}`,
