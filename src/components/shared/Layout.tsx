@@ -1,9 +1,10 @@
-import { Transition } from 'components'
-import MenuLeftIcon from 'mdi-react/MenuLeftIcon'
-import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { useContext } from 'react'
 import { ThemeContext, ThemeContextType } from 'utils/context'
+
+import Head from 'next/head'
+import MenuLeftIcon from 'mdi-react/MenuLeftIcon'
+import { Transition } from 'components'
+import { useContext } from 'react'
+import { useRouter } from 'next/router'
 
 interface IProps {
   consumerMetadata: { [key: string]: string }
@@ -31,7 +32,7 @@ const Layout: React.FC<IProps> = ({
 
   return (
     <div
-      className="flex h-screen bg-gray-100 border-t-4 border-primary"
+      className="flex h-screen bg-gray-100 border-t-4 border-main"
       style={primaryColor ? { borderColor: primaryColor } : {}}
     >
       <Head>

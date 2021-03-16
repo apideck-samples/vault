@@ -23,7 +23,7 @@ const OAuthButtons = ({ connection, isAuthorized, authorizeUrl, revokeUrl }: IPr
       ) : (
         <div
           className={classNames('uppercase font-medium', {
-            'text-primary': isAuthorized,
+            'text-main': isAuthorized,
             'text-gray-500': !isAuthorized
           })}
           style={{ fontSize: '0.8125rem' }}

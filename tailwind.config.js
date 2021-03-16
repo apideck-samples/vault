@@ -18,7 +18,7 @@ module.exports = config({
     },
     extend: {
       colors: {
-        primary: '#5D50CE',
+        main: '#5D50CE',
         background: '#F4F6FB',
         'warning-lighter': '#FEF5E5',
         warning: '#ff9800',

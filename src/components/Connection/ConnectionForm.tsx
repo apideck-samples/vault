@@ -1,4 +1,3 @@
-import { Button } from '@apideck/components'
 import {
   ConfigurableResources,
   ConfirmModal,
@@ -8,16 +7,18 @@ import {
   TextInput
 } from 'components'
 import { Formik, FormikProps } from 'formik'
-import client from 'lib/axios'
-import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
-import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
-import CheckIcon from 'mdi-react/CheckIcon'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { Fragment, useContext, useState } from 'react'
 import { IConnection, UpdateConnectionInput } from 'types/Connection'
+import { SessionExpiredModalContext, ThemeContext, ThemeContextType, isConnected } from 'utils'
+
+import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
+import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
+import { Button } from '@apideck/components'
+import CheckIcon from 'mdi-react/CheckIcon'
 import { JWTSession } from 'types/JWTSession'
-import { isConnected, SessionExpiredModalContext, ThemeContext, ThemeContextType } from 'utils'
+import Link from 'next/link'
+import client from 'lib/axios'
+import { useRouter } from 'next/router'
 
 interface IProps {
   connection: IConnection
@@ -259,7 +260,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
                   <div className="flex items-center justify-start">
                     {saved && (
                       <Fragment>
-                        <span className="mr-2 text-primary">
+                        <span className="mr-2 text-main">
                           <CheckIcon size={20} color="currentColor" />
                         </span>
                         <span className="text-sm">Your changes have been saved.</span>

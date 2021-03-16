@@ -42,11 +42,14 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
   } = connection
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const initialValues = formFields.reduce((acc: any, formField) => {
+  const sortedFormFields = formFields.sort((a: any, b: any) => b.required - a.required)
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const initialValues = sortedFormFields.reduce((acc: any, formField) => {
     const { id, value } = formField
     acc[id] = value || undefined
     return acc
-  }, {}) as Record<string, readonly string[]>
+  }, {})
 
   const headers = {
     Authorization: `Bearer ${jwt}`,
@@ -165,7 +168,6 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                               <CheckBox
                                 name={id}
                                 value={values[id] || false}
-                                required={required}
                                 placeholder={placeholder}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
@@ -188,7 +190,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                                 options={options}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                defaultValue={values[id]}
+                                defaultValue={values[id] || (type === 'multi-select' ? [] : '')}
                                 multiple={type === 'multi-select'}
                                 className="max-w-sm"
                               />
@@ -218,7 +220,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                     <div className="flex items-center justify-start">
                       {saved && (
                         <>
-                          <span className="mr-2 text-primary">
+                          <span className="mr-2 text-main">
                             <CheckIcon size={20} color="currentColor" />
                           </span>
                           <span className="text-sm">Your changes have been saved.</span>
