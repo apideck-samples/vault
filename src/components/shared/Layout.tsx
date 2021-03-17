@@ -76,7 +76,7 @@ const Layout: React.FC<IProps> = ({
               )}
               <div>
                 {accountName && (
-                  <div className="text-xs text-gray-500 uppercase">{accountName}</div>
+                  <div className="text-xs text-gray-500 uppercase mb-2">{accountName}</div>
                 )}
                 {userName && <div className="text-sm leading-none">{userName}</div>}
               </div>
