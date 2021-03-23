@@ -62,13 +62,11 @@ const AddResource = ({ jwt, token }: IProps) => {
       <div>
         <div className="inline-flex items-center self-start justify-start mb-4 text-sm leading-none">
           <div className="mr-1 bg-gray-200 rounded-md" style={{ height: '18px', width: '18px' }} />
-
           <div
             className="bg-gray-200 rounded-md skeleton-loading"
             style={{ height: '18px', width: '200px' }}
           />
         </div>
-
         <div className="mt-4 border rounded-md">
           <div className="flex justify-between py-4 pl-5 align-center">
             <div className="inline-flex">
@@ -78,13 +76,11 @@ const AddResource = ({ jwt, token }: IProps) => {
                 style={{ height: '18px', width: '240px' }}
               ></div>
             </div>
-
             <div
               className="m-2 mr-5 bg-gray-200 rounded"
               style={{ height: '30px', width: '80px' }}
             />
           </div>
-
           <div className="px-5 py-6 border-t">
             <div className="ml-14">
               <div
