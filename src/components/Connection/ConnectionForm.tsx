@@ -155,7 +155,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
 
   return (
     <Fragment>
-      {!router.query?.isolation && (
+      {!router?.query?.isolation && (
         <Link href="/">
           <button
             className="inline-flex items-center self-start justify-start mb-4 text-sm leading-none text-gray-600 group hover:text-gray-800"

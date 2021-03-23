@@ -162,6 +162,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 className="max-w-sm"
+                                data-testid={id}
                               />
                             )}
                             {type === 'checkbox' && (

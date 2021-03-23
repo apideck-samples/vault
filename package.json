@@ -84,7 +84,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "yarn lint-staged",
-      "pre-push": "jest --detectOpenHandles --colors --verbose --reporters=default --collectCoverage --no-cache --selectProjects=Unit"
+      "pre-push": "yarn test:unit"
     }
   },
   "lint-staged": {
