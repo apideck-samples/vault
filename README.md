@@ -24,7 +24,7 @@ This project uses the Vault API. Visit https://developers.apideck.com/api-refere
 #### Step 1: Update your environment variables
 
 - Copy `.env.example` and create a `.env.local` file
-- Add your API key: `UNIFY_API_KEY=<you-api-key>`
+- Add your API key: `UNIFY_API_KEY=<your-api-key>`
 - Your env should also include `NEXT_PUBLIC_UNIFY_API_URL=https://unify.apideck.com`
 - Optional: Add a Busnag API key to activate [Bugsnag](https://www.bugsnag.com/) error monitoring.
 
@@ -34,7 +34,7 @@ This project uses the Vault API. Visit https://developers.apideck.com/api-refere
 - Run the development server with `yarn dev` or `npm run dev`
 - Visit `http://localhost:3003/` to see if it's running. You should see a message that your session is invalid.
 
-#### Step 4: Create a new session
+#### Step 3: Create a new session
 
 You have to make a POST request to the Vault API to create a valid session for a user. Hereafter referred to as the consumer ID.
 In order to make the request, you need your Apideck API Key, Application ID, and Consumer ID. The Consumer ID is stored inside Apideck Vault. This can be a user ID, account ID, device ID, or another entity that can be linked to integrations within your app.
