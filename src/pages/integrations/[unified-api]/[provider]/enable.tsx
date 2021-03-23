@@ -54,7 +54,7 @@ const AddResource = ({ jwt, token }: IProps) => {
         })
     }
 
-    if (query.jwt && token.applicationId && token.consumerId) enableConnection()
+    if (jwt && token.applicationId && token.consumerId) enableConnection()
   }, [jwt, push, query, token.applicationId, token.consumerId])
 
   if (isLoading) {
