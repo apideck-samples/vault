@@ -63,7 +63,9 @@ describe('isConnected()', () => {
             type: 'text',
             required: true,
             description: '',
-            disabled: false
+            disabled: false,
+            options: [],
+            custom_field: false
           }
         ],
         configurable_resources: [],
@@ -92,7 +94,9 @@ describe('isConnected()', () => {
             type: 'text',
             required: true,
             description: '',
-            disabled: false
+            disabled: false,
+            options: [],
+            custom_field: false
           }
         ],
         configurable_resources: [],

@@ -1,3 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ConnectionForm } from 'components'
+import client from 'lib/axios'
+import { IConnection } from 'types/Connection'
+import INTEGRATIONS from '../../../fixtures/integrations.json'
+import { jwt, token } from '../../../fixtures/session'
 import {
   fireEvent,
   render,
@@ -6,13 +12,6 @@ import {
   waitForElementToBeRemoved,
   within
 } from '../../../testUtils/testing-utils'
-import { jwt, token } from '../../../fixtures/session'
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { ConnectionForm } from 'components'
-import { IConnection } from 'types/Connection'
-import INTEGRATIONS from '../../../fixtures/integrations.json'
-import client from 'lib/axios'
 
 describe('Connection Form', () => {
   const handleSubmit = jest.fn()
@@ -60,6 +59,40 @@ describe('Connection Form', () => {
         const authorizeButton = screen.getByRole('button', { name: 'Authorize' })
         expect(authorizeButton).toBeInTheDocument()
         expect(authorizeButton).not.toBeDisabled()
+      })
+    })
+
+    describe('When an OAuth error occurred', () => {
+      const connection = INTEGRATIONS.data.find((connector: any) => {
+        return connector.id === 'lead+microsoft-dynamics'
+      }) as IConnection
+
+      it('Renders an Error Alert', async () => {
+        render(
+          <ConnectionForm
+            connection={connection}
+            jwt={jwt}
+            token={token}
+            handleSubmit={handleSubmit}
+            handleDelete={handleDelete}
+          />,
+          {
+            router: {
+              query: {
+                error_type: 'OAuthInvalidStateError',
+                error_message: 'State parameter is not a valid JWT token. It may have expired.',
+                origin: 'authorize',
+                service_id: 'zoho-crm',
+                application_id: '1111',
+                ref: 'https://developers.apideck.com/errors#oauthinvalidstateerror'
+              }
+            }
+          }
+        )
+        expect(screen.getByRole('alert')).toBeInTheDocument()
+        expect(
+          screen.getByText('An error occurred during the authorization flow. Please try again.')
+        ).toBeInTheDocument()
       })
     })
 
