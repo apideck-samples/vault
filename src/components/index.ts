@@ -4,8 +4,8 @@ export {
   ResourceLink,
   ResourcePlaceholder
 } from './ConfigurableResource'
-export { ConnectionForm, ConnectionPlaceholder, OAuthButtons } from './Connection'
+export { ConnectionForm, ConnectionPlaceholder, OAuthButtons, OAuthErrorAlert } from './Connection'
 export { ConnectionCard, ConnectionsList, ListPlaceholder } from './Connections'
 export { CheckBox, DateInput, Select, SelectInput, TextArea, TextInput } from './Inputs'
 export { AddModal, ConfirmModal, SessionExpiredModal } from './Modals'
-export { ErrorBlock, Layout, Portal, Transition } from './shared'
+export { Alert, ErrorBlock, Layout, Portal, Transition } from './shared'

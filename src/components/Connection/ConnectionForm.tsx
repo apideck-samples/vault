@@ -1,24 +1,31 @@
+import { Button } from '@apideck/components'
 import {
   ConfigurableResources,
   ConfirmModal,
   ErrorBlock,
   OAuthButtons,
+  OAuthErrorAlert,
   Select,
   TextInput
 } from 'components'
 import { Formik, FormikProps } from 'formik'
-import { Fragment, useContext, useState } from 'react'
-import { IConnection, UpdateConnectionInput } from 'types/Connection'
-import { SessionExpiredModalContext, ThemeContext, ThemeContextType, isConnected } from 'utils'
-
+import client from 'lib/axios'
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
-import { Button } from '@apideck/components'
 import CheckIcon from 'mdi-react/CheckIcon'
-import { JWTSession } from 'types/JWTSession'
 import Link from 'next/link'
-import client from 'lib/axios'
 import { useRouter } from 'next/router'
+import { Fragment, useContext, useEffect, useState } from 'react'
+import { IConnection, UpdateConnectionInput } from 'types/Connection'
+import { JWTSession } from 'types/JWTSession'
+import {
+  createOAuthErrorFromQuery,
+  isConnected,
+  OAuthError,
+  SessionExpiredModalContext,
+  ThemeContext,
+  ThemeContextType
+} from 'utils'
 
 interface IProps {
   connection: IConnection
@@ -38,6 +45,12 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
   const { setSessionExpired } = useContext(SessionExpiredModalContext)
   const { primary_color } = useContext(ThemeContext) as ThemeContextType
   const router = useRouter()
+  const { query } = router
+  const [oauthError, setOAuthError] = useState<OAuthError | null>(null)
+
+  useEffect(() => {
+    setOAuthError(createOAuthErrorFromQuery(query))
+  }, [query])
 
   if (!connection) {
     const error = {
@@ -170,6 +183,8 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
           </button>
         </Link>
       )}
+
+      {oauthError && <OAuthErrorAlert error={oauthError} />}
 
       <div className="border rounded-md">
         <div className="flex justify-between px-5 py-4 items-top">
