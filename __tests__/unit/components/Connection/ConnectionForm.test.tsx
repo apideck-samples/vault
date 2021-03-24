@@ -91,7 +91,7 @@ describe('Connection Form', () => {
         )
         expect(screen.getByRole('alert')).toBeInTheDocument()
         expect(
-          screen.getByText('State parameter is not a valid JWT token. It may have expired.')
+          screen.getByText('An error occurred during the authorization flow. Please try again.')
         ).toBeInTheDocument()
       })
     })
