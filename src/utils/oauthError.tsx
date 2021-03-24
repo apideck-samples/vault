@@ -1,11 +1,16 @@
 import { ParsedUrlQuery } from 'querystring'
 
 export interface OAuthError {
-  type: string
   message: string
-  origin: string
   ref: string
-  full: Record<string, string>
+  details: {
+    error_type: string
+    error_message: string
+    origin: string
+    service_id?: string
+    client_id?: string
+    application_id?: string
+  }
 }
 
 export const createOAuthErrorFromQuery = (query: ParsedUrlQuery): OAuthError | null => {
@@ -15,21 +20,18 @@ export const createOAuthErrorFromQuery = (query: ParsedUrlQuery): OAuthError | n
     return null
   }
 
-  const error = {
+  const details = {
     error_type: queryRecord.error_type,
     error_message: queryRecord.error_message,
     origin: queryRecord.origin,
     service_id: queryRecord.service_id,
     client_id: queryRecord.client_id,
-    application_id: queryRecord.application_id,
-    ref: queryRecord.ref
+    application_id: queryRecord.application_id
   }
 
   return {
-    type: error.error_type,
-    message: error.error_message,
-    origin: error.origin as 'authorize' | 'revoke' | 'callback',
-    ref: error.ref,
-    full: error
+    message: 'An error occurred during the authorization flow. Please try again.',
+    ref: queryRecord.ref,
+    details
   }
 }

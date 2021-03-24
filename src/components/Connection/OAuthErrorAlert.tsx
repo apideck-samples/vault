@@ -13,7 +13,7 @@ export const OAuthErrorAlert: React.FC<IProps> = ({ error }) => {
   return (
     <Alert
       title={`${
-        error.origin === 'revoke' ? 'Disconnect' : 'Authorization'
+        error.details.origin === 'revoke' ? 'Disconnect' : 'Authorization'
       } failed. Please try again.`}
       description={error.message}
     >
@@ -36,11 +36,29 @@ export const OAuthErrorAlert: React.FC<IProps> = ({ error }) => {
         </Button>
       </div>
       {showErrorDetails && (
-        <code>
-          <pre className="text-xs mt-4 p-5 bg-red-100 text-red-600 rounded-md">
-            {JSON.stringify(error.full, null, 4)}
-          </pre>
-        </code>
+        <div className="text-xs mt-4 p-4 bg-red-100 text-red-600 rounded-md">
+          <p className="font-medium text-sm">{error.details.error_type}</p>
+          <p className="mt-2">{error.details.error_message}</p>
+          <p className="mt-2">
+            <span className="font-medium">origin:</span> {error.details.origin}{' '}
+            {error.details.service_id && (
+              <span>
+                <span className="font-medium ml-1">service_id:</span> {error.details.service_id}
+              </span>
+            )}
+            {error.details.application_id && (
+              <span>
+                <span className="font-medium ml-1">application_id:</span>{' '}
+                {error.details.application_id}
+              </span>
+            )}
+            {error.details.client_id && (
+              <span>
+                <span className="font-medium ml-1">client_id:</span> {error.details.client_id}
+              </span>
+            )}
+          </p>
+        </div>
       )}
     </Alert>
   )
