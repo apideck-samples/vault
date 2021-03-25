@@ -1,12 +1,12 @@
+import { AxiosResponse } from 'axios'
+import camelcaseKeys from 'camelcase-keys'
+import { decode } from 'jsonwebtoken'
+import client from 'lib/axios'
+import { applySession } from 'next-session'
+import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { JWTSession } from 'types/JWTSession'
-import { applySession } from 'next-session'
-import camelcaseKeys from 'camelcase-keys'
-import client from 'lib/axios'
-import { decode } from 'jsonwebtoken'
 import { options } from 'utils/sessionOptions'
-import { useRouter } from 'next/router'
-import { AxiosResponse } from 'axios'
 
 interface IProps {
   jwt: string
@@ -26,8 +26,6 @@ const AddResource = ({ jwt, token }: IProps) => {
         .patch(
           `/vault/connections/${query['unified-api']}/${query.provider}`,
           {
-            unifiedApi: query['unified-api'],
-            serviceId: query.provider,
             settings: {},
             enabled: true
           },

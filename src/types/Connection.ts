@@ -30,14 +30,7 @@ export interface IConnection {
   created_at: number
 }
 
-export interface CreateConnectionInput {
-  unifiedApi: string
-  serviceId: string
-}
-
 export interface UpdateConnectionInput {
-  unifiedApi: string
-  serviceId: string
   enabled: boolean
   settings?: Settings
 }
