@@ -99,12 +99,10 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { enabled, apiKey, ...rest } = values
-    const body = {
-      unifiedApi,
-      serviceId,
+    const body: UpdateConnectionInput = {
       settings: {},
       enabled: true
-    } as UpdateConnectionInput
+    }
 
     if (Object.keys(rest).length !== 0) {
       Object.keys(rest).forEach((setting) => {

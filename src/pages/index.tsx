@@ -3,7 +3,7 @@ import { ConnectionsList, ListPlaceholder } from 'components'
 import client from 'lib/axios'
 import { applySession } from 'next-session'
 import { Fragment, useContext } from 'react'
-import { CreateConnectionInput, IConnection } from 'types/Connection'
+import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
 import { SessionExpiredModalContext } from 'utils/context'
 import { options } from 'utils/sessionOptions'
@@ -29,21 +29,25 @@ const Home = ({ connections, setConnections, loading, jwt, token }: IProps): any
   }, {})
 
   const noConnections = Object.keys(connectionsPerUnifiedApiObj).length === 0
-  const updateConnection = async (
-    values: CreateConnectionInput,
+  const createConnection = async (
+    values: { unifiedApi: string; serviceId: string },
     successCallback: () => void,
     errorCallback: () => void
   ): Promise<void> => {
     const { unifiedApi, serviceId } = values
 
     try {
-      const { data } = await client.patch(`/vault/connections/${unifiedApi}/${serviceId}`, values, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-          'X-APIDECK-APP-ID': token.applicationId,
-          'X-APIDECK-CONSUMER-ID': token.consumerId
+      const { data } = await client.patch(
+        `/vault/connections/${unifiedApi}/${serviceId}`,
+        { enabled: true },
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+            'X-APIDECK-APP-ID': token.applicationId,
+            'X-APIDECK-CONSUMER-ID': token.consumerId
+          }
         }
-      })
+      )
       const remainingConnections = connections.filter(
         (connection: IConnection) => connection.id !== data.id
       )
@@ -75,7 +79,7 @@ const Home = ({ connections, setConnections, loading, jwt, token }: IProps): any
               key={unifiedApi}
               unifiedApi={unifiedApi}
               connections={connections}
-              updateConnection={updateConnection}
+              createConnection={createConnection}
             />
           )
         })

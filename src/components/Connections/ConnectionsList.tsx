@@ -1,20 +1,20 @@
 import { Button } from '@apideck/components'
 import { AddModal, ConnectionCard } from 'components'
 import { useContext, useState } from 'react'
-import { CreateConnectionInput, IConnection } from 'types/Connection'
+import { IConnection } from 'types/Connection'
 import { ThemeContext, ThemeContextType } from 'utils'
 
 interface IProps {
   unifiedApi: string
   connections: IConnection[]
-  updateConnection: (
-    values: CreateConnectionInput,
+  createConnection: (
+    values: { unifiedApi: string; serviceId: string },
     successCallback: () => void,
     errorCallback: () => void
   ) => void
 }
 
-const ConnectionsList = ({ unifiedApi, connections = [], updateConnection }: IProps) => {
+const ConnectionsList = ({ unifiedApi, connections = [], createConnection }: IProps) => {
   const [modalOpen, setModalOpen] = useState(false)
   const addedConnections = connections.filter((connection) => connection.added)
   const availableConnections = connections.filter((connection) => !connection.added)
@@ -47,7 +47,7 @@ const ConnectionsList = ({ unifiedApi, connections = [], updateConnection }: IPr
         setOpen={setModalOpen}
         unifiedApi={unifiedApi}
         availableConnections={availableConnections}
-        updateConnection={updateConnection}
+        createConnection={createConnection}
       />
     </section>
   )
