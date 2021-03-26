@@ -6,7 +6,7 @@ export const defaults = {
   },
   theme: {
     favicon: 'https://www.apideck.com/favicon.ico',
-    primary_color: '#5C51CE',
+    primary_color: '',
     privacy_url: 'https://compliance.apideck.com/privacy-policy',
     sidepanel_background_color: '#16263e',
     sidepanel_text_color: '#FFFFFF',

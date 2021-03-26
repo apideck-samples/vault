@@ -36,7 +36,7 @@ This project uses the Vault API. Visit https://developers.apideck.com/api-refere
 
 #### Step 3: Create a new session
 
-You have to make a POST request to the Vault API to create a valid session for a user. Hereafter referred to as the consumer ID.
+You have to make a POST request to the Vault API to create a valid session for a user, hereafter referred to as the consumer ID.
 In order to make the request, you need your Apideck API Key, Application ID, and Consumer ID. The Consumer ID is stored inside Apideck Vault. This can be a user ID, account ID, device ID, or another entity that can be linked to integrations within your app.
 
 Your request headers should include `Authorization`, `X-APIDECK-CONSUMER-ID`, and `X-APIDECK-APP-ID`.
@@ -52,6 +52,8 @@ The body of your request should include the `redirect_uri`, which is used for th
 ```
 
 After making the request, you should receive a response that includes the `session_uri` that has the bearer token that is needed to run the sample project. Copy the `session_uri`, paste it in your browser and replace `https://vault.apideck.com` with `localhost:3003`. Your URL should look like this: `http://localhost:3003/session/<your-bearer-token>`.
+
+If you add your API key, Application ID, and consumer ID to the `.env.local` file you can also start a session from the UI (only during development). When you start the application and get prompt with the "session invalid" message, you can click the "Create session" button to make an API request to the Vault API and get redirected to the `/session/<token>` route.
 
 ##### Example using curl
 

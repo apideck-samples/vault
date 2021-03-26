@@ -5,6 +5,7 @@ import Link from 'next/link'
 import MenuRightIcon from 'mdi-react/MenuRightIcon'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import { isConnected } from 'utils'
+import classNames from 'classnames'
 
 interface IProps {
   connection: IConnection
@@ -32,18 +33,26 @@ const ConnectionCard = ({ connection }: IProps) => {
 
         <div className="flex items-center">
           {configured ? (
-            <div className="flex flex-row px-2 py-1 text-xs font-medium leading-none text-green-600 uppercase bg-green-200 rounded-full">
+            <div
+              className={classNames(
+                'flex flex-row px-2 py-1 text-xs font-medium leading-none rounded-full',
+                {
+                  'text-primary-600 bg-primary-100': connection.enabled,
+                  'text-gray-500 bg-gray-100': !connection.enabled
+                }
+              )}
+            >
               <span className="flex flex-col justify-center mr-2">
                 <FaCircle size={8} />
               </span>
-              Enabled
+              {connection.enabled ? 'Enabled' : 'Disabled'}
             </div>
           ) : (
-            <div className="flex flex-row px-2 py-1 text-xs font-medium leading-none uppercase rounded-full bg-warning-lighter text-warning">
+            <div className="flex flex-row px-2 py-1 text-xs font-medium leading-none rounded-full bg-warning-lighter text-warning">
               <span className="mr-2">
                 <FaExclamationTriangle />
               </span>
-              Needs Configuration
+              Needs configuration
             </div>
           )}
 

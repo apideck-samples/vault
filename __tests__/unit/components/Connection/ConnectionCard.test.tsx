@@ -1,6 +1,7 @@
+import { render, screen } from '../../../testUtils/testing-utils'
+
 import { ConnectionCard } from 'components'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
-import { render, screen } from '../../../testUtils/testing-utils'
 
 describe('Connection Card', () => {
   describe('When Connection has just been Added', () => {
@@ -24,7 +25,7 @@ describe('Connection Card', () => {
     it('Renders Integration and indicates configuration required', async () => {
       render(<ConnectionCard connection={connection} />)
       expect(screen.getByText('Pipedrive')).toBeInTheDocument()
-      expect(screen.getByText('Needs Configuration')).toBeInTheDocument()
+      expect(screen.getByText('Needs configuration')).toBeInTheDocument()
       expect(
         screen.getByText(`Added ${formatDistanceToNow(connection.created_at)} ago`)
       ).toBeInTheDocument()
