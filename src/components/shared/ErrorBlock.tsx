@@ -1,3 +1,5 @@
+import { Button } from '@apideck/components'
+
 interface IMessageProps {
   redirectUri?: string
   message: string
@@ -53,14 +55,39 @@ const ErrorBlock = ({ error, token = {} }: IErrorProps) => {
     errorMessage = 'This page was not found.'
   }
 
+  const createVaultSession = async () => {
+    const response = await fetch('/api/vault/sessions', {
+      method: 'POST',
+      body: JSON.stringify({ redirect_uri: window.location.href })
+    })
+    return response.json()
+  }
+
+  const redirectToSessionRoute = async () => {
+    const response = await createVaultSession()
+    const url = response.data?.session_uri
+    const token = url.substring(url.lastIndexOf('/') + 1)
+    window.location.href = `${window.location.href}session/${token}`
+  }
+
   return (
     <div className="flex items-center justify-center flex-1 w-full">
       <div className="flex flex-col items-center">
         <h1 className="mb-4 text-2xl font-medium text-gray-800">{errorTitle}</h1>
         <ErrorMessage redirectUri={redirectUri} message={errorMessage} />
         {process.env.NODE_ENV !== 'production' && (
-          <div className="p-4 mt-4 text-sm border rounded">
-            <h2 className="mb-2 font-medium">DEVELOPMENT ONLY</h2>
+          <div className="max-w-2xl p-4 mt-4 overflow-x-auto text-sm border rounded">
+            <div className="flex justify-between">
+              <h2 className="mb-2 font-medium">DEVELOPMENT ONLY</h2>
+              {status === 401 && (
+                <Button
+                  text="Create session"
+                  variant="outline"
+                  onClick={() => redirectToSessionRoute()}
+                  className="mb-2"
+                />
+              )}
+            </div>
             <code className="text-sm">
               <pre>{JSON.stringify(error, null, 2)}</pre>
             </code>
