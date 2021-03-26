@@ -1,4 +1,4 @@
-import { Button } from '@apideck/components'
+import { Button, Toggle } from '@apideck/components'
 import {
   ConfigurableResources,
   ConfirmModal,
@@ -39,6 +39,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
   const [saved, setSaved] = useState(false)
   const [formError, setFormError] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
+  const [updateLoading, setUpdateLoading] = useState(false)
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [deleteSuccess, setDeleteSuccess] = useState(false)
   const [deleteError, setDeleteError] = useState(false)
@@ -94,14 +95,16 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
     'X-APIDECK-CONSUMER-ID': token.consumerId
   }
 
-  const updateConnection = async (values: Record<string, string | boolean | unknown>) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const updateConnection = async (values: Record<string, any>) => {
     setFormError(false)
+    setUpdateLoading(true)
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { enabled, apiKey, ...rest } = values
     const body: UpdateConnectionInput = {
       settings: {},
-      enabled: true
+      enabled
     }
 
     if (Object.keys(rest).length !== 0) {
@@ -126,6 +129,8 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
       if (status === 401) {
         setSessionExpired(true)
       }
+    } finally {
+      setUpdateLoading(false)
     }
   }
 
@@ -191,13 +196,16 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
             <div>
               <h1 className="text-xl font-medium text-gray-800">{name}</h1>
               <div className="text-sm text-gray-700 capitalize">{`${unifiedApi} integration`}</div>
-
-              {tagLine && (
-                <p className="pt-4 my-4 mr-4 text-sm text-gray-800 border-t">{tagLine}</p>
-              )}
+              {tagLine && <p className="my-3 mr-4 text-sm text-gray-800">{tagLine}</p>}
             </div>
           </div>
-          <div>
+          <div className="flex items-center h-12">
+            <Toggle
+              isEnabled={connection.enabled}
+              isLoading={updateLoading}
+              onToggle={() => updateConnection({ id: connection.id, enabled: !connection.enabled })}
+              className="inline-block mr-3"
+            />
             <Button variant="danger-outline" text="Delete" onClick={() => setModalOpen(true)} />
           </div>
         </div>
@@ -242,6 +250,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
                           {label}
                           {required && <span className="ml-1 text-red-600">*</span>}
                         </div>
+                        <input name="enabled" value="true" type="hidden" readOnly />
                         <div className="w-2/3 pl-2">
                           {type === 'text' && (
                             <TextInput
