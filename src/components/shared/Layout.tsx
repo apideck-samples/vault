@@ -23,6 +23,7 @@ const Layout: React.FC<IProps> = ({
   const {
     vault_name: vaultName,
     favicon,
+    logo,
     primary_color: primaryColor,
     terms_url: termsUrl,
     privacy_url: privacyUrl
@@ -45,7 +46,17 @@ const Layout: React.FC<IProps> = ({
         style={{ minWidth: '400px', maxWidth: '480px' }}
       >
         <div>
-          <div className="mb-10 text-2xl font-medium">{vaultName || 'Apideck Vault'}</div>
+          {logo && (
+            <div className="flex flex-col justify-end" style={{ height: 120, marginTop: -120 }}>
+              <img
+                className="mb-4 rounded"
+                src={logo}
+                alt={vaultName || 'Apideck Vault'}
+                style={{ maxWidth: 60 }}
+              />
+            </div>
+          )}
+          <div className="mb-12 text-2xl font-medium">{vaultName || 'Apideck Vault'}</div>
           <a
             className="inline-flex items-center text-sm text-gray-500 group hover:text-gray-800"
             href={redirectUri ? redirectUri : 'https://app.apideck.com'}
@@ -76,7 +87,7 @@ const Layout: React.FC<IProps> = ({
               )}
               <div>
                 {accountName && (
-                  <div className="text-xs text-gray-500 uppercase mb-2">{accountName}</div>
+                  <div className="mb-2 text-xs text-gray-500 uppercase">{accountName}</div>
                 )}
                 {userName && <div className="text-sm leading-none">{userName}</div>}
               </div>
