@@ -1,11 +1,11 @@
-import { render, screen } from '../../../testUtils/testing-utils'
-
 import { ConnectionCard } from 'components'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
+import { IConnection } from 'types/Connection'
+import { render, screen } from '../../../testUtils/testing-utils'
 
 describe('Connection Card', () => {
   describe('When Connection has just been Added', () => {
-    const connection = {
+    const connection: IConnection = {
       id: 'lead+pipedrive',
       name: 'Pipedrive',
       icon:
@@ -19,7 +19,8 @@ describe('Connection Card', () => {
       configurable_resources: [],
       enabled: true,
       added: true,
-      configured: false
+      configured: false,
+      state: 'added'
     }
 
     it('Renders Integration and indicates configuration required', async () => {
@@ -33,7 +34,7 @@ describe('Connection Card', () => {
   })
 
   describe('When Connection has been Configured', () => {
-    const connection = {
+    const connection: IConnection = {
       id: 'lead+pipedrive',
       name: 'Pipedrive',
       icon:
@@ -47,7 +48,8 @@ describe('Connection Card', () => {
       configurable_resources: [],
       enabled: true,
       added: true,
-      configured: true
+      configured: true,
+      state: 'callable'
     }
 
     it('Renders Integration as enabled', async () => {
