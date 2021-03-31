@@ -90,7 +90,7 @@ You should now be able to make requests to the Vault API.
 
 #### Theming
 
-By default, the Vault will match the colors of your Apideck ecosystem. If you haven't made any changes in the theming settings of your ecosystem, you could also overwrite the default settings inside `src/config/defaults` or send a `theme` object in the body of the `sessions` request.
+By default, the Vault will match the colors of your Apideck ecosystem. If you haven't made any changes in the theming settings of your ecosystem, you could also overwrite the default settings inside `src/config/defaults` or send a `theme` object in the body of the `session` request.
 
 ## Hosted Vault
 
