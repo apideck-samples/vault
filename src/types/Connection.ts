@@ -6,6 +6,8 @@ export interface Settings extends RawJSON {
   base_url?: string
 }
 
+export type ConnectionState = 'available' | 'added' | 'configured' | 'authorized' | 'callable'
+
 export interface IConnection {
   id: string
   service_id: string
@@ -19,7 +21,7 @@ export interface IConnection {
   tag_line?: string
   authorize_url?: string
   revoke_url?: string | null
-
+  state: ConnectionState
   configured: boolean
   enabled?: boolean
   settings?: Settings

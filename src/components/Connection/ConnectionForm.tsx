@@ -20,7 +20,6 @@ import { IConnection, UpdateConnectionInput } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
 import {
   createOAuthErrorFromQuery,
-  isConnected,
   OAuthError,
   SessionExpiredModalContext,
   ThemeContext,
@@ -72,7 +71,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
     service_id: serviceId
   } = connection
 
-  const isAuthorized = isConnected(connection)
+  const isAuthorized = connection.state === 'authorized' || connection.state === 'callable'
 
   const redirectUrl = `${window.location.origin}/integrations/${unifiedApi}/${serviceId}`
   const authorizeUrlWithRedirect = `${authorizeUrl}&redirect_uri=${redirectUrl}`
