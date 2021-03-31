@@ -38,7 +38,8 @@
       "created_at": 1606221287456,
       "updated_at": 1606463352997,
       "enabled": true,
-      "configured": false
+      "configured": false,
+      "state": "added"
     },
     {
       "id": "lead+copper",
@@ -79,7 +80,8 @@
       "created_at": 1606221287456,
       "updated_at": 1606463352997,
       "enabled": true,
-      "configured": true
+      "configured": true,
+      "state": "callable"
     },
     {
       "id": "lead+pipedrive",
@@ -99,7 +101,8 @@
       "settings": {},
       "created_at": 1606215640025,
       "enabled": true,
-      "configured": true
+      "configured": true,
+      "state": "callable"
     },
     {
       "id": "lead+salesforce",
@@ -128,7 +131,8 @@
       "authorize_url": "http://localhost:3050/vault/authorize/salesforce/cfaZrORgaH2PMQpIcjTpfhERIpIEUJHev09ucjTp?state=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb25zdW1lcl9pZCI6InRlc3QtY29uc3VtZXItY2tncnM5NWwzeTRlcjBiOTlxYTM3YnVqMiIsInVuaWZpZWRfYXBpIjoibGVhZCIsInNlcnZpY2VfaWQiOiJzYWxlc2ZvcmNlIiwiYXBwbGljYXRpb25faWQiOiJjZmFack9SZ2FIMlBNUXBJY2pUcGZoRVJJcElFVUpIZXYwOXVjalRwIiwiaWF0IjoxNjA2NTAwMDI1LCJleHAiOjE2MDY1MDAxNDV9.ovzxyRaUl_QYPH8hKWAStlGpWkpCxwpJhDgF1ANrVmE",
       "revoke_url": null,
       "enabled": false,
-      "configured": false
+      "configured": false,
+      "state": "available"
     },
     {
       "id": "lead+teamleader",
@@ -149,7 +153,8 @@
       "created_at": 1605879425896,
       "updated_at": 1605879438677,
       "enabled": true,
-      "configured": true
+      "configured": true,
+      "state": "callable"
     }
   ]
 }
