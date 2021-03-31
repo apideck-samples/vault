@@ -7,6 +7,8 @@ export interface ThemeContextType {
   terms_url: string
   privacy_url: string
   logo: string
+  sidepanel_background_color: string
+  sidepanel_text_color: string
 }
 
 export const ThemeContext = createContext({})
