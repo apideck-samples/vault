@@ -81,7 +81,6 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
     revokeUrlWithRedirect = `${revokeUrl}&redirect_uri=${redirectUrl}`
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const initialValues = formFields.reduce((acc: any, formField) => {
     const { id, value } = formField
     acc[id] = value
@@ -94,7 +93,6 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
     'X-APIDECK-CONSUMER-ID': token.consumerId
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateConnection = async (values: Record<string, any>) => {
     setFormError(false)
     setUpdateLoading(true)
@@ -108,7 +106,6 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
 
     if (Object.keys(rest).length !== 0) {
       Object.keys(rest).forEach((setting) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ;(body.settings as any)[setting] = rest[setting]
       })
     }

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ConnectionsList, ListPlaceholder } from 'components'
 import client from 'lib/axios'
 import { applySession } from 'next-session'

@@ -66,7 +66,6 @@ const Connection = ({ connections, setConnections, loading, token, jwt, connecti
   )
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getServerSideProps = async ({ req, res, params }: any): Promise<any> => {
   await applySession(req, res, options)
 

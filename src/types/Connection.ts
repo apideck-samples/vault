@@ -22,7 +22,6 @@ export interface IConnection {
   authorize_url?: string
   revoke_url?: string | null
   state: ConnectionState
-
   configured: boolean
   enabled?: boolean
   settings?: Settings

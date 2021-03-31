@@ -97,7 +97,6 @@ const App = ({ Component, pageProps }: AppProps) => {
   )
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getServerSideProps = async (appContext: any) => {
   const {
     ctx: { req, res, pathname }

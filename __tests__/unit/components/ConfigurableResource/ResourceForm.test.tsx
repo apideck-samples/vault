@@ -10,7 +10,6 @@ describe('Resource Form', () => {
   describe('With Salesforce CRM connector', () => {
     let connection = CONNECTIONS.find((connector) => {
       return connector.id === 'crm+salesforce'
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }) as any
     connection = {
       ...connection,
