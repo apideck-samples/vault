@@ -16,7 +16,6 @@ const Session = ({ token }: IProps) => {
   return <div />
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 export async function getServerSideProps({ req, res, query }: any): Promise<any> {
   await applySession(req, res, options)

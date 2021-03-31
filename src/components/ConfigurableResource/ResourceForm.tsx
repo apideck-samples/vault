@@ -41,10 +41,8 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
     configuration: formFields = []
   } = connection
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const sortedFormFields = formFields.sort((a: any, b: any) => b.required - a.required)
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const initialValues = sortedFormFields.reduce((acc: any, formField) => {
     const { id, value } = formField
     acc[id] = value || undefined
@@ -121,7 +119,6 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
           validateOnBlur={false}
         >
           {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (formikProps: FormikProps<Record<string, any>>) => {
               const { handleSubmit, isSubmitting, handleChange, handleBlur, values } = formikProps
 

@@ -3,7 +3,6 @@ import { fireEvent, render, screen } from '../../../testUtils/testing-utils'
 import { DateInput } from 'components'
 
 describe('Date Input', () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const props: any = {
     name: 'DateInput',
     type: 'date',

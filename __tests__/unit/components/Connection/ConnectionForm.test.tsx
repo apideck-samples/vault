@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ConnectionForm } from 'components'
 import client from 'lib/axios'
 import { IConnection } from 'types/Connection'

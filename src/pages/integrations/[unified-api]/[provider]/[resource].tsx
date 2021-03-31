@@ -66,7 +66,6 @@ const Resource = ({ jwt, token, url, resource }: IProps) => {
   )
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getServerSideProps = async ({ req, res, params }: any): Promise<any> => {
   await applySession(req, res, options)
 
