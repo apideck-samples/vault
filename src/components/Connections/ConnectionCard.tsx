@@ -1,11 +1,9 @@
-import { FaCircle, FaExclamationTriangle } from 'react-icons/fa'
-
-import { IConnection } from 'types/Connection'
-import Link from 'next/link'
-import MenuRightIcon from 'mdi-react/MenuRightIcon'
-import formatDistanceToNow from 'date-fns/formatDistanceToNow'
-import { isConnected } from 'utils'
 import classNames from 'classnames'
+import formatDistanceToNow from 'date-fns/formatDistanceToNow'
+import MenuRightIcon from 'mdi-react/MenuRightIcon'
+import Link from 'next/link'
+import { FaCircle, FaExclamationTriangle } from 'react-icons/fa'
+import { IConnection } from 'types/Connection'
 
 interface IProps {
   connection: IConnection
@@ -13,7 +11,7 @@ interface IProps {
 
 const ConnectionCard = ({ connection }: IProps) => {
   const { name, icon, unified_api, service_id, created_at: createdAt } = connection
-  const configured = isConnected(connection)
+  const isAuthorized = connection.state === 'authorized' || connection.state === 'callable'
 
   return (
     <Link href={`/integrations/${unified_api}/${service_id}`}>
@@ -32,7 +30,7 @@ const ConnectionCard = ({ connection }: IProps) => {
         </div>
 
         <div className="flex items-center">
-          {configured ? (
+          {isAuthorized ? (
             <div
               className={classNames(
                 'flex flex-row px-2 py-1 text-xs font-medium leading-none rounded-full',
