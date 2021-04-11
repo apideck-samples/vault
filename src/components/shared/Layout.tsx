@@ -1,10 +1,9 @@
-import { ThemeContext, ThemeContextType } from 'utils/context'
-
-import Head from 'next/head'
-import MenuLeftIcon from 'mdi-react/MenuLeftIcon'
 import { Transition } from 'components'
-import { useContext } from 'react'
+import MenuLeftIcon from 'mdi-react/MenuLeftIcon'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { useContext } from 'react'
+import { ThemeContext, ThemeContextType } from 'utils/context'
 
 interface IProps {
   consumerMetadata: { [key: string]: string }
@@ -53,7 +52,7 @@ const Layout: React.FC<IProps> = ({
               className="mb-12 rounded"
               src={logo}
               alt={vaultName || 'Apideck Vault'}
-              style={{ maxWidth: '50%' }}
+              style={{ maxWidth: '50%', maxHeight: '28px' }}
             />
           ) : (
             <div
