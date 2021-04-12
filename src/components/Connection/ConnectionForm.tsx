@@ -39,6 +39,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
   const [formError, setFormError] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
   const [updateLoading, setUpdateLoading] = useState(false)
+  const [toggleLoading, setToggleLoading] = useState(false)
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [deleteSuccess, setDeleteSuccess] = useState(false)
   const [deleteError, setDeleteError] = useState(false)
@@ -91,6 +92,12 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
     Authorization: `Bearer ${jwt}`,
     'X-APIDECK-APP-ID': token.applicationId,
     'X-APIDECK-CONSUMER-ID': token.consumerId
+  }
+
+  const toggleConnection = async ({ id, enabled }: { id: string; enabled: boolean }) => {
+    setToggleLoading(true)
+    await updateConnection({ id, enabled })
+    setToggleLoading(false)
   }
 
   const updateConnection = async (values: Record<string, any>) => {
@@ -198,8 +205,8 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
           <div className="flex items-center h-12">
             <Toggle
               isEnabled={connection.enabled}
-              isLoading={updateLoading}
-              onToggle={() => updateConnection({ id: connection.id, enabled: !connection.enabled })}
+              isLoading={toggleLoading}
+              onToggle={() => toggleConnection({ id: connection.id, enabled: !connection.enabled })}
               className="inline-block mr-3"
             />
             <Button variant="danger-outline" text="Delete" onClick={() => setModalOpen(true)} />
