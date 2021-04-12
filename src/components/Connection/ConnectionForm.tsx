@@ -93,9 +93,14 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
     'X-APIDECK-CONSUMER-ID': token.consumerId
   }
 
+  const toggleConnection = async ({ id, enabled }: { id: string; enabled: boolean }) => {
+    setUpdateLoading(true)
+    await updateConnection({ id, enabled })
+    setUpdateLoading(false)
+  }
+
   const updateConnection = async (values: Record<string, any>) => {
     setFormError(false)
-    setUpdateLoading(true)
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { enabled, apiKey, ...rest } = values
@@ -125,8 +130,6 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
       if (status === 401) {
         setSessionExpired(true)
       }
-    } finally {
-      setUpdateLoading(false)
     }
   }
 
@@ -199,7 +202,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
             <Toggle
               isEnabled={connection.enabled}
               isLoading={updateLoading}
-              onToggle={() => updateConnection({ id: connection.id, enabled: !connection.enabled })}
+              onToggle={() => toggleConnection({ id: connection.id, enabled: !connection.enabled })}
               className="inline-block mr-3"
             />
             <Button variant="danger-outline" text="Delete" onClick={() => setModalOpen(true)} />
