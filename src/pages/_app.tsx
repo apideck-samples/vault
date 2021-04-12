@@ -20,13 +20,15 @@ const App = ({ Component, pageProps }: AppProps) => {
   const [sessionExpired, setSessionExpired] = useState<boolean>(false)
   const { jwt, token } = pageProps
   let consumerMetadata = {}
-  let theme = {}
+  const persistedTheme = typeof window !== 'undefined' && window.localStorage.getItem('theme')
+  let theme = persistedTheme ? JSON.parse(persistedTheme) : {}
   let redirectUri = ''
 
   if (token && Object.keys(token).length > 0) {
     consumerMetadata = token.consumerMetadata || defaults.consumerMetadata
-    theme = token.theme || defaults.theme
     redirectUri = token.redirectUri
+    theme = token.theme || defaults.theme
+    if (typeof window !== 'undefined') window.localStorage.setItem('theme', JSON.stringify(theme))
   }
 
   const fetcher = (url: string) => {
