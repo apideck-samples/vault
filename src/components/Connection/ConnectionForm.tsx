@@ -39,7 +39,6 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
   const [formError, setFormError] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
   const [updateLoading, setUpdateLoading] = useState(false)
-  const [toggleLoading, setToggleLoading] = useState(false)
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [deleteSuccess, setDeleteSuccess] = useState(false)
   const [deleteError, setDeleteError] = useState(false)
@@ -95,14 +94,13 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
   }
 
   const toggleConnection = async ({ id, enabled }: { id: string; enabled: boolean }) => {
-    setToggleLoading(true)
+    setUpdateLoading(true)
     await updateConnection({ id, enabled })
-    setToggleLoading(false)
+    setUpdateLoading(false)
   }
 
   const updateConnection = async (values: Record<string, any>) => {
     setFormError(false)
-    setUpdateLoading(true)
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { enabled, apiKey, ...rest } = values
@@ -132,8 +130,6 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
       if (status === 401) {
         setSessionExpired(true)
       }
-    } finally {
-      setUpdateLoading(false)
     }
   }
 
@@ -205,7 +201,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
           <div className="flex items-center h-12">
             <Toggle
               isEnabled={connection.enabled}
-              isLoading={toggleLoading}
+              isLoading={updateLoading}
               onToggle={() => toggleConnection({ id: connection.id, enabled: !connection.enabled })}
               className="inline-block mr-3"
             />
