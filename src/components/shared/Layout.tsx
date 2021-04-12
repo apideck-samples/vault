@@ -2,7 +2,7 @@ import { Transition } from 'components'
 import MenuLeftIcon from 'mdi-react/MenuLeftIcon'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { ThemeContext, ThemeContextType } from 'utils/context'
 
 interface IProps {
@@ -19,6 +19,8 @@ const Layout: React.FC<IProps> = ({
 }) => {
   const router = useRouter()
   const theme = useContext(ThemeContext) as ThemeContextType
+  const [customStyles, setCustomStyles] = useState({})
+
   const {
     vault_name: vaultName,
     favicon,
@@ -31,9 +33,13 @@ const Layout: React.FC<IProps> = ({
   } = theme
   const { user_name: userName, account_name: accountName, image } = consumerMetadata
   const hasConsumerMetadata = Object.keys(consumerMetadata).length > 0
-  const customStyles = {} as any
-  if (primaryColor) customStyles.borderColor = primaryColor
-  if (bgColor) customStyles.backgroundColor = bgColor
+
+  useEffect(() => {
+    const styles = {} as any
+    if (primaryColor) styles.borderColor = primaryColor
+    if (bgColor) styles.backgroundColor = bgColor
+    setCustomStyles(styles)
+  }, [bgColor, primaryColor])
 
   return (
     <div className="flex h-screen bg-gray-100 border-t-4 border-main" style={customStyles}>
