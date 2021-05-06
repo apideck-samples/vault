@@ -86,6 +86,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
     acc[id] = value
     return acc
   }, {}) as Record<string, readonly string[]>
+  const filteredFormFields = formFields.filter((field) => !field.hidden)
 
   const headers = {
     Authorization: `Bearer ${jwt}`,
@@ -221,7 +222,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
         </div>
       )}
 
-      {formFields.length > 0 && (
+      {filteredFormFields.length > 0 && (
         <Formik
           onSubmit={(values) => updateConnection(values)}
           initialValues={initialValues}
@@ -237,7 +238,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
                   <h2 className="font-medium">Settings</h2>
                 </div>
                 <div className="px-5 py-6 bg-gray-100 border-t border-b">
-                  {formFields.map((field) => {
+                  {filteredFormFields.map((field) => {
                     const { id, label, required, placeholder, description, type, options } = field
 
                     return (

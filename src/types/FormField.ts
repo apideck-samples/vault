@@ -24,6 +24,7 @@ export interface FormField {
   disabled: boolean
   options: FormFieldOption[]
   custom_field: boolean
+  hidden: boolean
 }
 
 export interface FormFieldOption {
