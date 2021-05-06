@@ -37,7 +37,8 @@ describe('Connection Form', () => {
             description: '',
             disabled: false,
             options: [],
-            custom_field: false
+            custom_field: false,
+            hidden: false
           }
         ]
       }
