@@ -8,7 +8,7 @@ interface IProps {
   token: JWTSession
 }
 
-const ConfigurableResources = ({ connection, jwt, token }: IProps) => {
+const ConfigurableResources = ({ connection }: IProps) => {
   const { configurable_resources } = connection
 
   return (
@@ -20,7 +20,7 @@ const ConfigurableResources = ({ connection, jwt, token }: IProps) => {
         {configurable_resources.map((resource: string, index: number) => {
           return (
             <li key={`resource-${index}`}>
-              <ResourceLink connection={connection} resource={resource} jwt={jwt} token={token} />
+              <ResourceLink connection={connection} resource={resource} />
             </li>
           )
         })}

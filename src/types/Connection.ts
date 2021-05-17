@@ -27,6 +27,7 @@ export interface IConnection {
   settings?: Settings
   settings_required_for_authorization?: string[]
   configurable_resources: string[]
+  schema_support: string[]
   configuration?: FormField[]
   form_fields: FormField[]
   created_at: number
