@@ -97,6 +97,7 @@
     }
   ],
   "configurable_resources": ["opportunities", "companies", "contacts", "leads"],
+  "schema_support": ["opportunities", "companies", "contacts", "leads"],
   "settings_required_for_authorization": [],
   "added": true,
   "configured": true,
