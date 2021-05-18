@@ -25,6 +25,7 @@ export interface FormField {
   options: FormFieldOption[]
   custom_field: boolean
   hidden: boolean
+  target?: 'custom_fields' | 'resource'
 }
 
 export interface FormFieldOption {
