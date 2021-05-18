@@ -9,9 +9,9 @@ interface IProps {
 }
 
 const ResourceLink = ({ connection, resource }: IProps) => {
-  const { unified_api: unifiedApi, service_id: provider, schema_support } = connection
+  const { unified_api: unifiedApi, service_id: provider, configurable_resources } = connection
 
-  return schema_support.includes(resource) ? (
+  return configurable_resources.includes(resource) ? (
     <Link href={`/integrations/${unifiedApi}/${provider}/${resource}`}>
       <a className="flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-800 capitalize sm:px-6 hover:bg-gray-50 group">
         <span>{resource}</span>
