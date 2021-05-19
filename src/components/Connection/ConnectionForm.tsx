@@ -17,6 +17,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Fragment, useContext, useEffect, useState } from 'react'
 import { IConnection, UpdateConnectionInput } from 'types/Connection'
+import { FormFieldOption } from 'types/FormField'
 import { JWTSession } from 'types/JWTSession'
 import {
   createOAuthErrorFromQuery,
@@ -267,7 +268,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
                             <Select
                               field={id}
                               required={required}
-                              options={options}
+                              options={options as FormFieldOption[]}
                               formikProps={formikProps}
                             />
                           )}

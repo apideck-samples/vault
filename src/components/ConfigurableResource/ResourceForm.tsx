@@ -1,5 +1,6 @@
 import { Button, CheckBox, DateInput, Select, TextArea, TextInput } from '@apideck/components'
 import { ErrorBlock, ResourcePlaceholder } from 'components'
+import { FilteredSelect } from 'components/Inputs'
 import { Formik, FormikProps } from 'formik'
 import client from 'lib/axios'
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
@@ -9,6 +10,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useContext, useState } from 'react'
 import { IConnection, UpdateConnectionConfigInput } from 'types/Connection'
+import { FormFieldOption } from 'types/FormField'
 import { JWTSession } from 'types/JWTSession'
 import { SessionExpiredModalContext, ThemeContext, ThemeContextType } from 'utils'
 
@@ -48,6 +50,12 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
     return acc
   }, {})
 
+  const targetMap = sortedFormFields.reduce((acc: any, formField) => {
+    const { id, target } = formField
+    acc[id] = target || undefined
+    return acc
+  }, {})
+
   const headers = {
     Authorization: `Bearer ${jwt}`,
     'X-APIDECK-APP-ID': token.applicationId,
@@ -58,7 +66,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
     setFormError(false)
     const defaults = Object.entries(values)
       .map(([k, v]) => {
-        return v ? { id: k, value: v } : undefined
+        return v ? { id: k, value: v, target: targetMap[k] } : undefined
       })
       .filter((obj) => obj?.value)
 
@@ -183,11 +191,18 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                             <Select
                               name={id}
                               required={required}
-                              options={options}
+                              options={options as FormFieldOption[]}
                               onChange={handleChange}
                               onBlur={handleBlur}
                               defaultValue={values[id] || (type === 'multi-select' ? [] : '')}
                               multiple={type === 'multi-select'}
+                              className="max-w-sm"
+                            />
+                          )}
+                          {type === 'filtered-select' && (
+                            <FilteredSelect
+                              field={field}
+                              formikProps={formikProps}
                               className="max-w-sm"
                             />
                           )}

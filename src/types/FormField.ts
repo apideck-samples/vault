@@ -8,6 +8,7 @@ export interface FormField {
   type:
     | 'select'
     | 'multi-select'
+    | 'filtered-select'
     | 'text'
     | 'textarea'
     | 'number'
@@ -22,13 +23,20 @@ export interface FormField {
   required: boolean
   description?: string
   disabled: boolean
-  options: FormFieldOption[]
+  options: FormFieldOption[] | FormFieldOptionGroup[]
   custom_field: boolean
   hidden: boolean
   target?: 'custom_fields' | 'resource'
+  filter?: Record<string, string>
 }
 
 export interface FormFieldOption {
   label: string
   value: string | number | readonly string[] | undefined
+}
+
+export interface FormFieldOptionGroup {
+  id: string
+  label: string
+  options: FormFieldOption[]
 }
