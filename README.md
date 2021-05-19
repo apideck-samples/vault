@@ -1,6 +1,6 @@
 # Integration settings
 
-#### A sample project for managing integration settings with the [Apideck Vault API](https://developers.apideck.com/api-reference/vault).
+#### A sample project for managing integration settings with the [Apideck Vault API](https://developers.apideck.com/apis/vault/reference).
 
 Building integrations starts with handling user credentials and generating access tokens for the APIs you want to use. When you're looking to connect to an API, the first step is authentication. Vault helps you store API keys, integration settings, and access tokens from customers.
 
@@ -19,7 +19,7 @@ Built with [Next.js](https://nextjs.org/), [TypeScript](https://www.typescriptla
 
 ### Installing the sample
 
-This project uses the Vault API. Visit https://developers.apideck.com/api-reference/vault for documentation of the API.
+This project uses the Vault API. Visit https://developers.apideck.com/apis/vault/reference for documentation of the API.
 
 #### Step 1: Update your environment variables
 
