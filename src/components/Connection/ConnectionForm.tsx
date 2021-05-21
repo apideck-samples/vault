@@ -6,26 +6,28 @@ import {
   OAuthButtons,
   OAuthErrorAlert,
   Select,
+  SelectInput,
   TextInput
 } from 'components'
 import { Formik, FormikProps } from 'formik'
-import client from 'lib/axios'
-import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
-import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
-import CheckIcon from 'mdi-react/CheckIcon'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { Fragment, useContext, useEffect, useState } from 'react'
 import { IConnection, UpdateConnectionInput } from 'types/Connection'
-import { FormFieldOption } from 'types/FormField'
-import { JWTSession } from 'types/JWTSession'
 import {
-  createOAuthErrorFromQuery,
   OAuthError,
   SessionExpiredModalContext,
   ThemeContext,
-  ThemeContextType
+  ThemeContextType,
+  createOAuthErrorFromQuery
 } from 'utils'
+
+import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
+import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
+import CheckIcon from 'mdi-react/CheckIcon'
+import { FormFieldOption } from 'types/FormField'
+import { JWTSession } from 'types/JWTSession'
+import Link from 'next/link'
+import client from 'lib/axios'
+import { useRouter } from 'next/router'
 
 interface IProps {
   connection: IConnection
@@ -245,6 +247,8 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
                   {filteredFormFields.map((field) => {
                     const { id, label, required, placeholder, description, type, options } = field
 
+                    const { handleChange, handleBlur, values } = formikProps
+
                     return (
                       <div key={id} className="flex items-start justify-center mb-4">
                         <div className="w-1/3 pt-2 pr-2 text-sm font-medium text-right">
@@ -265,11 +269,14 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
                             />
                           )}
                           {type === 'select' && (
-                            <Select
+                            <SelectInput
                               field={id}
-                              required={required}
+                              value={values[id]}
+                              handleChange={handleChange}
+                              placeholder="Select.."
                               options={options as FormFieldOption[]}
-                              formikProps={formikProps}
+                              onChange={handleChange}
+                              placeholder="Select.."
                             />
                           )}
                           {description && (

@@ -1,7 +1,9 @@
-import MenuDownIcon from 'mdi-react/MenuDownIcon'
-import { useRef } from 'react'
-import Select, { components, OptionProps, OptionsType } from 'react-select'
+import { FormFieldOption, FormFieldOptionGroup } from 'types/FormField'
+import Select, { OptionProps, OptionsType, components } from 'react-select'
+import { useEffect, useRef, useState } from 'react'
+
 import { GroupTypeBase } from 'react-select/src/types'
+import classNames from 'classnames'
 import theme from 'utils/theme'
 
 export interface IOptionType {
@@ -13,8 +15,9 @@ interface ISelectProps {
   field: string
   placeholder: string
   value: string | undefined
-  handleChange: (options: IOptionType | null) => void
-  options: OptionsType<IOptionType>
+  handleChange: (event: any) => void
+  options: any
+  className?: string
 }
 
 interface IOptionProps extends OptionProps<IOptionType, false, GroupTypeBase<IOptionType>> {
@@ -29,27 +32,46 @@ interface IProvided {
 const customStyles = {
   control: (provided: IProvided, state: { isFocused: boolean }) => ({
     ...provided,
-    border: `1px solid ${theme.colors.gray[300]}`,
-    transition: 'none',
-    boxShadow: state.isFocused ? '0 0 0 3px rgba(66, 153, 225, 0.5)' : 'none',
+    border: state.isFocused ? `1px solid transparent` : `1px solid ${theme.colors.gray[300]}`,
+    borderRadius: theme.borderRadius.md,
+    boxShadow: state.isFocused ? `0 0 0 2px ${theme.colors.primary[500]}` : 'none',
     '&:hover': {
-      borderColor: theme.colors.gray[300]
-    }
+      border: state.isFocused ? `1px solid transparent` : `1px solid ${theme.colors.gray[300]}`
+    },
+    fontFamily: theme.fontFamily['basier-circle']
   }),
   menu: (provided: IProvided) => ({
     ...provided,
     marginTop: '5px',
     border: `1px solid ${theme.colors.gray[300]}`,
-    boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)'
+    borderRadius: theme.borderRadius.md,
+    boxShadow: theme.boxShadow.lg
+  }),
+  option: (provided: IProvided, state: { isSelected: boolean; isFocused: boolean }) => ({
+    ...provided,
+    backgroundColor: state.isSelected || state.isFocused ? theme.colors.primary[500] : 'none',
+    color: state.isSelected || state.isFocused ? theme.colors.white : theme.colors.gray[900],
+    fontFamily: theme.fontFamily['basier-circle'],
+    fontWeight: theme.fontWeight.normal
   }),
   noOptionsMessage: (provided: IProvided) => ({
     ...provided,
-    fontSize: '14px'
+    fontSize: theme.fontSize.sm
   })
 }
 
 const DropdownIndicator = () => {
-  return <MenuDownIcon className="mr-2" color={theme.colors.gray[600]} />
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-4 h-4 mr-2 text-gray-500"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+    </svg>
+  )
 }
 
 const Option = (props: IOptionProps) => {
@@ -70,11 +92,27 @@ const Option = (props: IOptionProps) => {
   )
 }
 
-const SelectInput = ({ field, placeholder, value, handleChange, options }: ISelectProps) => {
+const SelectInput = ({
+  field,
+  placeholder,
+  value,
+  handleChange,
+  options,
+  className = ''
+}: ISelectProps) => {
   const selectRef = useRef<Select>(null)
-  const getOptionFromValue = (value: string | undefined): OptionsType<IOptionType> | null => {
-    if (!value) return null
-    return options.filter((option) => option.value === value)
+  const [selectedOption, setSelectedOption] = useState<IOptionType>()
+
+  useEffect(() => {
+    const option = options?.find((option: IOptionType) => option.value === value)
+    if (option) {
+      setSelectedOption(option)
+    }
+  }, [options, value])
+
+  const patchedOnChange = (option: any) => {
+    handleChange({ currentTarget: { value: option.value, name: field } })
+    setSelectedOption(option)
   }
 
   return (
@@ -83,11 +121,14 @@ const SelectInput = ({ field, placeholder, value, handleChange, options }: ISele
       id={field}
       name={field}
       data-testid={field}
-      value={getOptionFromValue(value)}
-      onChange={(option) => handleChange(option)}
+      value={selectedOption}
+      onChange={patchedOnChange}
       placeholder={placeholder}
       options={options}
-      className="react-select"
+      className={classNames(
+        'text-base text-gray-600 placeholder-gray-400 border-gray-300 rounded-md shadow-sm focus:outline-none sm:text-sm focus:ring-primary-500 focus:border-primary-500 react-select',
+        className
+      )}
       onKeyDown={(e: React.KeyboardEvent<HTMLElement>) => {
         if (e.keyCode === 27) {
           e.stopPropagation()

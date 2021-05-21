@@ -1,12 +1,13 @@
-import { Button } from '@apideck/components'
-import { SelectInput } from 'components'
-import { IOptionType } from 'components/Inputs/SelectInput'
-import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
-import { useRouter } from 'next/router'
 import { Fragment, useContext, useEffect, useState } from 'react'
-import { IConnection } from 'types/Connection'
 import { ThemeContext, ThemeContextType } from 'utils'
+
+import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
+import { Button } from '@apideck/components'
+import { IConnection } from 'types/Connection'
+import { IOptionType } from 'components/Inputs/SelectInput'
 import ModalContainer from './ModalContainer'
+import { SelectInput } from 'components'
+import { useRouter } from 'next/router'
 
 interface IProps {
   open: boolean
@@ -72,10 +73,6 @@ const AddModal = ({
     }
   }, [open])
 
-  const handleChange = (option: IOptionType | null) => {
-    if (option?.value) setValue(option.value)
-  }
-
   return (
     <ModalContainer open={open} setOpen={setOpen}>
       <div className="px-5 py-4">
@@ -87,9 +84,7 @@ const AddModal = ({
           field="connection"
           value={value}
           options={connectionsOptions}
-          handleChange={(option) => {
-            handleChange(option)
-          }}
+          handleChange={(e: any) => setValue(e.currentTarget.value)}
           placeholder="Select.."
         />
       </div>
