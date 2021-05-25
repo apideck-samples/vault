@@ -17,7 +17,7 @@ interface ISelectProps {
   handleChange: (event: any) => void
   options: IOptionType[]
   className?: string
-  isMulti?: boolean
+  isMulti?: any
 }
 
 interface IOptionProps extends OptionProps<IOptionType, false, GroupTypeBase<IOptionType>> {

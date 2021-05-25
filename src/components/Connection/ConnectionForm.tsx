@@ -5,7 +5,6 @@ import {
   ErrorBlock,
   OAuthButtons,
   OAuthErrorAlert,
-  Select,
   SelectInput,
   TextInput
 } from 'components'
@@ -23,7 +22,6 @@ import {
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
 import CheckIcon from 'mdi-react/CheckIcon'
-import { FormFieldOption } from 'types/FormField'
 import { IOptionType } from 'components/Inputs/SelectInput'
 import { JWTSession } from 'types/JWTSession'
 import Link from 'next/link'

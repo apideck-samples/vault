@@ -83,7 +83,7 @@ const AddModal = ({
         <SelectInput
           field="connection"
           value={value}
-          options={connectionsOptions}
+          options={connectionsOptions as IOptionType[]}
           handleChange={(e: any) => setValue(e.currentTarget.value)}
           placeholder="Select.."
         />
