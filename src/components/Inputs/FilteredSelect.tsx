@@ -1,6 +1,7 @@
 import { FormField, FormFieldOptionGroup } from 'types/FormField'
 import React, { Fragment } from 'react'
 
+import { IOptionType } from './SelectInput'
 import { SelectInput } from '.'
 
 interface IProps {
@@ -29,7 +30,7 @@ const FilteredSelect = ({ field, formikProps, className = '' }: IProps) => {
       value={values[id]}
       handleChange={handleChange}
       placeholder="Select.."
-      options={(filterOptions as any) || []}
+      options={(filterOptions as IOptionType[]) || []}
       isMulti={type === 'multi-select'}
       className={className}
     />
