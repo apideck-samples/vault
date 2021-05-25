@@ -262,6 +262,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
                               placeholder={placeholder}
                               onChange={handleChange}
                               onBlur={handleBlur}
+                              data-testid={id}
                             />
                           )}
                           {type === 'select' && (
