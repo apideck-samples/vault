@@ -1,6 +1,7 @@
-import { Select } from '@apideck/components'
-import React, { Fragment } from 'react'
 import { FormField, FormFieldOptionGroup } from 'types/FormField'
+import React, { Fragment } from 'react'
+
+import { SelectInput } from '.'
 
 interface IProps {
   field: FormField
@@ -8,9 +9,9 @@ interface IProps {
   className: string
 }
 
-const FilteredSelect = ({ field, formikProps, className }: IProps) => {
-  const { handleChange, handleBlur, values } = formikProps
-  const { id, required, type, options, filter } = field
+const FilteredSelect = ({ field, formikProps, className = '' }: IProps) => {
+  const { handleChange, values } = formikProps
+  const { id, type, options, filter } = field
 
   const filterOn = filter?.value
   if (!filterOn) return <Fragment />
@@ -23,16 +24,14 @@ const FilteredSelect = ({ field, formikProps, className }: IProps) => {
     : []
 
   return (
-    <Select
-      name={id}
-      required={required}
-      options={filterOptions || []}
-      onChange={handleChange}
-      onBlur={handleBlur}
-      defaultValue={values[id] || (type === 'multi-select' ? [] : '')}
-      multiple={type === 'multi-select'}
+    <SelectInput
+      field={id}
+      value={values[id]}
+      handleChange={handleChange}
+      placeholder="Select.."
+      options={(filterOptions as any) || []}
+      isMulti={type === 'multi-select'}
       className={className}
-      disabled={!filterValue}
     />
   )
 }

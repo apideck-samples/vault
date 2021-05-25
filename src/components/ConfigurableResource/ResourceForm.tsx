@@ -1,4 +1,4 @@
-import { Button, CheckBox, DateInput, Select, TextArea, TextInput } from '@apideck/components'
+import { Button, CheckBox, DateInput, TextArea, TextInput } from '@apideck/components'
 import { ErrorBlock, ResourcePlaceholder } from 'components'
 import { FilteredSelect, SelectInput } from 'components/Inputs'
 import { Formik, FormikProps } from 'formik'
@@ -9,7 +9,6 @@ import { SessionExpiredModalContext, ThemeContext, ThemeContextType } from 'util
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
 import CheckIcon from 'mdi-react/CheckIcon'
-import { FormFieldOption } from 'types/FormField'
 import { JWTSession } from 'types/JWTSession'
 import Link from 'next/link'
 import client from 'lib/axios'
@@ -194,11 +193,8 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                               value={values[id]}
                               handleChange={handleChange}
                               placeholder="Select.."
-                              options={options}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              defaultValue={values[id] || (type === 'multi-select' ? [] : '')}
-                              multiple={type === 'multi-select'}
+                              options={options as any}
+                              isMulti={type === 'multi-select'}
                               className="max-w-sm"
                             />
                           )}
