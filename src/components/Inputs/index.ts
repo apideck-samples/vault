@@ -1,7 +1,2 @@
-export { default as CheckBox } from './CheckBox'
-export { default as DateInput } from './DateInput'
 export { default as FilteredSelect } from './FilteredSelect'
-export { default as Select } from './Select'
-export { default as SelectInput } from './SelectInput'
-export { default as TextArea } from './TextArea'
-export { default as TextInput } from './TextInput'
+export { default as SearchSelect } from './SearchSelect'

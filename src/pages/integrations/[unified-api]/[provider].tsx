@@ -1,9 +1,10 @@
 import { ConnectionForm, ConnectionPlaceholder, ErrorBlock } from 'components'
-import { applySession } from 'next-session'
-import { useRouter } from 'next/router'
+
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
+import { applySession } from 'next-session'
 import { options } from 'utils/sessionOptions'
+import { useRouter } from 'next/router'
 
 interface IProps {
   connections: IConnection[]

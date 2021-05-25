@@ -1,18 +1,19 @@
-import { Button, CheckBox, DateInput, Select, TextArea, TextInput } from '@apideck/components'
+import { Button, CheckBox, DateInput, TextArea, TextInput } from '@apideck/components'
 import { ErrorBlock, ResourcePlaceholder } from 'components'
-import { FilteredSelect } from 'components/Inputs'
+import { FilteredSelect, SearchSelect } from 'components/Inputs'
 import { Formik, FormikProps } from 'formik'
-import client from 'lib/axios'
+import { IConnection, UpdateConnectionConfigInput } from 'types/Connection'
+import React, { useContext, useState } from 'react'
+import { SessionExpiredModalContext, ThemeContext, ThemeContextType } from 'utils'
+
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
 import CheckIcon from 'mdi-react/CheckIcon'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import React, { useContext, useState } from 'react'
-import { IConnection, UpdateConnectionConfigInput } from 'types/Connection'
-import { FormFieldOption } from 'types/FormField'
+import { IOptionType } from 'components/Inputs/SearchSelect'
 import { JWTSession } from 'types/JWTSession'
-import { SessionExpiredModalContext, ThemeContext, ThemeContextType } from 'utils'
+import Link from 'next/link'
+import client from 'lib/axios'
+import { useRouter } from 'next/router'
 
 interface IProps {
   connection?: IConnection
@@ -188,14 +189,13 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                             />
                           )}
                           {(type === 'select' || type === 'multi-select') && (
-                            <Select
-                              name={id}
-                              required={required}
-                              options={options as FormFieldOption[]}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              defaultValue={values[id] || (type === 'multi-select' ? [] : '')}
-                              multiple={type === 'multi-select'}
+                            <SearchSelect
+                              field={id}
+                              value={values[id]}
+                              handleChange={handleChange}
+                              placeholder="Select.."
+                              options={(options as IOptionType[]) || []}
+                              isMulti={type === 'multi-select'}
                               className="max-w-sm"
                             />
                           )}
@@ -217,7 +217,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                             />
                           )}
                           {description && (
-                            <small className="inline-block pt-2 ml-2 text-gray-600">
+                            <small className="inline-block max-w-sm pt-2 ml-2 text-gray-600">
                               {description}
                             </small>
                           )}

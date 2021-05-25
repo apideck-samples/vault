@@ -1,8 +1,3 @@
-import { ConnectionForm } from 'components'
-import client from 'lib/axios'
-import { IConnection } from 'types/Connection'
-import INTEGRATIONS from '../../../fixtures/integrations.json'
-import { jwt, token } from '../../../fixtures/session'
 import {
   fireEvent,
   render,
@@ -11,6 +6,12 @@ import {
   waitForElementToBeRemoved,
   within
 } from '../../../testUtils/testing-utils'
+import { jwt, token } from '../../../fixtures/session'
+
+import { ConnectionForm } from 'components'
+import { IConnection } from 'types/Connection'
+import INTEGRATIONS from '../../../fixtures/integrations.json'
+import client from 'lib/axios'
 
 describe('Connection Form', () => {
   const handleSubmit = jest.fn()

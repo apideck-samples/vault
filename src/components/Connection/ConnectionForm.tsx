@@ -1,31 +1,31 @@
-import { Button, Toggle } from '@apideck/components'
+import { Button, TextInput, Toggle } from '@apideck/components'
 import {
   ConfigurableResources,
   ConfirmModal,
   ErrorBlock,
   OAuthButtons,
   OAuthErrorAlert,
-  Select,
-  TextInput
+  SearchSelect
 } from 'components'
 import { Formik, FormikProps } from 'formik'
-import client from 'lib/axios'
-import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
-import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
-import CheckIcon from 'mdi-react/CheckIcon'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { Fragment, useContext, useEffect, useState } from 'react'
 import { IConnection, UpdateConnectionInput } from 'types/Connection'
-import { FormFieldOption } from 'types/FormField'
-import { JWTSession } from 'types/JWTSession'
 import {
-  createOAuthErrorFromQuery,
   OAuthError,
   SessionExpiredModalContext,
   ThemeContext,
-  ThemeContextType
+  ThemeContextType,
+  createOAuthErrorFromQuery
 } from 'utils'
+
+import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
+import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
+import CheckIcon from 'mdi-react/CheckIcon'
+import { IOptionType } from 'components/Inputs/SearchSelect'
+import { JWTSession } from 'types/JWTSession'
+import Link from 'next/link'
+import client from 'lib/axios'
+import { useRouter } from 'next/router'
 
 interface IProps {
   connection: IConnection
@@ -256,20 +256,22 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
                           {type === 'text' && (
                             <TextInput
                               name={id}
-                              value={values[id]}
+                              value={(values[id] as any) || ''}
                               type="text"
                               required={required}
                               placeholder={placeholder}
                               onChange={handleChange}
                               onBlur={handleBlur}
+                              data-testid={id}
                             />
                           )}
                           {type === 'select' && (
-                            <Select
+                            <SearchSelect
                               field={id}
-                              required={required}
-                              options={options as FormFieldOption[]}
-                              formikProps={formikProps}
+                              value={values[id]}
+                              handleChange={handleChange}
+                              options={options as IOptionType[]}
+                              placeholder="Select.."
                             />
                           )}
                           {description && (
