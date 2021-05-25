@@ -24,6 +24,7 @@ import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
 import CheckIcon from 'mdi-react/CheckIcon'
 import { FormFieldOption } from 'types/FormField'
+import { IOptionType } from 'components/Inputs/SelectInput'
 import { JWTSession } from 'types/JWTSession'
 import Link from 'next/link'
 import client from 'lib/axios'
@@ -247,8 +248,6 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
                   {filteredFormFields.map((field) => {
                     const { id, label, required, placeholder, description, type, options } = field
 
-                    const { handleChange, handleBlur, values } = formikProps
-
                     return (
                       <div key={id} className="flex items-start justify-center mb-4">
                         <div className="w-1/3 pt-2 pr-2 text-sm font-medium text-right">
@@ -273,9 +272,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
                               field={id}
                               value={values[id]}
                               handleChange={handleChange}
-                              placeholder="Select.."
-                              options={options as FormFieldOption[]}
-                              onChange={handleChange}
+                              options={options as IOptionType[]}
                               placeholder="Select.."
                             />
                           )}

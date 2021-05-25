@@ -9,6 +9,7 @@ import { SessionExpiredModalContext, ThemeContext, ThemeContextType } from 'util
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
 import CheckIcon from 'mdi-react/CheckIcon'
+import { IOptionType } from 'components/Inputs/SelectInput'
 import { JWTSession } from 'types/JWTSession'
 import Link from 'next/link'
 import client from 'lib/axios'
@@ -193,7 +194,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                               value={values[id]}
                               handleChange={handleChange}
                               placeholder="Select.."
-                              options={options as any}
+                              options={(options as IOptionType[]) || []}
                               isMulti={type === 'multi-select'}
                               className="max-w-sm"
                             />

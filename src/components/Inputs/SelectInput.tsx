@@ -13,7 +13,7 @@ export interface IOptionType {
 interface ISelectProps {
   field: string
   placeholder: string
-  value: string | undefined
+  value?: string | string[] | readonly string[]
   handleChange: (event: any) => void
   options: IOptionType[]
   className?: string
