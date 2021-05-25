@@ -1,5 +1,4 @@
-import { FormFieldOption, FormFieldOptionGroup } from 'types/FormField'
-import Select, { OptionProps, OptionsType, components } from 'react-select'
+import Select, { OptionProps, components } from 'react-select'
 import { useEffect, useRef, useState } from 'react'
 
 import { GroupTypeBase } from 'react-select/src/types'
@@ -16,8 +15,9 @@ interface ISelectProps {
   placeholder: string
   value: string | undefined
   handleChange: (event: any) => void
-  options: any
+  options: IOptionType[]
   className?: string
+  isMulti?: boolean
 }
 
 interface IOptionProps extends OptionProps<IOptionType, false, GroupTypeBase<IOptionType>> {
@@ -52,7 +52,8 @@ const customStyles = {
     backgroundColor: state.isSelected || state.isFocused ? theme.colors.primary[500] : 'none',
     color: state.isSelected || state.isFocused ? theme.colors.white : theme.colors.gray[900],
     fontFamily: theme.fontFamily['basier-circle'],
-    fontWeight: theme.fontWeight.normal
+    fontWeight: theme.fontWeight.normal,
+    '&:Active': { backgroundColor: theme.colors.primary[400] }
   }),
   noOptionsMessage: (provided: IProvided) => ({
     ...provided,
@@ -98,21 +99,27 @@ const SelectInput = ({
   value,
   handleChange,
   options,
-  className = ''
+  className = '',
+  ...rest
 }: ISelectProps) => {
   const selectRef = useRef<Select>(null)
-  const [selectedOption, setSelectedOption] = useState<IOptionType>()
+  const [selectedOption, setSelectedOption] = useState<IOptionType | IOptionType[]>()
 
   useEffect(() => {
-    const option = options?.find((option: IOptionType) => option.value === value)
-    if (option) {
-      setSelectedOption(option)
+    let option
+    if (rest.isMulti) {
+      option = options?.filter((option: IOptionType) => value?.includes(option.value))
+    } else {
+      option = options?.find((option: IOptionType) => option.value === value)
     }
-  }, [options, value])
 
-  const patchedOnChange = (option: any) => {
-    handleChange({ currentTarget: { value: option.value, name: field } })
-    setSelectedOption(option)
+    if (option) setSelectedOption(option)
+  }, [options, rest.isMulti, value])
+
+  const patchedOnChange = (options: any) => {
+    const value = rest.isMulti ? options.map((option: IOptionType) => option.value) : options.value
+    handleChange({ currentTarget: { value, name: field } })
+    setSelectedOption(options)
   }
 
   return (
@@ -141,6 +148,7 @@ const SelectInput = ({
         IndicatorSeparator: null
       }}
       styles={customStyles}
+      {...rest}
     />
   )
 }
