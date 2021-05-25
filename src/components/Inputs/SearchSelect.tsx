@@ -93,7 +93,7 @@ const Option = (props: IOptionProps) => {
   )
 }
 
-const SelectInput = ({
+const SearchSelect = ({
   field,
   placeholder,
   value,
@@ -106,12 +106,9 @@ const SelectInput = ({
   const [selectedOption, setSelectedOption] = useState<IOptionType | IOptionType[]>()
 
   useEffect(() => {
-    let option
-    if (rest.isMulti) {
-      option = options?.filter((option: IOptionType) => value?.includes(option.value))
-    } else {
-      option = options?.find((option: IOptionType) => option.value === value)
-    }
+    const option = rest.isMulti
+      ? options?.filter((option: IOptionType) => value?.includes(option.value))
+      : options?.find((option: IOptionType) => option.value === value)
 
     if (option) setSelectedOption(option)
   }, [options, rest.isMulti, value])
@@ -153,4 +150,4 @@ const SelectInput = ({
   )
 }
 
-export default SelectInput
+export default SearchSelect

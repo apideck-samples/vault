@@ -4,9 +4,9 @@ import { ThemeContext, ThemeContextType } from 'utils'
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import { Button } from '@apideck/components'
 import { IConnection } from 'types/Connection'
-import { IOptionType } from 'components/Inputs/SelectInput'
+import { IOptionType } from 'components/Inputs/SearchSelect'
 import ModalContainer from './ModalContainer'
-import { SelectInput } from 'components'
+import { SearchSelect } from 'components'
 import { useRouter } from 'next/router'
 
 interface IProps {
@@ -80,7 +80,7 @@ const AddModal = ({
       </div>
       <div className="px-5 pt-10 pb-12 bg-gray-100 border-t border-b">
         <div className="mb-1 text-sm font-medium">Integration</div>
-        <SelectInput
+        <SearchSelect
           field="connection"
           value={value}
           options={connectionsOptions as IOptionType[]}

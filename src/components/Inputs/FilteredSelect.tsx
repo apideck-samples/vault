@@ -1,8 +1,8 @@
 import { FormField, FormFieldOptionGroup } from 'types/FormField'
 import React, { Fragment } from 'react'
 
-import { IOptionType } from './SelectInput'
-import { SelectInput } from '.'
+import { IOptionType } from './SearchSelect'
+import { SearchSelect } from '.'
 
 interface IProps {
   field: FormField
@@ -25,7 +25,7 @@ const FilteredSelect = ({ field, formikProps, className = '' }: IProps) => {
     : []
 
   return (
-    <SelectInput
+    <SearchSelect
       field={id}
       value={values[id]}
       handleChange={handleChange}

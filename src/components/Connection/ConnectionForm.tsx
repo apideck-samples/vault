@@ -1,12 +1,11 @@
-import { Button, Toggle } from '@apideck/components'
+import { Button, TextInput, Toggle } from '@apideck/components'
 import {
   ConfigurableResources,
   ConfirmModal,
   ErrorBlock,
   OAuthButtons,
   OAuthErrorAlert,
-  SelectInput,
-  TextInput
+  SearchSelect
 } from 'components'
 import { Formik, FormikProps } from 'formik'
 import { Fragment, useContext, useEffect, useState } from 'react'
@@ -22,7 +21,7 @@ import {
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
 import CheckIcon from 'mdi-react/CheckIcon'
-import { IOptionType } from 'components/Inputs/SelectInput'
+import { IOptionType } from 'components/Inputs/SearchSelect'
 import { JWTSession } from 'types/JWTSession'
 import Link from 'next/link'
 import client from 'lib/axios'
@@ -257,7 +256,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
                           {type === 'text' && (
                             <TextInput
                               name={id}
-                              value={values[id]}
+                              value={(values[id] as any) || ''}
                               type="text"
                               required={required}
                               placeholder={placeholder}
@@ -266,7 +265,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
                             />
                           )}
                           {type === 'select' && (
-                            <SelectInput
+                            <SearchSelect
                               field={id}
                               value={values[id]}
                               handleChange={handleChange}
