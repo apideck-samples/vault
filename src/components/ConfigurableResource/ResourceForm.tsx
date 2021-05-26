@@ -67,9 +67,9 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
     setFormError(false)
     const defaults = Object.entries(values)
       .map(([k, v]) => {
-        return v ? { id: k, value: v, target: targetMap[k] } : undefined
+        return v !== undefined ? { id: k, value: v, target: targetMap[k] } : v
       })
-      .filter((obj) => obj?.value)
+      .filter(Boolean)
 
     const body = {
       configuration: [
