@@ -3,7 +3,7 @@ import { ErrorBlock, ResourcePlaceholder } from 'components'
 import { FilteredSelect, SearchSelect } from 'components/Inputs'
 import { Formik, FormikProps } from 'formik'
 import { IConnection, UpdateConnectionConfigInput } from 'types/Connection'
-import React, { useContext, useState } from 'react'
+import React, { ChangeEvent, useContext, useState } from 'react'
 import { SessionExpiredModalContext, ThemeContext, ThemeContextType } from 'utils'
 
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
@@ -172,9 +172,14 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                           {type === 'checkbox' && (
                             <CheckBox
                               name={id}
-                              value={values[id] || false}
+                              value={values[id]}
+                              defaultChecked={!!values[id]}
                               placeholder={placeholder}
-                              onChange={handleChange}
+                              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                                handleChange({
+                                  currentTarget: { value: e.target.checked, name: id }
+                                })
+                              }
                               onBlur={handleBlur}
                             />
                           )}
