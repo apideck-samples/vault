@@ -36,7 +36,9 @@ const Home = ({ connections, setConnections, loading, jwt, token }: IProps): any
     const { unifiedApi, serviceId } = values
 
     try {
-      const { data } = await client.patch(
+      const {
+        data: { data }
+      } = await client.patch(
         `/vault/connections/${unifiedApi}/${serviceId}`,
         { enabled: true },
         {

@@ -7,25 +7,24 @@ import {
   OAuthErrorAlert,
   SearchSelect
 } from 'components'
+import { IOptionType } from 'components/Inputs/SearchSelect'
 import { Formik, FormikProps } from 'formik'
-import { Fragment, useContext, useEffect, useState } from 'react'
-import { IConnection, UpdateConnectionInput } from 'types/Connection'
-import {
-  OAuthError,
-  SessionExpiredModalContext,
-  ThemeContext,
-  ThemeContextType,
-  createOAuthErrorFromQuery
-} from 'utils'
-
+import client from 'lib/axios'
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
 import CheckIcon from 'mdi-react/CheckIcon'
-import { IOptionType } from 'components/Inputs/SearchSelect'
-import { JWTSession } from 'types/JWTSession'
 import Link from 'next/link'
-import client from 'lib/axios'
 import { useRouter } from 'next/router'
+import { Fragment, useContext, useEffect, useState } from 'react'
+import { IConnection, UpdateConnectionInput } from 'types/Connection'
+import { JWTSession } from 'types/JWTSession'
+import {
+  createOAuthErrorFromQuery,
+  OAuthError,
+  SessionExpiredModalContext,
+  ThemeContext,
+  ThemeContextType
+} from 'utils'
 
 interface IProps {
   connection: IConnection
@@ -118,7 +117,9 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
     }
 
     try {
-      const { data } = await client.patch(`/vault/connections/${unifiedApi}/${serviceId}`, body, {
+      const {
+        data: { data }
+      } = await client.patch(`/vault/connections/${unifiedApi}/${serviceId}`, body, {
         headers
       })
       handleSubmit(data)
