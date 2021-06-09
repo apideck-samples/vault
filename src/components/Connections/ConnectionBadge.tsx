@@ -1,5 +1,6 @@
-import { FC } from 'react'
 import { FaCircle, FaExclamationTriangle } from 'react-icons/fa'
+
+import { FC } from 'react'
 import { IConnection } from 'types/Connection'
 
 interface IProps {
@@ -9,7 +10,7 @@ interface IProps {
 export const ConnectionBadge: FC<IProps> = ({ connection: { enabled, state } }) => {
   if (!enabled) {
     return (
-      <div className="flex flex-row px-2 py-1 text-xs font-medium leading-none rounded-full text-gray-500 bg-gray-100">
+      <div className="flex flex-row px-2 py-1 text-xs font-medium leading-none text-gray-500 bg-gray-100 rounded-full">
         <span className="flex flex-col justify-center mr-2">
           <FaCircle size={8} />
         </span>
@@ -30,7 +31,8 @@ export const ConnectionBadge: FC<IProps> = ({ connection: { enabled, state } }) 
       <span className="mr-2">
         <FaExclamationTriangle />
       </span>
-      Needs configuration
+      <span className="hidden sm:inline-block">Needs configuration</span>
+      <span className="inline-block sm:hidden">Config</span>
     </div>
   )
 }

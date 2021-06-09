@@ -144,16 +144,19 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                   {formFields?.map((field) => {
                     const { id, label, required, placeholder, description, type, options } = field
                     return (
-                      <div key={id} className="flex items-start justify-center mb-4">
-                        <div className="w-1/3 pt-2 pr-2 text-sm font-medium text-right text-gray-600">
+                      <div key={id} className="items-start justify-center mb-4 md:flex">
+                        <label
+                          htmlFor={id}
+                          className="w-full pt-2 pr-2 text-sm font-medium text-gray-600 md:w-1/3 md:text-right"
+                        >
                           {label}
                           {required && type !== 'checkbox' && (
                             <span className="ml-1 text-red-600" data-testid="required">
                               *
                             </span>
                           )}
-                        </div>
-                        <div className="w-2/3 pl-2">
+                        </label>
+                        <div className="w-full mt-1 md:w-2/3 md:pl-2 md:mt-0">
                           {['text', 'email', 'url', 'tel', 'number', 'time', 'location'].includes(
                             type as string
                           ) && (

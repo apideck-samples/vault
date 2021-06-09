@@ -172,12 +172,6 @@ describe('Connection Form', () => {
         />
       )
       expect(screen.getByText('Copper')).toBeInTheDocument()
-      expect(
-        screen.getByText(
-          'When you need CRM software that works with G Suite, you need Copper. Give us a try and see how we can help your business build stronger customer relationships.'
-        )
-      ).toBeInTheDocument()
-
       expect(screen.getByDisplayValue('nick@apideck.com')).toBeInTheDocument()
       expect(screen.getByDisplayValue('21cafde969594a339fcbb4f3ff2600aa')).toBeInTheDocument()
     })

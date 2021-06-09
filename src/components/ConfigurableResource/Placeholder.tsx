@@ -12,15 +12,15 @@ const Placeholder = () => {
         />
       </div>
 
-      <div className="mt-4 border rounded-md">
+      <div className="mt-4 overflow-hidden border rounded-md">
         <div className="px-5 py-4">
           <div
-            className="mt-1 bg-gray-200 rounded skeleton-loading"
+            className="mt-1 bg-gray-200 rounded skeleton-loading "
             style={{ height: '18px', width: '240px' }}
           ></div>
         </div>
 
-        <div className="px-5 py-6 border-t border-b">
+        <div className="px-5 py-6 overflow-hidden border-t border-b">
           <div className="flex flex-col items-center justify-center">
             <div className="flex items-center justify-start mb-3">
               <div
@@ -48,7 +48,7 @@ const Placeholder = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-end">
+        <div className="flex items-center justify-end overflow-hidden">
           <div className="m-2 mr-5 bg-gray-200 rounded" style={{ height: '36px', width: '80px' }} />
         </div>
       </div>

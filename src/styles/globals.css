@@ -18,8 +18,7 @@
 }
 
 body {
-  @apply font-basier-circle antialiased text-gray-800;
-  min-width: 1024px;
+  @apply antialiased text-gray-800 font-basier-circle;
 }
 
 a {

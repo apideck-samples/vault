@@ -17,16 +17,15 @@ const OAuthButtons = ({ connection, isAuthorized, authorizeUrl, revokeUrl }: IPr
   const { primary_color } = useContext(ThemeContext) as ThemeContextType
 
   return (
-    <div className="flex items-center justify-between px-5 py-2 bg-gray-100 border-t rounded-bl-md rounded-br-md">
+    <div className="flex items-center justify-between px-3 py-2 bg-gray-100 border-t sm:px-4 md:px-5 rounded-bl-md rounded-br-md">
       {requiredAuth ? (
-        <div className={'font-medium text-sm text-gray-500'}>{requiredAuth}</div>
+        <div className={'font-medium text-xs sm:text-sm text-gray-500'}>{requiredAuth}</div>
       ) : (
         <div
-          className={classNames('uppercase font-medium', {
+          className={classNames('uppercase font-medium text-xs sm:text-sm pr-2', {
             'text-main': isAuthorized,
             'text-gray-500': !isAuthorized
           })}
-          style={{ fontSize: '0.8125rem' }}
         >
           {isAuthorized ? 'Connected' : 'Not connected'}
         </div>
@@ -48,7 +47,7 @@ const OAuthButtons = ({ connection, isAuthorized, authorizeUrl, revokeUrl }: IPr
         )}
 
         {isAuthorized && (
-          <div className="inline-block ml-4">
+          <div className="inline-block ml-2 md:ml-4">
             <Button
               variant="outline"
               text="Disconnect"
