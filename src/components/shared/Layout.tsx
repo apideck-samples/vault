@@ -129,7 +129,7 @@ const Layout: React.FC<IProps> = ({
         id="sidebar"
         onClick={() => setNavIsOpen(false)}
         className={classNames(
-          'fixed z-40 inset-0 flex-none h-full bg-opacity-25 w-full lg:static lg:h-auto lg:pt-0 lg:w-80 2xl:w-96 lg:block',
+          'fixed z-10 inset-0 flex-none h-full bg-opacity-25 w-full lg:static lg:h-auto lg:pt-0 lg:w-80 2xl:w-96 lg:block',
           {
             hidden: !navIsOpen
           }
