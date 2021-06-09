@@ -23,7 +23,7 @@ const Layout: React.FC<IProps> = ({
 }) => {
   const router = useRouter()
   const theme = useContext(ThemeContext) as ThemeContextType
-  const [customStyles, setCustomStyles] = useState({})
+  const [customStyles, setCustomStyles] = useState<any>({})
   const [customTextColor, setCustomTextColor] = useState('')
   const [navIsOpen, setNavIsOpen] = useState(false)
 
@@ -60,7 +60,10 @@ const Layout: React.FC<IProps> = ({
   }, [navIsOpen])
 
   return (
-    <div className="flex h-screen bg-gray-100 border-t-4 border-main" style={customStyles}>
+    <div
+      className="flex h-screen overflow-hidden bg-gray-100 border-t-4 border-main"
+      style={customStyles}
+    >
       <Head>
         <meta
           name="viewport"
@@ -69,6 +72,7 @@ const Layout: React.FC<IProps> = ({
             'minimum-scale=1, width=device-width, height=device-height'
           }
         />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <title>{vaultName ? `${vaultName} Vault` : 'Apideck Vault'}</title>
         <link rel="icon" href={favicon ? favicon : '/favicon.ico'} />
       </Head>
@@ -132,7 +136,7 @@ const Layout: React.FC<IProps> = ({
         )}
       >
         <aside
-          style={navIsOpen ? { background: customStyles.bgColor } : {}}
+          style={navIsOpen ? { background: customStyles.backgroundColor } : {}}
           className={classNames(
             'flex flex-col justify-between px-6 sm:px-8 pt-24 sm:pt-32 pb-10 sm:pb-12 overflow-y-auto min-h-screen',
             {

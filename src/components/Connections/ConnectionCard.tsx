@@ -15,7 +15,7 @@ const ConnectionCard = ({ connection }: IProps) => {
   return (
     <Link href={`/integrations/${unified_api}/${service_id}`}>
       <button
-        className="flex items-center justify-between w-full px-4 py-3 mt-5 border rounded-md sm:px-5 sm:py-4 group hover:bg-gray-100 spec-connection"
+        className="flex items-center justify-between w-full px-4 py-3 mt-5 overflow-hidden border rounded-md sm:px-5 sm:py-4 group hover:bg-gray-100 spec-connection"
         data-testid={'connection-link'}
       >
         <div className="flex items-center">
@@ -27,10 +27,7 @@ const ConnectionCard = ({ connection }: IProps) => {
           />
           <div className="text-left">
             <div className="font-medium text-md spec-connection-name">{name}</div>
-            <div
-              className="text-gray-600 truncate whitespace-nowrap"
-              style={{ fontSize: '0.8125rem' }}
-            >
+            <div className="text-xs text-gray-600 sm:text-base">
               Added {formatDistanceToNow(createdAt)} ago
             </div>
           </div>

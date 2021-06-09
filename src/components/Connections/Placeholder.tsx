@@ -4,7 +4,7 @@ import { memo } from 'react'
 
 const ConnectionCardLoadingPlaceholder = () => {
   return (
-    <div className="flex items-center justify-between w-full px-5 py-4 mt-5 border rounded-md">
+    <div className="flex items-center justify-between w-full px-5 py-4 mt-5 overflow-hidden border rounded-md">
       <div className="flex items-center">
         <div className="mr-5 bg-gray-200 rounded" style={{ width: '36px', height: '36px' }} />
         <div>

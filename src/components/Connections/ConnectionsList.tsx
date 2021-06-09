@@ -1,8 +1,9 @@
-import { Button } from '@apideck/components'
 import { AddModal, ConnectionCard } from 'components'
-import { useContext, useState } from 'react'
-import { IConnection } from 'types/Connection'
 import { ThemeContext, ThemeContextType } from 'utils'
+import { useContext, useState } from 'react'
+
+import { Button } from '@apideck/components'
+import { IConnection } from 'types/Connection'
 
 interface IProps {
   unifiedApi: string
@@ -23,7 +24,7 @@ const ConnectionsList = ({ unifiedApi, connections = [], createConnection }: IPr
 
   return (
     <section className="mt-12" data-testid={'connections-list'}>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-4 sm:mb-6 md:mb-8">
         <h2 className="text-sm font-medium uppercase">{unifiedApi} integrations</h2>
         <Button
           text="+ Add"
