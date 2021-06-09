@@ -76,7 +76,7 @@ const ErrorBlock = ({ error, token = {} }: IErrorProps) => {
         <h1 className="mb-4 text-2xl font-medium text-gray-800">{errorTitle}</h1>
         <ErrorMessage redirectUri={redirectUri} message={errorMessage} />
         {process.env.NODE_ENV !== 'production' && (
-          <div className="max-w-2xl p-4 mt-4 overflow-x-auto text-sm border rounded">
+          <div className="max-w-xs p-4 mt-4 overflow-x-auto text-sm border rounded sm:max-w-sm md:max-w-md lg:max-w-2xl">
             <div className="flex justify-between">
               <h2 className="mb-2 font-medium">DEVELOPMENT ONLY</h2>
               {status === 401 && (

@@ -7,24 +7,25 @@ import {
   OAuthErrorAlert,
   SearchSelect
 } from 'components'
-import { IOptionType } from 'components/Inputs/SearchSelect'
 import { Formik, FormikProps } from 'formik'
-import client from 'lib/axios'
-import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
-import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
-import CheckIcon from 'mdi-react/CheckIcon'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { Fragment, useContext, useEffect, useState } from 'react'
 import { IConnection, UpdateConnectionInput } from 'types/Connection'
-import { JWTSession } from 'types/JWTSession'
 import {
-  createOAuthErrorFromQuery,
   OAuthError,
   SessionExpiredModalContext,
   ThemeContext,
-  ThemeContextType
+  ThemeContextType,
+  createOAuthErrorFromQuery
 } from 'utils'
+
+import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
+import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
+import CheckIcon from 'mdi-react/CheckIcon'
+import { IOptionType } from 'components/Inputs/SearchSelect'
+import { JWTSession } from 'types/JWTSession'
+import Link from 'next/link'
+import client from 'lib/axios'
+import { useRouter } from 'next/router'
 
 interface IProps {
   connection: IConnection
@@ -192,13 +193,15 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
       {oauthError && <OAuthErrorAlert error={oauthError} />}
 
       <div className="border rounded-md">
-        <div className="flex justify-between px-5 py-4 items-top">
+        <div className="flex justify-between px-3 py-4 sm:px-4 md:px-5 items-top">
           <div className="flex justify-start items-top">
-            <img className="mr-4" style={{ width: '40px', height: '40px' }} src={icon} alt={name} />
+            <img className="w-8 h-8 mr-2 sm:w-10 sm:h-10 sm:mr-4" src={icon} alt={name} />
             <div>
-              <h1 className="text-xl font-medium text-gray-800">{name}</h1>
+              <h1 className="font-medium text-gray-800 text-md md:text-xl">{name}</h1>
               <div className="text-sm text-gray-700 capitalize">{`${unifiedApi} integration`}</div>
-              {tagLine && <p className="my-3 mr-4 text-sm text-gray-800">{tagLine}</p>}
+              {tagLine && (
+                <p className="hidden my-3 mr-4 text-sm text-gray-800 md:block">{tagLine}</p>
+              )}
             </div>
           </div>
           <div className="flex items-center h-12">
@@ -206,11 +209,14 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
               isEnabled={connection.enabled}
               isLoading={updateLoading}
               onToggle={() => toggleConnection({ id: connection.id, enabled: !connection.enabled })}
-              className="inline-block mr-3"
+              className="inline-block mr-2 md:mr-3"
             />
             <Button variant="danger-outline" text="Delete" onClick={() => setModalOpen(true)} />
           </div>
         </div>
+        {tagLine && (
+          <p className="px-3 pb-3 text-sm text-gray-800 sm:px-4 sm:pb-4 md:hidden">{tagLine}</p>
+        )}
         {authType === 'oauth2' && (
           <OAuthButtons
             connection={connection}
@@ -238,7 +244,7 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
             const { handleSubmit, isSubmitting, handleBlur, handleChange, values } = formikProps
 
             return (
-              <form className="mt-10 border rounded-md" onSubmit={handleSubmit}>
+              <form className="mt-10 overflow-hidden border rounded-md" onSubmit={handleSubmit}>
                 <div className="px-5 py-4">
                   <h2 className="font-medium">Settings</h2>
                 </div>
@@ -247,13 +253,13 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
                     const { id, label, required, placeholder, description, type, options } = field
 
                     return (
-                      <div key={id} className="flex items-start justify-center mb-4">
-                        <div className="w-1/3 pt-2 pr-2 text-sm font-medium text-right">
+                      <div key={id} className="items-start justify-center mb-4 md:flex">
+                        <div className="w-full py-2 pr-2 text-sm font-medium md:text-right md:w-1/3">
                           {label}
                           {required && <span className="ml-1 text-red-600">*</span>}
                         </div>
                         <input name="enabled" value="true" type="hidden" readOnly />
-                        <div className="w-2/3 pl-2">
+                        <div className="w-full md:pl-2 md:w-2/3">
                           {type === 'text' && (
                             <TextInput
                               name={id}
