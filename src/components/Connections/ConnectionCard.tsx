@@ -27,7 +27,7 @@ const ConnectionCard = ({ connection }: IProps) => {
           />
           <div className="text-left">
             <div className="font-medium text-md spec-connection-name">{name}</div>
-            <div className="text-xs text-gray-600 sm:text-base">
+            <div className="text-xs text-gray-600 sm:text-sm">
               Added {formatDistanceToNow(createdAt)} ago
             </div>
           </div>
