@@ -1,10 +1,11 @@
 import { ConnectionsList, ListPlaceholder } from 'components'
-import client from 'lib/axios'
-import { applySession } from 'next-session'
 import { Fragment, useContext } from 'react'
+
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
 import { SessionExpiredModalContext } from 'utils/context'
+import { applySession } from 'next-session'
+import client from 'lib/axios'
 import { options } from 'utils/sessionOptions'
 
 interface IProps {
@@ -70,7 +71,7 @@ const Home = ({ connections, setConnections, loading, jwt, token }: IProps): any
 
   return (
     <Fragment>
-      <h1 className="text-2xl font-medium text-gray-800">Manage your integrations</h1>
+      <h1 className="text-xl font-medium text-gray-800 md:text-2xl">Manage your integrations</h1>
       {!loading ? (
         Object.keys(connectionsPerUnifiedApiObj).map((unifiedApi) => {
           const connections = connectionsPerUnifiedApiObj[unifiedApi]
