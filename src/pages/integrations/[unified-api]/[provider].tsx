@@ -42,9 +42,9 @@ const Connection = ({ connections, setConnections, loading, token, jwt, connecti
 
   const handleDelete = async (connection: IConnection) => {
     const remainingConnections = connections.filter((connection) => connection.id !== connectionId)
-    const updatedConnection = {
+    const updatedConnection: IConnection = {
       ...connection,
-      enabled: false
+      state: 'available'
     }
     const updatedConnections = [...remainingConnections, updatedConnection]
 
