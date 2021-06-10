@@ -148,7 +148,6 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
 
       const updatedConnection = {
         ...connection,
-        added: false,
         enabled: false
       }
 

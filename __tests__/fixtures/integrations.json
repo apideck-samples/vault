@@ -35,11 +35,9 @@
       ],
       "service_id": "microsoft-dynamics",
       "unified_api": "lead",
-      "added": true,
       "created_at": 1606221287456,
       "updated_at": 1606463352997,
       "enabled": true,
-      "configured": false,
       "state": "added"
     },
     {
@@ -77,12 +75,10 @@
       ],
       "configurable_resources": [],
       "resource_schema_support": [],
-      "added": true,
       "settings": { "api_key": "21cafde969594a339fcbb4f3ff2600aa", "email": "nick@apideck.com" },
       "created_at": 1606221287456,
       "updated_at": 1606463352997,
       "enabled": true,
-      "configured": true,
       "state": "callable"
     },
     {
@@ -98,13 +94,11 @@
       "form_fields": [],
       "configurable_resources": [],
       "resource_schema_support": [],
-      "added": true,
       "authorize_url": "http://localhost:3050/vault/authorize/pipedrive/cfaZrORgaH2PMQpIcjTpfhERIpIEUJHev09ucjTp?state=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb25zdW1lcl9pZCI6InRlc3QtY29uc3VtZXItY2tncnM5NWwzeTRlcjBiOTlxYTM3YnVqMiIsInVuaWZpZWRfYXBpIjoibGVhZCIsInNlcnZpY2VfaWQiOiJwaXBlZHJpdmUiLCJhcHBsaWNhdGlvbl9pZCI6ImNmYVpyT1JnYUgyUE1RcEljalRwZmhFUklwSUVVSkhldjA5dWNqVHAiLCJpYXQiOjE2MDY1MDAwMjUsImV4cCI6MTYwNjUwMDE0NX0.Ri4dTKiX3tucoQ_OvMDWiKVU8PyHvgWg-kczv2quma0",
       "revoke_url": null,
       "settings": {},
       "created_at": 1606215640025,
       "enabled": true,
-      "configured": true,
       "state": "callable"
     },
     {
@@ -131,11 +125,9 @@
       ],
       "configurable_resources": ["leads"],
       "resource_schema_support": ["leads"],
-      "added": false,
       "authorize_url": "http://localhost:3050/vault/authorize/salesforce/cfaZrORgaH2PMQpIcjTpfhERIpIEUJHev09ucjTp?state=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb25zdW1lcl9pZCI6InRlc3QtY29uc3VtZXItY2tncnM5NWwzeTRlcjBiOTlxYTM3YnVqMiIsInVuaWZpZWRfYXBpIjoibGVhZCIsInNlcnZpY2VfaWQiOiJzYWxlc2ZvcmNlIiwiYXBwbGljYXRpb25faWQiOiJjZmFack9SZ2FIMlBNUXBJY2pUcGZoRVJJcElFVUpIZXYwOXVjalRwIiwiaWF0IjoxNjA2NTAwMDI1LCJleHAiOjE2MDY1MDAxNDV9.ovzxyRaUl_QYPH8hKWAStlGpWkpCxwpJhDgF1ANrVmE",
       "revoke_url": null,
       "enabled": false,
-      "configured": false,
       "state": "available"
     },
     {
@@ -151,14 +143,12 @@
       "form_fields": [],
       "configurable_resources": [],
       "resource_schema_support": [],
-      "added": true,
       "authorize_url": "http://localhost:3050/vault/authorize/teamleader/cfaZrORgaH2PMQpIcjTpfhERIpIEUJHev09ucjTp?state=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb25zdW1lcl9pZCI6InRlc3QtY29uc3VtZXItY2tncnM5NWwzeTRlcjBiOTlxYTM3YnVqMiIsInVuaWZpZWRfYXBpIjoibGVhZCIsInNlcnZpY2VfaWQiOiJ0ZWFtbGVhZGVyIiwiYXBwbGljYXRpb25faWQiOiJjZmFack9SZ2FIMlBNUXBJY2pUcGZoRVJJcElFVUpIZXYwOXVjalRwIiwiaWF0IjoxNjA2NTAwMDI1LCJleHAiOjE2MDY1MDAxNDV9.HLQepJ28YVuxV5F2hwUrxyjvv-KbUxt7oKYMM2GEdmQ",
       "revoke_url": "http://localhost:3050/vault/revoke/teamleader/cfaZrORgaH2PMQpIcjTpfhERIpIEUJHev09ucjTp?state=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb25zdW1lcl9pZCI6InRlc3QtY29uc3VtZXItY2tncnM5NWwzeTRlcjBiOTlxYTM3YnVqMiIsInVuaWZpZWRfYXBpIjoibGVhZCIsInNlcnZpY2VfaWQiOiJ0ZWFtbGVhZGVyIiwiYXBwbGljYXRpb25faWQiOiJjZmFack9SZ2FIMlBNUXBJY2pUcGZoRVJJcElFVUpIZXYwOXVjalRwIiwiaWF0IjoxNjA2NTAwMDI1LCJleHAiOjE2MDY1MDAxNDV9.HLQepJ28YVuxV5F2hwUrxyjvv-KbUxt7oKYMM2GEdmQ",
       "settings": {},
       "created_at": 1605879425896,
       "updated_at": 1605879438677,
       "enabled": true,
-      "configured": true,
       "state": "callable"
     }
   ]

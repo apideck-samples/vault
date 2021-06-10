@@ -44,7 +44,6 @@ const Connection = ({ connections, setConnections, loading, token, jwt, connecti
     const remainingConnections = connections.filter((connection) => connection.id !== connectionId)
     const updatedConnection = {
       ...connection,
-      added: false,
       enabled: false
     }
     const updatedConnections = [...remainingConnections, updatedConnection]

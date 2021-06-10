@@ -104,8 +104,6 @@
   "configurable_resources": ["opportunities", "companies", "contacts", "leads"],
   "resource_schema_support": ["opportunities", "companies", "contacts", "leads"],
   "settings_required_for_authorization": [],
-  "added": true,
-  "configured": true,
   "settings": {
     "instance_url": "https://eu26.salesforce.com"
   },

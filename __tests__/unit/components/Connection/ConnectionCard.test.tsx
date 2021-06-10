@@ -19,8 +19,6 @@ describe('Connection Card', () => {
       configurable_resources: [],
       resource_schema_support: [],
       enabled: true,
-      added: true,
-      configured: false,
       state: 'added'
     }
 
@@ -49,8 +47,6 @@ describe('Connection Card', () => {
       configurable_resources: [],
       resource_schema_support: [],
       enabled: true,
-      added: true,
-      configured: true,
       state: 'callable'
     }
 
