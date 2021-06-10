@@ -25,7 +25,7 @@ describe('Connection Form', () => {
       }) as IConnection
       connection = {
         ...connection,
-        configured: true,
+        state: 'added',
         form_fields: [
           {
             id: 'organisation_url',
@@ -105,7 +105,7 @@ describe('Connection Form', () => {
       const updateMock = jest.spyOn(client, 'patch').mockResolvedValue({
         data: {
           ...connection,
-          configured: true,
+          state: 'added',
           form_fields: [
             {
               id: 'organisation_url',

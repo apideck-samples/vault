@@ -17,8 +17,8 @@ interface IProps {
 
 const ConnectionsList = ({ unifiedApi, connections = [], createConnection }: IProps) => {
   const [modalOpen, setModalOpen] = useState(false)
-  const addedConnections = connections.filter((connection) => connection.added)
-  const availableConnections = connections.filter((connection) => !connection.added)
+  const addedConnections = connections.filter((connection) => connection.state !== 'available')
+  const availableConnections = connections.filter((connection) => connection.state === 'available')
   const noConnectionsAdded = addedConnections.length === 0
   const { primary_color } = useContext(ThemeContext) as ThemeContextType
 

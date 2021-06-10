@@ -146,10 +146,9 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
         headers
       })
 
-      const updatedConnection = {
+      const updatedConnection: IConnection = {
         ...connection,
-        added: false,
-        enabled: false
+        state: 'available'
       }
 
       handleDelete(updatedConnection)

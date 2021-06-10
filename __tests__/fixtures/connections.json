@@ -38,8 +38,6 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "settings": {
       "base_url": "https://apideck1600217394.api-us1.com"
     },
@@ -88,8 +86,6 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "settings": {
       "base_url": "https://apideck1600217394.api-us1.com"
     },
@@ -124,8 +120,6 @@
       }
     ],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": false,
     "settings": {},
     "created_at": 1614330446180,
     "enabled": true,
@@ -146,8 +140,7 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": true,
+
     "enabled": false,
     "authorize_url": "http://localhost:3050/vault/authorize/auth0/1111?state=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb25zdW1lcl9pZCI6InRlc3RfdXNlcl9pZCIsInVuaWZpZWRfYXBpIjoiY3JtIiwic2VydmljZV9pZCI6ImF1dGgwIiwiYXBwbGljYXRpb25faWQiOiIxMTExIiwiaWF0IjoxNjE0NjAwOTQ0LCJleHAiOjE2MTQ2MDI3NDR9.Cd6haakdzDqyhRCD6BPETw2NXyJrGwGG4bhpkB2GhLQ",
     "revoke_url": null
@@ -179,8 +172,6 @@
     "configurable_resources": ["leads"],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "settings": {},
     "created_at": 1584136711056,
     "enabled": true,
@@ -214,8 +205,6 @@
     "configurable_resources": ["leads"],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "settings": {},
     "created_at": 1584136711056,
     "enabled": true,
@@ -233,8 +222,7 @@
     "auth_type": "",
     "form_fields": [],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": true,
+
     "enabled": false,
     "authorize_url": null,
     "revoke_url": null
@@ -277,8 +265,6 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "settings": {
       "email": "sandbox@apideck.com"
     },
@@ -312,8 +298,6 @@
       }
     ],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": false,
     "enabled": false,
     "authorize_url": null,
     "revoke_url": null
@@ -332,8 +316,7 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": true,
+
     "enabled": false,
     "authorize_url": null,
     "revoke_url": null
@@ -363,8 +346,6 @@
       }
     ],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": false,
     "enabled": false,
     "authorize_url": null,
     "revoke_url": null
@@ -406,8 +387,6 @@
     "configurable_resources": ["leads"],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "settings": {
       "domain": "apideck"
     },
@@ -430,8 +409,7 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": true,
+
     "enabled": false,
     "authorize_url": null,
     "revoke_url": null
@@ -461,8 +439,6 @@
       }
     ],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": false,
     "enabled": false,
     "authorize_url": null,
     "revoke_url": null
@@ -480,8 +456,7 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": true,
+
     "enabled": false,
     "authorize_url": "http://localhost:3050/vault/authorize/google-sheets/1111?state=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb25zdW1lcl9pZCI6InRlc3RfdXNlcl9pZCIsInVuaWZpZWRfYXBpIjoic3ByZWFkc2hlZXQiLCJzZXJ2aWNlX2lkIjoiZ29vZ2xlLXNoZWV0cyIsImFwcGxpY2F0aW9uX2lkIjoiMTExMSIsImlhdCI6MTYxNDYwMDk0NCwiZXhwIjoxNjE0NjAyNzQ0fQ.LOoi6BqiOSGR3Bq_5ARzw_QO5vbXbj-9dS0dpRgRXBY",
     "revoke_url": null
@@ -511,8 +486,6 @@
       }
     ],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": false,
     "enabled": false,
     "authorize_url": null,
     "revoke_url": null
@@ -542,8 +515,6 @@
       }
     ],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": false,
     "enabled": false,
     "authorize_url": null,
     "revoke_url": null
@@ -562,8 +533,6 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "settings": {},
     "created_at": 1601649447088,
     "updated_at": 1601649454101,
@@ -597,8 +566,6 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": false,
     "enabled": false,
     "authorize_url": null,
     "revoke_url": null
@@ -617,8 +584,6 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "settings": {},
     "created_at": 1601649447088,
     "updated_at": 1601649454101,
@@ -640,8 +605,6 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "settings": {},
     "created_at": 1614066980791,
     "enabled": true,
@@ -674,8 +637,6 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": false,
     "enabled": false,
     "authorize_url": null,
     "revoke_url": null
@@ -715,8 +676,6 @@
       }
     ],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": false,
     "enabled": false,
     "authorize_url": null,
     "revoke_url": null
@@ -756,8 +715,6 @@
       }
     ],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": false,
     "enabled": false,
     "authorize_url": null,
     "revoke_url": null
@@ -787,8 +744,6 @@
       }
     ],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": false,
     "enabled": false,
     "authorize_url": null,
     "revoke_url": null
@@ -817,8 +772,6 @@
       }
     ],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": false,
     "enabled": false,
     "authorize_url": null,
     "revoke_url": null
@@ -849,8 +802,6 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": ["organisation_url"],
-    "added": true,
-    "configured": true,
     "settings": {
       "organisation_url": "https://apideck.crm4.dynamics.com"
     },
@@ -886,8 +837,6 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": ["organisation_url"],
-    "added": true,
-    "configured": true,
     "settings": {
       "organisation_url": "https://apideck.crm4.dynamics.com"
     },
@@ -924,8 +873,6 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "settings": {},
     "created_at": 1564934240188,
     "enabled": true,
@@ -957,8 +904,6 @@
       }
     ],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": false,
     "enabled": false,
     "authorize_url": null,
     "revoke_url": null
@@ -977,8 +922,6 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "settings": {},
     "created_at": 1600651243548,
     "updated_at": 1600651354561,
@@ -1000,8 +943,6 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "settings": {},
     "created_at": 1600651243548,
     "updated_at": 1600651354561,
@@ -1036,8 +977,6 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "settings": {},
     "created_at": 1564934240188,
     "enabled": true,
@@ -1071,8 +1010,6 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "created_at": 1600272529984,
     "updated_at": 1600272531696,
     "enabled": true,
@@ -1106,8 +1043,6 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "created_at": 1600272529984,
     "updated_at": 1600272531696,
     "enabled": true,
@@ -1140,8 +1075,6 @@
     "configurable_resources": ["leads"],
     "resource_schema_support": ["leads"],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "settings": {
       "instance_url": "https://eu26.salesforce.com"
     },
@@ -1198,8 +1131,6 @@
     "configurable_resources": ["opportunities", "companies", "contacts", "leads"],
     "resource_schema_support": ["opportunities", "companies", "contacts", "leads"],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "settings": {
       "instance_url": "https://eu26.salesforce.com"
     },
@@ -1234,8 +1165,6 @@
       }
     ],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": false,
     "enabled": false,
     "authorize_url": null,
     "revoke_url": null
@@ -1253,8 +1182,7 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": true,
+
     "enabled": false,
     "authorize_url": null,
     "revoke_url": null
@@ -1286,8 +1214,6 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": false,
     "enabled": false,
     "authorize_url": "http://localhost:3050/vault/authorize/slack/1111?state=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb25zdW1lcl9pZCI6InRlc3RfdXNlcl9pZCIsInVuaWZpZWRfYXBpIjoibGVhZCIsInNlcnZpY2VfaWQiOiJzbGFjayIsImFwcGxpY2F0aW9uX2lkIjoiMTExMSIsImlhdCI6MTYxNDYwMDk0NCwiZXhwIjoxNjE0NjAyNzQ0fQ.QYBiJnsboZDZpNJAz2UWiJIkutDm5K7FjymhB2mfkrs",
     "revoke_url": null
@@ -1319,8 +1245,6 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": false,
     "settings": {},
     "created_at": 1564934240188,
     "enabled": true,
@@ -1341,8 +1265,7 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": true,
+
     "enabled": false,
     "authorize_url": null,
     "revoke_url": null
@@ -1360,8 +1283,7 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": true,
+
     "enabled": false,
     "authorize_url": null,
     "revoke_url": null
@@ -1380,8 +1302,6 @@
     "configurable_resources": ["leads"],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "settings": {},
     "created_at": 1609195918998,
     "updated_at": 1609195928312,
@@ -1403,8 +1323,6 @@
     "configurable_resources": ["leads"],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "settings": {},
     "created_at": 1613349302619,
     "updated_at": 1613349321531,
@@ -1424,8 +1342,7 @@
     "auth_type": "oauth2",
     "form_fields": [],
     "settings_required_for_authorization": [],
-    "added": false,
-    "configured": true,
+
     "enabled": false,
     "authorize_url": "http://localhost:3050/vault/authorize/tink/1111?state=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb25zdW1lcl9pZCI6InRlc3RfdXNlcl9pZCIsInVuaWZpZWRfYXBpIjoiYmFua2luZyIsInNlcnZpY2VfaWQiOiJ0aW5rIiwiYXBwbGljYXRpb25faWQiOiIxMTExIiwiaWF0IjoxNjE0NjAwOTQ0LCJleHAiOjE2MTQ2MDI3NDR9.kUM2cIpHXf3K49MsdtLPoQTttCmKCWCGPvdu0vmphXc",
     "revoke_url": null
@@ -1443,8 +1360,6 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "settings": {},
     "created_at": 1611205418375,
     "updated_at": 1611205452749,
@@ -1465,8 +1380,6 @@
     "configurable_resources": [],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "settings": {},
     "created_at": 1613348801007,
     "updated_at": 1613349088817,
@@ -1487,8 +1400,6 @@
     "configurable_resources": ["leads"],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "settings": {},
     "created_at": 1601307584451,
     "updated_at": 1601380169267,
@@ -1509,8 +1420,6 @@
     "configurable_resources": ["leads"],
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
-    "added": true,
-    "configured": true,
     "settings": {},
     "created_at": 1601307584451,
     "updated_at": 1601380169267,
