@@ -23,7 +23,7 @@ const ConnectionsList = ({ unifiedApi, connections = [], createConnection }: IPr
   const { primary_color } = useContext(ThemeContext) as ThemeContextType
 
   return (
-    <section className="mt-12" data-testid={'connections-list'}>
+    <section className="mt-8 lg:mt-12" data-testid={'connections-list'}>
       <div className="flex items-center justify-between mb-4 sm:mb-6 md:mb-8">
         <h2 className="text-sm font-medium uppercase">{unifiedApi} integrations</h2>
         <Button

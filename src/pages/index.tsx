@@ -71,7 +71,7 @@ const Home = ({ connections, setConnections, loading, jwt, token }: IProps): any
 
   return (
     <Fragment>
-      <h1 className="text-xl font-medium text-gray-800 md:text-2xl">Manage your integrations</h1>
+      <h1 className="text-lg font-medium text-gray-800 md:text-2xl">Manage your integrations</h1>
       {!loading ? (
         Object.keys(connectionsPerUnifiedApiObj).map((unifiedApi) => {
           const connections = connectionsPerUnifiedApiObj[unifiedApi]
