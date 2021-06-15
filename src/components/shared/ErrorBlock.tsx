@@ -65,7 +65,13 @@ const ErrorBlock = ({ error, token = {} }: IErrorProps) => {
 
   const redirectToSessionRoute = async () => {
     const response = await createVaultSession()
-    const url = response.data?.session_uri
+
+    const url = response?.data?.session_uri
+    if (!url) {
+      console.log(response)
+      return
+    }
+
     const token = url.substring(url.lastIndexOf('/') + 1)
     window.location.href = `${window.location.href}session/${token}`
   }
