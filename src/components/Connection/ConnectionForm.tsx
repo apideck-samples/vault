@@ -26,6 +26,7 @@ import { JWTSession } from 'types/JWTSession'
 import Link from 'next/link'
 import client from 'lib/axios'
 import { useRouter } from 'next/router'
+import ReactMarkdown from 'react-markdown'
 
 interface IProps {
   connection: IConnection
@@ -281,7 +282,9 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
                             />
                           )}
                           {description && (
-                            <small className="inline-block mt-2 text-gray-600">{description}</small>
+                            <small className="inline-block mt-2 text-gray-600">
+                              <ReactMarkdown>{description}</ReactMarkdown>
+                            </small>
                           )}
                         </div>
                       </div>
