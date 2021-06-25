@@ -53,7 +53,9 @@ const Resource = ({ jwt, token, url, resource }: IProps) => {
     }
   }, [connectionError])
 
-  if (error) return <ErrorBlock error={error} />
+  if (error) {
+    return <ErrorBlock error={error} />
+  }
 
   return (
     <ResourceForm

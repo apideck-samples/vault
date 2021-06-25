@@ -3,8 +3,11 @@ import { ConnectionForm, ConnectionPlaceholder, ErrorBlock } from 'components'
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
 import { applySession } from 'next-session'
+import client from 'lib/axios'
 import { options } from 'utils/sessionOptions'
-import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import useSWR from 'swr'
+import { useState } from 'react'
 
 interface IProps {
   connections: IConnection[]
@@ -15,55 +18,45 @@ interface IProps {
   connectionId: string
 }
 
-const Connection = ({ connections, setConnections, loading, token, jwt, connectionId }: IProps) => {
-  const router = useRouter()
-  const connection = connections.filter(
-    (connection: IConnection) => connection.id === connectionId
-  )[0]
+const Connection = ({ token, jwt, connectionId }: IProps) => {
+  const [connection, setConnection] = useState<IConnection>()
 
-  if (loading) {
+  const fetcher = (url: string) => {
+    return client.get(url, {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+        'X-APIDECK-APP-ID': token?.applicationId,
+        'X-APIDECK-CONSUMER-ID': token?.consumerId
+      }
+    })
+  }
+
+  const { data, error, mutate } = useSWR('/vault/connections', fetcher, {
+    shouldRetryOnError: false,
+    revalidateOnFocus: false
+  })
+
+  const connections: IConnection[] = data?.data?.data
+
+  useEffect(() => {
+    const currentConnection = connections?.filter(
+      (connection: IConnection) => connection.id === connectionId
+    )[0]
+    if (currentConnection) {
+      setConnection(currentConnection)
+    }
+  }, [connectionId, connections])
+
+  if ((!data && !error) || !connection) {
     return <ConnectionPlaceholder />
   }
 
-  if (!connection) {
-    const error = {
-      status: 404
-    }
-
-    return <ErrorBlock error={error} />
+  if (error) {
+    const errorObj = error?.response ? error.response : { status: 400 }
+    return <ErrorBlock error={errorObj} token={token} />
   }
 
-  const handleSubmit = async (connection: IConnection) => {
-    const remainingConnections = connections.filter((connection) => connection.id !== connectionId)
-    const updatedConnections = [...remainingConnections, connection]
-
-    setConnections(updatedConnections)
-  }
-
-  const handleDelete = async (connection: IConnection) => {
-    const remainingConnections = connections.filter((connection) => connection.id !== connectionId)
-    const updatedConnection: IConnection = {
-      ...connection,
-      state: 'available'
-    }
-    const updatedConnections = [...remainingConnections, updatedConnection]
-
-    setConnections(updatedConnections)
-
-    setTimeout(() => {
-      router.push('/')
-    }, 3000)
-  }
-
-  return (
-    <ConnectionForm
-      connection={connection}
-      handleSubmit={handleSubmit}
-      handleDelete={handleDelete}
-      token={token}
-      jwt={jwt}
-    />
-  )
+  return <ConnectionForm connection={connection} mutate={mutate} token={token} jwt={jwt} />
 }
 
 export const getServerSideProps = async ({ req, res, params }: any): Promise<any> => {
