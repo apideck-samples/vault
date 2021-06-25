@@ -14,7 +14,6 @@ import INTEGRATIONS from '../../../fixtures/integrations.json'
 import client from 'lib/axios'
 
 describe('Connection Form', () => {
-  const mutate = jest.fn()
   const deleteMock = jest.spyOn(client, 'delete').mockResolvedValue(true)
 
   describe('OAuth Connector', () => {
@@ -44,7 +43,7 @@ describe('Connection Form', () => {
       }
 
       it('Renders Connection Form w settings', async () => {
-        render(<ConnectionForm mutate={mutate} connection={connection} jwt={jwt} token={token} />)
+        render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
         expect(screen.getByRole('heading', { name: 'Microsoft Dynamics CRM' })).toBeInTheDocument()
         expect(screen.getByDisplayValue('example')).toBeInTheDocument()
 
@@ -60,7 +59,7 @@ describe('Connection Form', () => {
       }) as IConnection
 
       it('Renders an Error Alert', async () => {
-        render(<ConnectionForm mutate={mutate} connection={connection} jwt={jwt} token={token} />, {
+        render(<ConnectionForm connection={connection} jwt={jwt} token={token} />, {
           router: {
             query: {
               error_type: 'OAuthInvalidStateError',
@@ -105,7 +104,7 @@ describe('Connection Form', () => {
       })
 
       it('Renders Connection Form w settings as enabled', async () => {
-        render(<ConnectionForm mutate={mutate} connection={connection} jwt={jwt} token={token} />)
+        render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
         expect(screen.getByRole('heading', { name: 'Microsoft Dynamics CRM' })).toBeInTheDocument()
         const warning = screen.getByText(
           'Microsoft Dynamics CRM requires Organisation Url to be set before authorizing.'
@@ -136,14 +135,14 @@ describe('Connection Form', () => {
     }) as IConnection
 
     it('Renders Connection Form w settings as enabled', async () => {
-      render(<ConnectionForm mutate={mutate} connection={connection} jwt={jwt} token={token} />)
+      render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
       expect(screen.getByText('Copper')).toBeInTheDocument()
       expect(screen.getByDisplayValue('nick@apideck.com')).toBeInTheDocument()
       expect(screen.getByDisplayValue('21cafde969594a339fcbb4f3ff2600aa')).toBeInTheDocument()
     })
 
     it('Uses Modal to confirm delete Connection', async () => {
-      render(<ConnectionForm mutate={mutate} connection={connection} jwt={jwt} token={token} />)
+      render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
       const openDeleteModalButton = screen.getByRole('button', { name: 'Delete' })
 
       fireEvent.click(openDeleteModalButton)
