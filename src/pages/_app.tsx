@@ -1,24 +1,18 @@
 import '../styles/globals.css'
 
-import { ErrorBlock, Layout, SessionExpiredModal } from 'components'
-import React, { Fragment, useEffect, useState } from 'react'
+import { Layout, SessionExpiredModal } from 'components'
+import React, { Fragment, useState } from 'react'
 import { SessionExpiredModalContext, ThemeContext } from 'utils/context'
 
 import { AppProps } from 'next/app'
-import { IConnection } from 'types/Connection'
+import { ToastProvider } from '@apideck/components'
 import { applySession } from 'next-session'
-import client from 'lib/axios'
 import { defaults } from 'config/defaults'
 import { options } from 'utils/sessionOptions'
-import useSWR from 'swr'
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const App = ({ Component, pageProps }: AppProps) => {
-  const [connections, setConnections] = useState<IConnection[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<{ status: number } | null>(null)
   const [sessionExpired, setSessionExpired] = useState<boolean>(false)
-  const { jwt, token } = pageProps
+  const { token } = pageProps
   let consumerMetadata = {}
   const persistedTheme = typeof window !== 'undefined' && window.localStorage.getItem('theme')
   let theme = persistedTheme ? JSON.parse(persistedTheme) : {}
@@ -31,67 +25,24 @@ const App = ({ Component, pageProps }: AppProps) => {
     if (typeof window !== 'undefined') window.localStorage.setItem('theme', JSON.stringify(theme))
   }
 
-  const fetcher = (url: string) => {
-    return client.get(url, {
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-        'X-APIDECK-APP-ID': token?.applicationId,
-        'X-APIDECK-CONSUMER-ID': token?.consumerId
-      }
-    })
-  }
-
-  const options = {
-    shouldRetryOnError: false,
-    revalidateOnFocus: false
-  }
-
-  const { data, error: connectionsError } = useSWR('/vault/connections', fetcher, options)
-
-  useEffect(() => {
-    if (data) {
-      setConnections(data.data.data)
-      setLoading(false)
-    }
-  }, [data])
-
-  useEffect(() => {
-    if (connectionsError) {
-      const { response } = connectionsError
-      const errorObj = response ? response : { status: 400 }
-
-      setError(errorObj)
-      setLoading(false)
-    }
-  }, [connectionsError])
-
   return (
     <Fragment>
       <ThemeContext.Provider value={theme}>
         <SessionExpiredModalContext.Provider value={{ sessionExpired, setSessionExpired }}>
-          <Layout
-            consumerMetadata={consumerMetadata}
-            redirectUri={redirectUri}
-            hideConsumerCard={!!error || sessionExpired || loading}
-          >
-            {error ? (
-              <ErrorBlock error={error} token={token} />
-            ) : (
-              <Fragment>
-                <Component
-                  connections={connections}
-                  setConnections={setConnections}
-                  loading={loading}
-                  {...pageProps}
-                />
-                <SessionExpiredModal
-                  open={sessionExpired}
-                  setOpen={setSessionExpired}
-                  redirectUri={redirectUri}
-                />
-              </Fragment>
-            )}
-          </Layout>
+          <ToastProvider>
+            <Layout
+              consumerMetadata={consumerMetadata}
+              redirectUri={redirectUri}
+              hideConsumerCard={sessionExpired}
+            >
+              <Component {...pageProps} />
+              <SessionExpiredModal
+                open={sessionExpired}
+                setOpen={setSessionExpired}
+                redirectUri={redirectUri}
+              />
+            </Layout>
+          </ToastProvider>
         </SessionExpiredModalContext.Provider>
       </ThemeContext.Provider>
       <div id="modal" />

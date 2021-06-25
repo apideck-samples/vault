@@ -12,9 +12,9 @@ import CheckIcon from 'mdi-react/CheckIcon'
 import { IOptionType } from 'components/Inputs/SearchSelect'
 import { JWTSession } from 'types/JWTSession'
 import Link from 'next/link'
+import ReactMarkdown from 'react-markdown'
 import client from 'lib/axios'
 import { useRouter } from 'next/router'
-import ReactMarkdown from 'react-markdown'
 
 interface IProps {
   connection?: IConnection

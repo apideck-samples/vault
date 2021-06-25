@@ -1,8 +1,8 @@
+import { Button, useToast } from '@apideck/components'
 import { Fragment, useContext, useEffect, useState } from 'react'
 import { ThemeContext, ThemeContextType } from 'utils'
 
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
-import { Button } from '@apideck/components'
 import { IConnection } from 'types/Connection'
 import { IOptionType } from 'components/Inputs/SearchSelect'
 import ModalContainer from './ModalContainer'
@@ -32,6 +32,7 @@ const AddModal = ({
   const [value, setValue] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
+  const { addToast } = useToast()
   const { primary_color } = useContext(ThemeContext) as ThemeContextType
   const connectionsOptions = availableConnections.map((connection) => {
     const { id, name, service_id: serviceId, icon } = connection
@@ -50,6 +51,12 @@ const AddModal = ({
     const successCallback = () => {
       setLoading(false)
       setOpen(false)
+      addToast({
+        title: `Integration successfully added`,
+        description: `You can now authorize it and manage integration settings.`,
+        type: 'success',
+        autoClose: true
+      })
       router.push(`/integrations/${unifiedApi}/${value}`)
     }
 

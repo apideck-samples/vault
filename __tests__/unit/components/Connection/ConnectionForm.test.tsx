@@ -14,8 +14,6 @@ import INTEGRATIONS from '../../../fixtures/integrations.json'
 import client from 'lib/axios'
 
 describe('Connection Form', () => {
-  const handleSubmit = jest.fn()
-  const handleDelete = jest.fn()
   const deleteMock = jest.spyOn(client, 'delete').mockResolvedValue(true)
 
   describe('OAuth Connector', () => {
@@ -45,15 +43,7 @@ describe('Connection Form', () => {
       }
 
       it('Renders Connection Form w settings', async () => {
-        render(
-          <ConnectionForm
-            connection={connection}
-            jwt={jwt}
-            token={token}
-            handleSubmit={handleSubmit}
-            handleDelete={handleDelete}
-          />
-        )
+        render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
         expect(screen.getByRole('heading', { name: 'Microsoft Dynamics CRM' })).toBeInTheDocument()
         expect(screen.getByDisplayValue('example')).toBeInTheDocument()
 
@@ -69,27 +59,18 @@ describe('Connection Form', () => {
       }) as IConnection
 
       it('Renders an Error Alert', async () => {
-        render(
-          <ConnectionForm
-            connection={connection}
-            jwt={jwt}
-            token={token}
-            handleSubmit={handleSubmit}
-            handleDelete={handleDelete}
-          />,
-          {
-            router: {
-              query: {
-                error_type: 'OAuthInvalidStateError',
-                error_message: 'State parameter is not a valid JWT token. It may have expired.',
-                origin: 'authorize',
-                service_id: 'zoho-crm',
-                application_id: '1111',
-                ref: 'https://developers.apideck.com/errors#oauthinvalidstateerror'
-              }
+        render(<ConnectionForm connection={connection} jwt={jwt} token={token} />, {
+          router: {
+            query: {
+              error_type: 'OAuthInvalidStateError',
+              error_message: 'State parameter is not a valid JWT token. It may have expired.',
+              origin: 'authorize',
+              service_id: 'zoho-crm',
+              application_id: '1111',
+              ref: 'https://developers.apideck.com/errors#oauthinvalidstateerror'
             }
           }
-        )
+        })
         expect(screen.getByRole('alert')).toBeInTheDocument()
         expect(
           screen.getByText('An error occurred during the authorization flow. Please try again.')
@@ -123,15 +104,7 @@ describe('Connection Form', () => {
       })
 
       it('Renders Connection Form w settings as enabled', async () => {
-        render(
-          <ConnectionForm
-            connection={connection}
-            jwt={jwt}
-            token={token}
-            handleSubmit={handleSubmit}
-            handleDelete={handleDelete}
-          />
-        )
+        render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
         expect(screen.getByRole('heading', { name: 'Microsoft Dynamics CRM' })).toBeInTheDocument()
         const warning = screen.getByText(
           'Microsoft Dynamics CRM requires Organisation Url to be set before authorizing.'
@@ -162,30 +135,14 @@ describe('Connection Form', () => {
     }) as IConnection
 
     it('Renders Connection Form w settings as enabled', async () => {
-      render(
-        <ConnectionForm
-          connection={connection}
-          jwt={jwt}
-          token={token}
-          handleSubmit={handleSubmit}
-          handleDelete={handleDelete}
-        />
-      )
+      render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
       expect(screen.getByText('Copper')).toBeInTheDocument()
       expect(screen.getByDisplayValue('nick@apideck.com')).toBeInTheDocument()
       expect(screen.getByDisplayValue('21cafde969594a339fcbb4f3ff2600aa')).toBeInTheDocument()
     })
 
     it('Uses Modal to confirm delete Connection', async () => {
-      render(
-        <ConnectionForm
-          connection={connection}
-          jwt={jwt}
-          token={token}
-          handleSubmit={handleSubmit}
-          handleDelete={handleDelete}
-        />
-      )
+      render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
       const openDeleteModalButton = screen.getByRole('button', { name: 'Delete' })
 
       fireEvent.click(openDeleteModalButton)

@@ -1,8 +1,7 @@
-import { Button, TextInput, Toggle } from '@apideck/components'
+import { Button, TextInput, Toggle, useToast } from '@apideck/components'
 import {
   ConfigurableResources,
   ConfirmModal,
-  ErrorBlock,
   OAuthButtons,
   OAuthErrorAlert,
   SearchSelect
@@ -24,26 +23,25 @@ import CheckIcon from 'mdi-react/CheckIcon'
 import { IOptionType } from 'components/Inputs/SearchSelect'
 import { JWTSession } from 'types/JWTSession'
 import Link from 'next/link'
-import client from 'lib/axios'
-import { useRouter } from 'next/router'
 import ReactMarkdown from 'react-markdown'
+import client from 'lib/axios'
+import { mutate } from 'swr'
+import { useRouter } from 'next/router'
 
 interface IProps {
   connection: IConnection
   jwt: string
   token: JWTSession
-  handleSubmit: (connection: IConnection) => void
-  handleDelete: (connection: IConnection) => void
 }
 
-const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: IProps) => {
+const ConnectionForm = ({ connection, token, jwt }: IProps) => {
   const [saved, setSaved] = useState(false)
   const [formError, setFormError] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
   const [updateLoading, setUpdateLoading] = useState(false)
   const [deleteLoading, setDeleteLoading] = useState(false)
-  const [deleteSuccess, setDeleteSuccess] = useState(false)
   const [deleteError, setDeleteError] = useState(false)
+  const { addToast } = useToast()
   const { setSessionExpired } = useContext(SessionExpiredModalContext)
   const { primary_color } = useContext(ThemeContext) as ThemeContextType
   const router = useRouter()
@@ -53,13 +51,6 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
   useEffect(() => {
     setOAuthError(createOAuthErrorFromQuery(query))
   }, [query])
-
-  if (!connection) {
-    const error = {
-      status: 404
-    }
-    return <ErrorBlock error={error} />
-  }
 
   const {
     name,
@@ -105,7 +96,6 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
   const updateConnection = async (values: Record<string, any>) => {
     setFormError(false)
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { enabled, apiKey, ...rest } = values
     const body: UpdateConnectionInput = {
       settings: {},
@@ -119,20 +109,14 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
     }
 
     try {
-      const {
-        data: { data }
-      } = await client.patch(`/vault/connections/${unifiedApi}/${serviceId}`, body, {
+      await client.patch(`/vault/connections/${unifiedApi}/${serviceId}`, body, {
         headers
       })
-      handleSubmit(data)
+      mutate('/vault/connections')
       setSaved(true)
     } catch (error) {
       setFormError(true)
-
-      const { response } = error
-      const { status } = response
-
-      if (status === 401) {
+      if (error?.response?.status === 401) {
         setSessionExpired(true)
       }
     }
@@ -146,25 +130,17 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
       await client.delete(`/vault/connections/${unifiedApi}/${serviceId}`, {
         headers
       })
-
-      const updatedConnection: IConnection = {
-        ...connection,
-        state: 'available'
-      }
-
-      handleDelete(updatedConnection)
-
-      setDeleteSuccess(true)
-      setTimeout(() => {
-        router.push('/')
-      }, 3000)
+      mutate('/vault/connections')
+      router.push('/')
+      addToast({
+        title: `Integration successfully deleted`,
+        description: 'You can re-add it anytime you want.',
+        type: 'success',
+        autoClose: true
+      })
     } catch (error) {
       setDeleteError(true)
-
-      const { response } = error
-      const { status } = response
-
-      if (status === 401) {
+      if (error?.response?.status === 401) {
         setSessionExpired(true)
       }
     } finally {
@@ -332,7 +308,6 @@ const ConnectionForm = ({ connection, token, jwt, handleSubmit, handleDelete }: 
         onConfirm={() => deleteConnection()}
         title={`Delete ${name} integration`}
         loading={deleteLoading}
-        success={deleteSuccess}
         error={deleteError}
       />
     </Fragment>
