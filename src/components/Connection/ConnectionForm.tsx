@@ -25,16 +25,16 @@ import { JWTSession } from 'types/JWTSession'
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import client from 'lib/axios'
+import { mutate } from 'swr'
 import { useRouter } from 'next/router'
 
 interface IProps {
   connection: IConnection
   jwt: string
   token: JWTSession
-  mutate: any
 }
 
-const ConnectionForm = ({ connection, token, jwt, mutate }: IProps) => {
+const ConnectionForm = ({ connection, token, jwt }: IProps) => {
   const [saved, setSaved] = useState(false)
   const [formError, setFormError] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
@@ -112,7 +112,7 @@ const ConnectionForm = ({ connection, token, jwt, mutate }: IProps) => {
       await client.patch(`/vault/connections/${unifiedApi}/${serviceId}`, body, {
         headers
       })
-      mutate()
+      mutate('/vault/connections')
       setSaved(true)
     } catch (error) {
       setFormError(true)
@@ -130,14 +130,14 @@ const ConnectionForm = ({ connection, token, jwt, mutate }: IProps) => {
       await client.delete(`/vault/connections/${unifiedApi}/${serviceId}`, {
         headers
       })
-      mutate()
+      mutate('/vault/connections')
+      router.push('/')
       addToast({
         title: `Integration successfully deleted`,
         description: 'You can re-add it anytime you want.',
         type: 'success',
         autoClose: true
       })
-      router.push('/')
     } catch (error) {
       setDeleteError(true)
       if (error?.response?.status === 401) {

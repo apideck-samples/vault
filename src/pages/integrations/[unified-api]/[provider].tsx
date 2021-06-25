@@ -31,7 +31,7 @@ const Connection = ({ token, jwt, connectionId }: IProps) => {
     })
   }
 
-  const { data, error, mutate } = useSWR('/vault/connections', fetcher, {
+  const { data, error } = useSWR('/vault/connections', fetcher, {
     shouldRetryOnError: false,
     revalidateOnFocus: false
   })
@@ -56,7 +56,7 @@ const Connection = ({ token, jwt, connectionId }: IProps) => {
     return <ErrorBlock error={errorObj} token={token} />
   }
 
-  return <ConnectionForm connection={connection} mutate={mutate} token={token} jwt={jwt} />
+  return <ConnectionForm connection={connection} token={token} jwt={jwt} />
 }
 
 export const getServerSideProps = async ({ req, res, params }: any): Promise<any> => {

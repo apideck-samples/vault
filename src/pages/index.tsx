@@ -97,7 +97,7 @@ const Home = ({ jwt, token }: IProps): any => {
             />
           )
         })}
-      {!data && !connections?.length && <div className="mt-12">No integrations available.</div>}
+      {data && !connections?.length && <div className="mt-12">No integrations available.</div>}
     </Fragment>
   )
 }
