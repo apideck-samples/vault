@@ -2,6 +2,7 @@ import { Button, TextInput, useOutsideClick, useToast } from '@apideck/component
 import React, { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react'
 
 import { IConnection } from 'types/Connection'
+import MenuRightIcon from 'mdi-react/MenuRightIcon'
 import { Transition } from '@headlessui/react'
 import classNames from 'classnames'
 import useDebounce from 'utils/useDebounce'
@@ -195,9 +196,9 @@ const SearchItem = ({ connection, isActive, isLoading = false, handleClick }: II
           </div>
         </div>
       </div>
-      <div className="flex items-center">
+      <div className="flex items-center text-gray-400">
         {connection.state !== 'available' ? (
-          <span className="px-4 py-2 text-sm text-gray-400 rounded">Added</span>
+          <MenuRightIcon color="currentColor" />
         ) : (
           <Button text={isLoading ? 'Add' : '+ Add'} variant="primary" isLoading={isLoading} />
         )}
