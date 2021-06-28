@@ -127,7 +127,7 @@ const SearchInput = ({ connections, createConnection }: IProps) => {
         leaveTo="transform opacity-0"
       >
         <ul
-          className="absolute left-0 w-full max-w-md p-4 mt-6 overflow-auto bg-white rounded-md shadow-xl h-80"
+          className="absolute left-0 w-full max-w-md p-4 mt-3 overflow-auto bg-white rounded-md shadow-lg md:mt-4 max-h-96 ring-1 ring-black ring-opacity-5"
           ref={ref}
         >
           {!list?.length && (
@@ -173,20 +173,21 @@ const SearchItem = ({ connection, isActive, isLoading = false, handleClick }: II
   return (
     <li
       className={classNames(
-        'flex items-center justify-between w-full px-4 py-3 mt-3 overflow-hidden rounded-md group hover:bg-gray-100 cursor-pointer',
+        'flex items-center justify-between w-full px-3 md:px-4 py-2 md:py-3 mt-3 overflow-hidden rounded-md group hover:bg-gray-100 cursor-pointer',
         { 'bg-purple-100': isLoading, 'bg-gray-100': isActive }
       )}
       onClick={() => handleClick(connection)}
     >
       <div className="flex items-center">
         <img
-          className="mr-5 rounded"
-          style={{ width: '36px', height: '36px' }}
+          className="w-8 h-8 mr-4 rounded md:mr-5 md:h-10 md:w-10"
           src={connection.icon}
           alt={connection.name}
         />
         <div className="text-left">
-          <div className="font-medium text-md spec-connection-name">{connection.name}</div>
+          <div className="text-sm font-medium md:text-md spec-connection-name">
+            {connection.name}
+          </div>
           <div className="text-xs text-gray-600 sm:text-sm">
             {connection.unified_api?.toUpperCase()} API
           </div>
