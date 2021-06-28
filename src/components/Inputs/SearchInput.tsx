@@ -197,9 +197,7 @@ const SearchItem = ({ connection, isActive, isLoading = false, handleClick }: II
       </div>
       <div className="flex items-center">
         {connection.state !== 'available' ? (
-          <span className="px-4 py-2 text-sm text-gray-400 border border-gray-200 rounded">
-            Added
-          </span>
+          <span className="px-4 py-2 text-sm text-gray-400 rounded">Added</span>
         ) : (
           <Button text={isLoading ? 'Add' : '+ Add'} variant="primary" isLoading={isLoading} />
         )}
