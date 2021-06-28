@@ -1,5 +1,5 @@
 import { Button, TextInput, useOutsideClick, useToast } from '@apideck/components'
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
+import React, { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react'
 
 import { IConnection } from 'types/Connection'
 import { Transition } from '@headlessui/react'
@@ -27,10 +27,6 @@ const SearchInput = ({ connections, createConnection }: IProps) => {
   const { addToast } = useToast()
   const ref: any = useRef()
   useOutsideClick(ref, () => setIsFocused(false))
-
-  useEffect(() => {
-    setList(connections)
-  }, [connections])
 
   useEffect(() => {
     if (debouncedSearchTerm) {
@@ -94,7 +90,7 @@ const SearchInput = ({ connections, createConnection }: IProps) => {
   }
 
   return (
-    <div className="relative mt-6">
+    <div className="relative mt-6 lg:mt-8">
       <div className="absolute left-0 flex items-center pt-2.5 pl-3 pointer-events-none">
         <svg
           className="w-5 h-5 text-gray-400"
@@ -120,7 +116,6 @@ const SearchInput = ({ connections, createConnection }: IProps) => {
         onKeyDown={handleKeyDown}
         onChange={(event: ChangeEvent<HTMLInputElement>) => setSearchTerm(event.target.value)}
         onFocus={() => setIsFocused(true)}
-        // onBlur={() => setIsFocused(false)}
       />
       <Transition
         show={isFocused}
@@ -132,9 +127,12 @@ const SearchInput = ({ connections, createConnection }: IProps) => {
         leaveTo="transform opacity-0"
       >
         <ul
-          className="absolute w-full max-w-md p-4 mt-6 overflow-auto bg-white rounded-md shadow-xl h-80"
+          className="absolute left-0 w-full max-w-md p-4 mt-6 overflow-auto bg-white rounded-md shadow-xl h-80"
           ref={ref}
         >
+          {!list?.length && (
+            <p className="flex items-center justify-center h-full">No connections available</p>
+          )}
           {list?.map((connection: IConnection, i: number) => {
             const delay = Math.max(0, i * 20 + 100)
             return (
