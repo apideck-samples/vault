@@ -111,7 +111,7 @@ const SearchInput = ({ connections, createConnection }: IProps) => {
         type="text"
         placeholder="Search"
         value={searchTerm}
-        className="max-w-md pl-10"
+        className="pl-10 sm:max-w-sm lg:max-w-sm xl:max-w-md"
         autocomplete="off"
         onKeyDown={handleKeyDown}
         onChange={(event: ChangeEvent<HTMLInputElement>) => setSearchTerm(event.target.value)}
@@ -127,7 +127,7 @@ const SearchInput = ({ connections, createConnection }: IProps) => {
         leaveTo="transform opacity-0"
       >
         <ul
-          className="absolute left-0 w-full max-w-md p-4 mt-3 overflow-auto bg-white rounded-md shadow-lg md:mt-4 max-h-96 ring-1 ring-black ring-opacity-5"
+          className="absolute left-0 w-full p-4 mt-3 overflow-auto bg-white rounded-md shadow-lg sm:max-w-sm lg:max-w-sm xl:max-w-md md:mt-4 max-h-96 ring-1 ring-black ring-opacity-5"
           ref={ref}
         >
           {!list?.length && (
