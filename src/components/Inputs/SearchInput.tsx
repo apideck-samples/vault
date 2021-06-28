@@ -26,6 +26,7 @@ const SearchInput = ({ connections, createConnection }: IProps) => {
   const { push } = useRouter()
   const { addToast } = useToast()
   const ref: any = useRef()
+
   useOutsideClick(ref, () => setIsFocused(false))
 
   useEffect(() => {
