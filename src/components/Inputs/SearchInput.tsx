@@ -1,4 +1,4 @@
-import { Button, TextInput, useToast } from '@apideck/components'
+import { Button, TextInput, useOutsideClick, useToast } from '@apideck/components'
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 
 import { IConnection } from 'types/Connection'
@@ -26,6 +26,7 @@ const SearchInput = ({ connections, createConnection }: IProps) => {
   const { push } = useRouter()
   const { addToast } = useToast()
   const ref: any = useRef()
+  useOutsideClick(ref, () => setIsFocused(false))
 
   useEffect(() => {
     setList(connections)
