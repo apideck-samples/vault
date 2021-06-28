@@ -54,7 +54,7 @@ const ListPlaceholder = () => {
         <TextInput
           name="search"
           type="text"
-          placeholder="Search"
+          placeholder="Search connectors"
           className="max-w-md pl-10"
           disabled
         />

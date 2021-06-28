@@ -203,11 +203,13 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
         )}
       </div>
 
-      {isAuthorized && connection?.configurable_resources?.length > 0 && (
-        <div className="mt-10">
-          <ConfigurableResources connection={connection} token={token} jwt={jwt} />
-        </div>
-      )}
+      {isAuthorized &&
+        connection?.configurable_resources?.length > 0 &&
+        !token.hideResourceSettings && (
+          <div className="mt-10">
+            <ConfigurableResources connection={connection} token={token} jwt={jwt} />
+          </div>
+        )}
 
       {filteredFormFields.length > 0 && (
         <Formik

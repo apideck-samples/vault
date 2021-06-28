@@ -8,6 +8,7 @@ export interface JWTSession {
   }
   exp: number
   iat: number
+  hideResourceSettings: boolean
   redirectUri: string
   theme: {
     favicon: string

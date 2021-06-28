@@ -66,6 +66,7 @@ export const getServerSideProps = async ({ req, res, params }: any): Promise<any
     props: {
       jwt: req.session.jwt || '',
       token: req.session.token || {},
+      hideResourceSettings: req.session.hide_resource_settings || false,
       connectionId: `${params['unified-api']}+${params['provider']}`
     }
   }
