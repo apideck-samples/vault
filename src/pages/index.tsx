@@ -84,21 +84,24 @@ const Home = ({ jwt, token }: IProps): any => {
   return (
     <Fragment>
       <h1 className="text-lg font-medium text-gray-800 md:text-2xl">Manage your integrations</h1>
-      <SearchInput connections={connectionsASC} createConnection={createConnection} />
       {!data && !error && <ListPlaceholder />}
-      {connections?.length &&
-        Object.keys(connectionsPerUnifiedApiObj).map((unifiedApi) => {
-          const connections = connectionsPerUnifiedApiObj[unifiedApi]
+      {connections?.length && (
+        <>
+          <SearchInput connections={connectionsASC} createConnection={createConnection} />
+          {Object.keys(connectionsPerUnifiedApiObj).map((unifiedApi) => {
+            const connections = connectionsPerUnifiedApiObj[unifiedApi]
 
-          return (
-            <ConnectionsList
-              key={unifiedApi}
-              unifiedApi={unifiedApi}
-              connections={connections}
-              createConnection={createConnection}
-            />
-          )
-        })}
+            return (
+              <ConnectionsList
+                key={unifiedApi}
+                unifiedApi={unifiedApi}
+                connections={connections}
+                createConnection={createConnection}
+              />
+            )
+          })}
+        </>
+      )}
       {data && !connections?.length && <div className="mt-12">No integrations available.</div>}
     </Fragment>
   )
