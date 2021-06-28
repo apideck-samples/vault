@@ -3,6 +3,7 @@ import { Fragment, useContext } from 'react'
 
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
+import SearchInput from 'components/Inputs/SearchInput'
 import { SessionExpiredModalContext } from 'utils/context'
 import { applySession } from 'next-session'
 import client from 'lib/axios'
@@ -83,6 +84,7 @@ const Home = ({ jwt, token }: IProps): any => {
   return (
     <Fragment>
       <h1 className="text-lg font-medium text-gray-800 md:text-2xl">Manage your integrations</h1>
+      <SearchInput connections={connectionsASC} createConnection={createConnection} />
       {!data && !error && <ListPlaceholder />}
       {connections?.length &&
         Object.keys(connectionsPerUnifiedApiObj).map((unifiedApi) => {
