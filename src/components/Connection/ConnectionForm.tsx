@@ -171,7 +171,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
       <div className="border rounded-md">
         <div className="flex justify-between px-3 py-4 sm:px-4 md:px-5 items-top">
           <div className="flex justify-start items-top">
-            <img className="w-8 h-8 mr-2 sm:w-10 sm:h-10 sm:mr-4" src={icon} alt={name} />
+            <img className="w-8 h-8 mr-2 rounded sm:w-10 sm:h-10 sm:mr-4" src={icon} alt={name} />
             <div>
               <h1 className="font-medium text-gray-800 text-md md:text-xl">{name}</h1>
               <div className="text-sm text-gray-700 capitalize">{`${unifiedApi} integration`}</div>
@@ -203,11 +203,13 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
         )}
       </div>
 
-      {isAuthorized && connection?.configurable_resources?.length > 0 && (
-        <div className="mt-10">
-          <ConfigurableResources connection={connection} token={token} jwt={jwt} />
-        </div>
-      )}
+      {isAuthorized &&
+        connection?.configurable_resources?.length > 0 &&
+        !token.hideResourceSettings && (
+          <div className="mt-10">
+            <ConfigurableResources connection={connection} token={token} jwt={jwt} />
+          </div>
+        )}
 
       {filteredFormFields.length > 0 && (
         <Formik

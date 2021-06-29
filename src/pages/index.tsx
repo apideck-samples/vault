@@ -3,6 +3,7 @@ import { Fragment, useContext } from 'react'
 
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
+import SearchInput from 'components/Inputs/SearchInput'
 import { SessionExpiredModalContext } from 'utils/context'
 import { applySession } from 'next-session'
 import client from 'lib/axios'
@@ -84,19 +85,23 @@ const Home = ({ jwt, token }: IProps): any => {
     <Fragment>
       <h1 className="text-lg font-medium text-gray-800 md:text-2xl">Manage your integrations</h1>
       {!data && !error && <ListPlaceholder />}
-      {connections?.length &&
-        Object.keys(connectionsPerUnifiedApiObj).map((unifiedApi) => {
-          const connections = connectionsPerUnifiedApiObj[unifiedApi]
+      {connections?.length && (
+        <>
+          <SearchInput connections={connectionsASC} createConnection={createConnection} />
+          {Object.keys(connectionsPerUnifiedApiObj).map((unifiedApi) => {
+            const connections = connectionsPerUnifiedApiObj[unifiedApi]
 
-          return (
-            <ConnectionsList
-              key={unifiedApi}
-              unifiedApi={unifiedApi}
-              connections={connections}
-              createConnection={createConnection}
-            />
-          )
-        })}
+            return (
+              <ConnectionsList
+                key={unifiedApi}
+                unifiedApi={unifiedApi}
+                connections={connections}
+                createConnection={createConnection}
+              />
+            )
+          })}
+        </>
+      )}
       {data && !connections?.length && <div className="mt-12">No integrations available.</div>}
     </Fragment>
   )
