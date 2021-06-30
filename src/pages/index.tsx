@@ -1,14 +1,26 @@
-import { ConnectionsList, ErrorBlock, ListPlaceholder } from 'components'
-import { Fragment, useContext } from 'react'
+import {
+  ChangeEvent,
+  Fragment,
+  KeyboardEvent,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
+import { ConnectionCard, ConnectionsList, ErrorBlock, ListPlaceholder } from 'components'
 
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
-import SearchInput from 'components/Inputs/SearchInput'
+import Link from 'next/link'
 import { SessionExpiredModalContext } from 'utils/context'
+import { TextInput } from '@apideck/components'
 import { applySession } from 'next-session'
 import client from 'lib/axios'
 import { options } from 'utils/sessionOptions'
+import useDebounce from 'utils/useDebounce'
+import { useRouter } from 'next/router'
 import useSWR from 'swr'
+import { useToast } from '@apideck/components'
 
 interface IProps {
   jwt: string
@@ -17,6 +29,14 @@ interface IProps {
 
 const Home = ({ jwt, token }: IProps): any => {
   const { setSessionExpired } = useContext(SessionExpiredModalContext)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [list, setList] = useState<IConnection[]>([])
+  const [cursor, setCursor] = useState(0)
+  const debouncedSearchTerm = useDebounce(searchTerm, 250)
+  const [isLoading, setIsLoading] = useState<boolean | string>(false)
+  const { push } = useRouter()
+  const { addToast } = useToast()
+  const ref: any = useRef()
 
   const fetcher = (url: string) => {
     return client.get(url, {
@@ -42,6 +62,27 @@ const Home = ({ jwt, token }: IProps): any => {
 
     return acc
   }, {})
+
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      const results = connections.filter((connector: IConnection) =>
+        connector.name?.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+      )
+      setList(results)
+    } else {
+      setList(connections)
+    }
+  }, [connections, debouncedSearchTerm])
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.code === 'ArrowUp' && cursor > 0) {
+      setCursor(cursor - 1)
+    } else if (event.code === 'ArrowDown' && cursor < list.length - 1) {
+      setCursor(cursor + 1)
+    } else if (event.code === 'Enter') {
+      handleClick(list[cursor], cursor)
+    }
+  }
 
   const createConnection = async (
     values: { unifiedApi: string; serviceId: string },
@@ -76,6 +117,43 @@ const Home = ({ jwt, token }: IProps): any => {
     }
   }
 
+  const handleClick = (connection: IConnection, i: number) => {
+    if (cursor !== i) setCursor(i)
+    if (connection.state !== 'available') {
+      push(`/integrations/${connection.unified_api}/${connection.service_id}`)
+      return
+    }
+
+    setIsLoading(connection.id)
+
+    const successCallback = () => {
+      setIsLoading(false)
+      addToast({
+        title: `Integration successfully added`,
+        description: `You can now authorize it and manage integration settings.`,
+        type: 'success',
+        autoClose: true
+      })
+      push(`/integrations/${connection.unified_api}/${connection.service_id}`)
+    }
+
+    const errorCallback = () => {
+      setIsLoading(false)
+      addToast({
+        title: `Something went wrong`,
+        description: `The integration has nog been added. Please try again.`,
+        type: 'error',
+        autoClose: true
+      })
+    }
+
+    createConnection(
+      { unifiedApi: connection.unified_api, serviceId: connection.service_id },
+      successCallback,
+      errorCallback
+    )
+  }
+
   if (error) {
     const errorObj = error?.response ? error.response : { status: 400 }
     return <ErrorBlock error={errorObj} token={token} />
@@ -87,19 +165,74 @@ const Home = ({ jwt, token }: IProps): any => {
       {!data && !error && <ListPlaceholder />}
       {connections?.length && (
         <>
-          <SearchInput connections={connectionsASC} createConnection={createConnection} />
-          {Object.keys(connectionsPerUnifiedApiObj).map((unifiedApi) => {
-            const connections = connectionsPerUnifiedApiObj[unifiedApi]
+          <div className="relative mt-6 lg:mt-8">
+            <div className="absolute left-0 flex items-center pt-2.5 md:pt-3 pl-3 pointer-events-none">
+              <svg
+                className="w-5 h-5 text-gray-400"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+            <TextInput
+              name="search"
+              type="text"
+              ref={ref}
+              placeholder="Search connectors"
+              value={searchTerm}
+              className="pl-10 md:py-2.5 lg:py-3 border-gray-50"
+              autocomplete="off"
+              onKeyDown={handleKeyDown}
+              onChange={(event: ChangeEvent<HTMLInputElement>) => setSearchTerm(event.target.value)}
+            />
+          </div>
+          {searchTerm.length ? (
+            <div className="mt-6">
+              {list?.map((connection: IConnection, i) => {
+                const { id, unified_api, service_id, state } = connection
 
-            return (
-              <ConnectionsList
-                key={unifiedApi}
-                unifiedApi={unifiedApi}
-                connections={connections}
-                createConnection={createConnection}
-              />
-            )
-          })}
+                if (state !== 'available') {
+                  return (
+                    <Link href={`/integrations/${unified_api}/${service_id}`} key={id}>
+                      <a>
+                        <ConnectionCard connection={connection} isActive={cursor === i} />
+                      </a>
+                    </Link>
+                  )
+                } else {
+                  return (
+                    <button onClick={() => handleClick(connection, i)} key={id} className="w-full">
+                      <ConnectionCard
+                        connection={connection}
+                        isLoading={isLoading === connection.id}
+                        isActive={cursor === i}
+                      />
+                    </button>
+                  )
+                }
+              })}
+            </div>
+          ) : (
+            Object.keys(connectionsPerUnifiedApiObj).map((unifiedApi) => {
+              const connections = connectionsPerUnifiedApiObj[unifiedApi]
+
+              return (
+                <ConnectionsList
+                  key={unifiedApi}
+                  unifiedApi={unifiedApi}
+                  connections={connections}
+                  createConnection={createConnection}
+                />
+              )
+            })
+          )}
         </>
       )}
       {data && !connections?.length && <div className="mt-12">No integrations available.</div>}
