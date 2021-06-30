@@ -36,7 +36,7 @@ const ListPlaceholder = () => {
   return (
     <section>
       <div className="relative mt-6 lg:mt-8">
-        <div className="absolute left-0 flex items-center pt-2.5 pl-3 pointer-events-none">
+        <div className="absolute left-0 flex items-center pt-2.5 lg:pt-3 pl-3 pointer-events-none">
           <svg
             className="w-5 h-5 text-gray-400"
             xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +55,7 @@ const ListPlaceholder = () => {
           name="search"
           type="text"
           placeholder="Search connectors"
-          className="max-w-md pl-10"
+          className="pl-10 md:py-2.5 lg:py-3 border-gray-50"
           disabled
         />
       </div>
