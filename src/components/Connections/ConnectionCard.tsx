@@ -1,7 +1,6 @@
 import { Button } from '@apideck/components'
 import { ConnectionBadge } from 'components'
 import { IConnection } from 'types/Connection'
-import Link from 'next/link'
 import MenuRightIcon from 'mdi-react/MenuRightIcon'
 import React from 'react'
 import classNames from 'classnames'
@@ -17,7 +16,7 @@ const ConnectionCard = ({ connection, isLoading = false, isActive = false }: IPr
   const { name, icon, unified_api: unifiedApi, created_at: createdAt } = connection
 
   return (
-    <button
+    <div
       className={classNames(
         'flex items-center justify-between w-full px-4 py-3 mt-5 overflow-hidden border rounded-md sm:px-5 sm:py-4 group hover:bg-gray-100 spec-connection',
         { 'bg-gray-50': isActive }
@@ -55,7 +54,7 @@ const ConnectionCard = ({ connection, isLoading = false, isActive = false }: IPr
           <Button text={isLoading ? 'Add' : '+ Add'} variant="primary" isLoading={isLoading} />
         )}
       </div>
-    </button>
+    </div>
   )
 }
 
