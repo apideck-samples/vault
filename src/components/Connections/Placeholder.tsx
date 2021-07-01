@@ -1,5 +1,4 @@
 import { Button, TextInput } from '@apideck/components'
-
 import MenuRightIcon from 'mdi-react/MenuRightIcon'
 import { memo } from 'react'
 
@@ -54,7 +53,7 @@ const ListPlaceholder = () => {
         <TextInput
           name="search"
           type="text"
-          placeholder="Search connectors"
+          placeholder="Search integrations"
           className="pl-10 md:py-2.5 lg:py-3 border-gray-50"
           disabled
         />

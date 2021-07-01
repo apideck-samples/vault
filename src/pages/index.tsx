@@ -1,3 +1,9 @@
+import { TextInput, useToast } from '@apideck/components'
+import { ConnectionCard, ConnectionsList, ErrorBlock, ListPlaceholder } from 'components'
+import client from 'lib/axios'
+import { applySession } from 'next-session'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import {
   ChangeEvent,
   Fragment,
@@ -7,20 +13,12 @@ import {
   useRef,
   useState
 } from 'react'
-import { ConnectionCard, ConnectionsList, ErrorBlock, ListPlaceholder } from 'components'
-
+import useSWR from 'swr'
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
-import Link from 'next/link'
 import { SessionExpiredModalContext } from 'utils/context'
-import { TextInput } from '@apideck/components'
-import { applySession } from 'next-session'
-import client from 'lib/axios'
 import { options } from 'utils/sessionOptions'
 import useDebounce from 'utils/useDebounce'
-import { useRouter } from 'next/router'
-import useSWR from 'swr'
-import { useToast } from '@apideck/components'
 
 interface IProps {
   jwt: string
@@ -185,7 +183,7 @@ const Home = ({ jwt, token }: IProps): any => {
               name="search"
               type="text"
               ref={ref}
-              placeholder="Search connectors"
+              placeholder="Search integrations"
               value={searchTerm}
               className="pl-10 md:py-2.5 lg:py-3 border-gray-50"
               autocomplete="off"
