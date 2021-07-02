@@ -71,7 +71,7 @@ const ErrorBlock = ({ error, token = {} }: IErrorProps) => {
       return
     }
     const token = url.substring(url.lastIndexOf('/') + 1)
-    window.location.href = `${window.location.href}session/${token}`
+    window.location.href = `${window.location.origin}/session/${token}`
   }
 
   return (
