@@ -55,7 +55,8 @@ const Resource = ({ jwt, token, url, resource }: IProps) => {
         addToast({
           title: `Something went wrong`,
           description: errorObj.data.detail,
-          type: 'error'
+          type: 'error',
+          closeAfter: 5000
         })
         back()
       }
