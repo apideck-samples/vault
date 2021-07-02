@@ -6,7 +6,9 @@ import { JWTSession } from 'types/JWTSession'
 import { applySession } from 'next-session'
 import client from 'lib/axios'
 import { options } from 'utils/sessionOptions'
+import { useRouter } from 'next/router'
 import useSWR from 'swr'
+import { useToast } from '@apideck/components'
 
 interface IProps {
   connection: IConnection
@@ -19,7 +21,9 @@ interface IProps {
 const Resource = ({ jwt, token, url, resource }: IProps) => {
   const [connection, setConnection] = useState<IConnection>()
   const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<{ status: number } | null>(null)
+  const [error, setError] = useState<{ status: number; data?: any } | null>(null)
+  const { addToast } = useToast()
+  const { back } = useRouter()
 
   const fetcher = (url: string) => {
     return client.get(url, {
@@ -47,14 +51,23 @@ const Resource = ({ jwt, token, url, resource }: IProps) => {
     if (connectionError) {
       const { response } = connectionError
       const errorObj = response ? response : { status: 400 }
+      if (errorObj.data && !error) {
+        addToast({
+          title: `Something went wrong`,
+          description: errorObj.data.detail,
+          type: 'error'
+        })
+        back()
+      }
 
       setError(errorObj)
       setLoading(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connectionError])
 
-  if (error) {
-    return <ErrorBlock error={error} />
+  if (error && !error.data) {
+    return <ErrorBlock error={error || { status: 404 }} />
   }
 
   return (

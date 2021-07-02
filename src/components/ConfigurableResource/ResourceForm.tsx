@@ -31,12 +31,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
   const { primary_color } = useContext(ThemeContext) as ThemeContextType
   const router = useRouter()
 
-  if (loading) return <ResourcePlaceholder />
-
-  if (!connection) {
-    const error = { status: 404 }
-    return <ErrorBlock error={error} />
-  }
+  if (loading || !connection) return <ResourcePlaceholder />
 
   const {
     unified_api: unifiedApi,

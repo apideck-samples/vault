@@ -47,11 +47,11 @@ const Connection = ({ token, jwt, connectionId }: IProps) => {
     }
   }, [connectionId, connections])
 
-  if ((!data && !error) || !connection) {
+  if (!data && !error) {
     return <ConnectionPlaceholder />
   }
 
-  if (error) {
+  if (error || !connection) {
     const errorObj = error?.response ? error.response : { status: 400 }
     return <ErrorBlock error={errorObj} token={token} />
   }
