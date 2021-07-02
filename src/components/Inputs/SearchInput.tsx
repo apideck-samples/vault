@@ -1,12 +1,11 @@
 import { Button, TextInput, useOutsideClick, useToast } from '@apideck/components'
-import React, { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react'
-
-import { IConnection } from 'types/Connection'
-import MenuRightIcon from 'mdi-react/MenuRightIcon'
 import { Transition } from '@headlessui/react'
 import classNames from 'classnames'
-import useDebounce from 'utils/useDebounce'
+import MenuRightIcon from 'mdi-react/MenuRightIcon'
 import { useRouter } from 'next/router'
+import React, { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react'
+import { IConnection } from 'types/Connection'
+import useDebounce from 'utils/useDebounce'
 
 interface IProps {
   connections: IConnection[]
@@ -111,7 +110,7 @@ const SearchInput = ({ connections, createConnection }: IProps) => {
       <TextInput
         name="search"
         type="text"
-        placeholder="Search connectors"
+        placeholder="Search integrations"
         value={searchTerm}
         className="pl-10 sm:max-w-sm lg:max-w-sm xl:max-w-md"
         autocomplete="off"
