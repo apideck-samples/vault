@@ -222,7 +222,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
             const { handleSubmit, isSubmitting, handleBlur, handleChange, values } = formikProps
 
             return (
-              <form className="mt-10 overflow-hidden border rounded-md" onSubmit={handleSubmit}>
+              <form className="mt-10 border rounded-md" onSubmit={handleSubmit}>
                 <div className="px-5 py-4">
                   <h2 className="font-medium">Settings</h2>
                 </div>
