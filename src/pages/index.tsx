@@ -1,7 +1,7 @@
 import {
   ChangeEvent,
-  Fragment,
   KeyboardEvent,
+  useCallback,
   useContext,
   useEffect,
   useRef,
@@ -10,6 +10,7 @@ import {
 import { ConnectionCard, ConnectionsList, ErrorBlock, ListPlaceholder } from 'components'
 import { TextInput, useToast } from '@apideck/components'
 
+import { GlobalHotKeys } from 'react-hotkeys'
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
 import Link from 'next/link'
@@ -20,6 +21,10 @@ import { options } from 'utils/sessionOptions'
 import useDebounce from 'utils/useDebounce'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
+
+const keyMap = { FOCUS_INPUT: ['command+k', 'control+k'] }
+const ACTION_KEY_DEFAULT = ['Ctrl ', 'Control']
+const ACTION_KEY_APPLE = ['⌘', 'Command']
 
 interface IProps {
   jwt: string
@@ -33,9 +38,17 @@ const Home = ({ jwt, token }: IProps): any => {
   const [cursor, setCursor] = useState(0)
   const debouncedSearchTerm = useDebounce(searchTerm, 250)
   const [isLoading, setIsLoading] = useState<boolean | string>(false)
+  const [browserDetected, setBrowserDetected] = useState(false)
+  const [actionKey, setActionKey] = useState(ACTION_KEY_DEFAULT)
   const { push } = useRouter()
   const { addToast } = useToast()
   const ref: any = useRef()
+
+  const focusInput = useCallback(() => {
+    ref?.current?.focus()
+  }, [])
+
+  const handlers = { FOCUS_INPUT: focusInput }
 
   const fetcher = (url: string) => {
     return client.get(url, {
@@ -72,6 +85,17 @@ const Home = ({ jwt, token }: IProps): any => {
       setList(connections)
     }
   }, [connections, debouncedSearchTerm])
+
+  useEffect(() => {
+    if (typeof navigator !== 'undefined') {
+      if (/(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+        setActionKey(ACTION_KEY_APPLE)
+      } else {
+        setActionKey(ACTION_KEY_DEFAULT)
+      }
+      setBrowserDetected(true)
+    }
+  }, [])
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.code === 'ArrowUp' && cursor > 0) {
@@ -159,7 +183,7 @@ const Home = ({ jwt, token }: IProps): any => {
   }
 
   return (
-    <Fragment>
+    <GlobalHotKeys handlers={handlers} keyMap={keyMap}>
       <h1 className="text-lg font-medium text-gray-800 md:text-2xl">Manage your integrations</h1>
       {!data && !error && <ListPlaceholder />}
       {connections?.length && (
@@ -191,6 +215,12 @@ const Home = ({ jwt, token }: IProps): any => {
               onKeyDown={handleKeyDown}
               onChange={(event: ChangeEvent<HTMLInputElement>) => setSearchTerm(event.target.value)}
             />
+            <span
+              style={{ opacity: browserDetected ? '1' : '0' }}
+              className="hidden whitespace-nowrap sm:block ml-2 md:ml-4 text-gray-400 text-sm py-0.5 px-1.5 border border-gray-300 rounded-md absolute right-2.5 top-2.5"
+            >
+              <span className="mr-1 font-medium">{actionKey[0]}</span>K
+            </span>
           </div>
           {searchTerm.length ? (
             <div className="mt-6">
@@ -235,7 +265,7 @@ const Home = ({ jwt, token }: IProps): any => {
         </>
       )}
       {data && !connections?.length && <div className="mt-12">No integrations available.</div>}
-    </Fragment>
+    </GlobalHotKeys>
   )
 }
 
