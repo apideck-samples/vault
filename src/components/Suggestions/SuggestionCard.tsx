@@ -13,13 +13,13 @@ const SuggestionCard = ({ connection, toggleConnection }: IProps) => {
 
   const handleClick = async () => {
     setIsLoading(true)
-    toggleConnection(connection, !enabled).then(() => setTimeout(() => setIsLoading(false), 400))
+    toggleConnection(connection, !enabled).then(() => setTimeout(() => setIsLoading(false), 500))
   }
 
   return (
     <div
       className={classNames(
-        'cursor-pointer relative w-full sm:w-44 xl:w-48 px-6 pt-6 pb-4 font-medium hover:shadow-md border border-gray-300 rounded-md transition duration-150',
+        'mx-auto cursor-pointer relative w-full sm:w-44 xl:w-48 px-6 pt-6 pb-4 font-medium hover:shadow-md border border-gray-300 rounded-md transition duration-150',
         {
           'border-primary-600 border-2 text-gray-900 ': enabled && !isLoading,
           'text-gray-500 hover:text-gray-900': !enabled,
@@ -32,7 +32,7 @@ const SuggestionCard = ({ connection, toggleConnection }: IProps) => {
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="absolute w-6 h-6 text-gray-500 bg-white rounded-full -top-3 -right-3 animate-spin"
-          fill="none"
+          fill="white"
           viewBox="0 0 24 24"
           stroke="currentColor"
         >

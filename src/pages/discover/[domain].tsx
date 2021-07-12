@@ -6,6 +6,7 @@ import { JWTSession } from 'types/JWTSession'
 import LoadingSuggestionCard from 'components/Suggestions/LoadingSuggestionCard'
 import SuggestionCard from 'components/Suggestions/SuggestionCard'
 import { applySession } from 'next-session'
+import classNames from 'classnames'
 import client from 'lib/axios'
 import { options } from 'utils/sessionOptions'
 import { useRouter } from 'next/router'
@@ -112,7 +113,16 @@ const DiscoverDomainPage = ({ jwt, token, domain }: IProps) => {
             : ''}
         </p>
 
-        <div className="grid grid-cols-2 gap-4 mb-6 text-center md:grid-cols-3 md:gap-6 lg:gap-4 xl:gap-6">
+        <div
+          className={classNames('grid mb-6 text-center', {
+            'grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-0':
+              !loading && matchedConnections?.length === 1,
+            'grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-4 xl:gap-6':
+              !loading && matchedConnections?.length === 2,
+            'grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-4 xl:gap-6':
+              loading || (matchedConnections?.length && matchedConnections?.length > 2)
+          })}
+        >
           {loading ? [...Array(9).keys()].map((key) => <LoadingSuggestionCard key={key} />) : ''}
           {!loading &&
             matchedConnections?.map((connection) => {
