@@ -311,7 +311,7 @@ const Layout: React.FC<IProps> = ({
             { 'lg:overflow-hidden max-h-screen fixed': navIsOpen }
           )}
         >
-          <div className="flex flex-col max-w-4xl min-h-screen py-8 mx-4 sm:py-16 sm:mx-8 md:mx-12 lg:m-auto lg:py-32">
+          <div className="flex flex-col max-w-4xl py-8 mx-4 sm:py-16 sm:mx-8 md:mx-12 lg:m-auto lg:py-32">
             <Transition location={router.pathname}>{children}</Transition>
           </div>
         </main>
