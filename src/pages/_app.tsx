@@ -19,7 +19,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   let redirectUri = ''
 
   if (token && Object.keys(token).length > 0) {
-    consumerMetadata = token.consumerMetadata || defaults.consumerMetadata
+    consumerMetadata = token.consumer_metadata || defaults.consumer_metadata
     redirectUri = token.redirectUri
     theme = token.theme || defaults.theme
     if (typeof window !== 'undefined') window.localStorage.setItem('theme', JSON.stringify(theme))

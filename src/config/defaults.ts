@@ -1,5 +1,5 @@
 export const defaults = {
-  consumerMetadata: {
+  consumer_metadata: {
     account_name: 'Account Name',
     user_name: 'User name',
     image: 'https://unavatar.now.sh/jake'
