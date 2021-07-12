@@ -132,12 +132,14 @@ const DiscoverDomainPage = ({ jwt, token, domain }: IProps) => {
               ? [...Array(9).keys()].map((key) => <LoadingSuggestionCard key={key} />)
               : ''}
             {!loading &&
-              matchedConnections?.map((connection) => {
+              matchedConnections?.map((connection, i) => {
+                const delay = Math.max(0, i * 20)
                 return (
                   <SuggestionCard
                     connection={connection}
                     toggleConnection={toggleConnection}
                     key={connection?.id}
+                    delay={delay}
                   />
                 )
               })}
@@ -145,7 +147,7 @@ const DiscoverDomainPage = ({ jwt, token, domain }: IProps) => {
         </div>
       </div>
       {!loading ? (
-        <div className="text-center">
+        <div className="w-full text-center">
           <Link href="/">
             <Button text="Continue" size="large" />
           </Link>

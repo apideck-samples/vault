@@ -2,6 +2,7 @@ import { Button, TextInput } from '@apideck/components'
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from 'react'
 
 import { JWTSession } from 'types/JWTSession'
+import Link from 'next/link'
 import StepLayout from 'components/Suggestions/StepLayout'
 import { applySession } from 'next-session'
 import { options } from 'utils/sessionOptions'
@@ -45,6 +46,9 @@ const DiscoverPage = ({ token }: IProps) => {
               onChange={(e: ChangeEvent<HTMLInputElement>) => setDomain(e.currentTarget.value)}
               className="block max-w-xs mx-auto mb-6"
             />
+            <Link href="/">
+              <Button text="Skip" size="large" variant="outline" className="mr-3" />
+            </Link>
             <Button text="Continue" size="large" type="submit" />
           </form>
         </div>

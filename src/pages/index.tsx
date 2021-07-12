@@ -97,6 +97,13 @@ const Home = ({ jwt, token }: IProps): any => {
     }
   }, [])
 
+  useEffect(() => {
+    if (!data || error) return
+
+    const addedConnections = connections?.filter((connection) => connection.state !== 'available')
+    if (!addedConnections?.length) push('/discover')
+  }, [connections, data, error, push])
+
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.code === 'ArrowUp' && cursor > 0) {
       setCursor(cursor - 1)

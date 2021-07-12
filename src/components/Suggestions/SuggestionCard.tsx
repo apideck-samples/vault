@@ -1,13 +1,15 @@
 import { IConnection } from 'types/Connection'
+import { Transition } from '@headlessui/react'
 import classNames from 'classnames'
 import { useState } from 'react'
 
 interface IProps {
   connection: IConnection
   toggleConnection: (connection: IConnection, enabled: boolean) => Promise<any>
+  delay: number
 }
 
-const SuggestionCard = ({ connection, toggleConnection }: IProps) => {
+const SuggestionCard = ({ connection, toggleConnection, delay }: IProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const { name, icon, unified_api: unifiedApi, enabled } = connection
 
@@ -17,9 +19,17 @@ const SuggestionCard = ({ connection, toggleConnection }: IProps) => {
   }
 
   return (
-    <div
+    <Transition
+      show={true}
+      style={{ transitionDelay: `${delay}ms` }}
+      enter="transition ease-out duration-200"
+      enterFrom="transform opacity-50 scale-95"
+      enterTo="transform opacity-100 scale-100"
+      leave="transition ease-in duration-150"
+      leaveFrom="transform opacity-100 scale-100"
+      leaveTo="transform opacity-0"
       className={classNames(
-        'mx-auto cursor-pointer relative w-full sm:w-44 xl:w-48 px-6 pt-6 pb-4 font-medium hover:shadow-md border border-gray-300 rounded-md transition duration-150',
+        'mx-auto cursor-pointer relative w-full sm:w-44 xl:w-48 px-4 pt-6 pb-4 font-medium hover:shadow-md border border-gray-300 rounded-md transition duration-150',
         {
           'border-primary-600 border-2 text-gray-900 ': enabled && !isLoading,
           'text-gray-500 hover:text-gray-900': !enabled,
@@ -67,7 +77,7 @@ const SuggestionCard = ({ connection, toggleConnection }: IProps) => {
         <h4 className="text-base font-medium">{name}</h4>
         <p className="text-sm font-medium text-gray-500 uppercase">{unifiedApi}</p>
       </div>
-    </div>
+    </Transition>
   )
 }
 
