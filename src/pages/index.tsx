@@ -164,7 +164,7 @@ const Home = ({ jwt, token }: IProps): any => {
       setIsLoading(false)
       addToast({
         title: `Something went wrong`,
-        description: `The integration has nog been added. Please try again.`,
+        description: `The integration has not been added. Please try again.`,
         type: 'error',
         autoClose: true
       })
