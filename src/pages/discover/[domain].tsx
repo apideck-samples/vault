@@ -1,9 +1,12 @@
+import { Button, useToast } from '@apideck/components'
 import { useEffect, useState } from 'react'
 
 import { ErrorBlock } from 'components'
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
+import Link from 'next/link'
 import LoadingSuggestionCard from 'components/Suggestions/LoadingSuggestionCard'
+import StepLayout from 'components/Suggestions/StepLayout'
 import SuggestionCard from 'components/Suggestions/SuggestionCard'
 import { applySession } from 'next-session'
 import classNames from 'classnames'
@@ -11,7 +14,6 @@ import client from 'lib/axios'
 import { options } from 'utils/sessionOptions'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
-import { useToast } from '@apideck/components'
 
 interface IProps {
   jwt: string
@@ -98,45 +100,60 @@ const DiscoverDomainPage = ({ jwt, token, domain }: IProps) => {
   }
 
   return (
-    <div className="flex items-center justify-center max-w-3xl mx-auto">
-      <div className="w-full text-center">
-        <h2 className="mb-4 text-2xl font-extrabold tracking-tight text-center text-gray-900 sm:text-3xl">
-          {!loading && !matchedConnections?.length ? 'No suggestions found' : ''}
-          {loading || matchedConnections?.length ? 'Integration suggestions' : ''}
-        </h2>
+    <StepLayout prevPath="/discover" nextPath="/" stepIndex={1}>
+      <div className="flex items-center justify-center px-2">
+        <div className="text-center ">
+          {/* <h2 className="mb-4 text-2xl font-extrabold tracking-tight text-center text-gray-900 sm:text-3xl">
+            {!loading && !matchedConnections?.length ? 'No suggestions found' : ''}
+            {loading || matchedConnections?.length ? 'Integration suggestions' : ''}
+          </h2> */}
 
-        <p className="max-w-sm mx-auto mb-8 text-lg font-medium tracking-tight text-gray-500 sm:text-xl">
-          {loading ? 'Searching for relative suggestions...' : ''}
-          {!loading || matchedConnections?.length ? 'Select integrations you to enable them.' : ''}
-          {!loading && !connections?.length
-            ? 'It seem like you have not added any connectors.'
-            : ''}
-        </p>
+          <p className="max-w-sm mx-auto mb-8 text-lg font-medium tracking-tight text-gray-500 sm:text-xl">
+            {loading ? 'Searching for relative suggestions...' : ''}
+            {!loading && matchedConnections?.length
+              ? 'Select any suggested integrations to enable them.'
+              : ''}
+            {!loading && !connections?.length
+              ? 'It seem like you have not added any connectors.'
+              : ''}
+          </p>
 
-        <div
-          className={classNames('grid mb-6 text-center', {
-            'grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-0':
-              !loading && matchedConnections?.length === 1,
-            'grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-4 xl:gap-6':
-              !loading && matchedConnections?.length === 2,
-            'grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-4 xl:gap-6':
-              loading || (matchedConnections?.length && matchedConnections?.length > 2)
-          })}
-        >
-          {loading ? [...Array(9).keys()].map((key) => <LoadingSuggestionCard key={key} />) : ''}
-          {!loading &&
-            matchedConnections?.map((connection) => {
-              return (
-                <SuggestionCard
-                  connection={connection}
-                  toggleConnection={toggleConnection}
-                  key={connection?.id}
-                />
-              )
+          <div
+            className={classNames('grid mb-8 text-center', {
+              'grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-0':
+                !loading && matchedConnections?.length === 1,
+              'grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-4 xl:gap-6':
+                !loading && matchedConnections?.length === 2,
+              'grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-4 xl:gap-6':
+                loading || (matchedConnections?.length && matchedConnections?.length > 2)
             })}
+          >
+            {loading && !matchedConnections
+              ? [...Array(9).keys()].map((key) => <LoadingSuggestionCard key={key} />)
+              : ''}
+            {!loading &&
+              matchedConnections?.map((connection) => {
+                return (
+                  <SuggestionCard
+                    connection={connection}
+                    toggleConnection={toggleConnection}
+                    key={connection?.id}
+                  />
+                )
+              })}
+          </div>
         </div>
       </div>
-    </div>
+      {!loading ? (
+        <div className="text-center">
+          <Link href="/">
+            <Button text="Continue" size="large" />
+          </Link>
+        </div>
+      ) : (
+        ''
+      )}
+    </StepLayout>
   )
 }
 
