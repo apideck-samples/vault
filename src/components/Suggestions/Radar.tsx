@@ -26,10 +26,10 @@ const RadarSvg = ({ connections }: { connections: IConnection[] }) => {
       <defs>
         <rect id="path-1" x={0} y={0} width={1042} height={500} />
         <filter
-          x="-24.1%"
-          y="-25.3%"
-          width="149.4%"
-          height="149.4%"
+          x="-30.0%"
+          y="-30.0%"
+          width="160.0%"
+          height="158.6%"
           filterUnits="objectBoundingBox"
           id="filter-3"
         >
@@ -46,12 +46,12 @@ const RadarSvg = ({ connections }: { connections: IConnection[] }) => {
             <feMergeNode in="SourceGraphic" />
           </feMerge>
         </filter>
-        <circle id="path-4" cx="35.5167785" cy="35.3892617" r={35} />
+        <circle id="path-4" cx="32.5153606" cy="32.3986199" r="32.0422535" />
         <filter
-          x="-16.4%"
-          y="-10.7%"
-          width="132.9%"
-          height="132.9%"
+          x="-17.9%"
+          y="-11.7%"
+          width="135.9%"
+          height="135.9%"
           filterUnits="objectBoundingBox"
           id="filter-5"
         >
@@ -76,10 +76,10 @@ const RadarSvg = ({ connections }: { connections: IConnection[] }) => {
           />
         </filter>
         <filter
-          x="-21.3%"
-          y="-21.3%"
-          width="143.6%"
-          height="143.6%"
+          x="-26.7%"
+          y="-28.0%"
+          width="154.7%"
+          height="156.0%"
           filterUnits="objectBoundingBox"
           id="filter-6"
         >
@@ -96,12 +96,12 @@ const RadarSvg = ({ connections }: { connections: IConnection[] }) => {
             <feMergeNode in="SourceGraphic" />
           </feMerge>
         </filter>
-        <circle id="path-7" cx="29.2583893" cy="28.9228188" r="28.5" />
+        <circle id="path-7" cx="30.2672992" cy="29.9201574" r="29.4827586" />
         <filter
-          x="-16.7%"
-          y="-11.4%"
-          width="133.3%"
-          height="133.3%"
+          x="-16.1%"
+          y="-11.0%"
+          width="132.2%"
+          height="132.2%"
           filterUnits="objectBoundingBox"
           id="filter-8"
         >
@@ -125,7 +125,7 @@ const RadarSvg = ({ connections }: { connections: IConnection[] }) => {
             in="shadowBlurOuter1"
           />
         </filter>
-        <circle id="path-9" cx="31.9577576" cy="31.3398003" r={31} />
+        <circle id="path-9" cx="31.9427926" cy="31.334491" r={31} />
         <filter
           x="-18.6%"
           y="-12.1%"
@@ -154,12 +154,12 @@ const RadarSvg = ({ connections }: { connections: IConnection[] }) => {
             in="shadowBlurOuter1"
           />
         </filter>
-        <circle id="path-11" cx="29.795302" cy="30.4395973" r="29.5" />
+        <circle id="path-11" cx="31.2850671" cy="30.9923464" r="30.975" />
         <filter
-          x="-16.1%"
-          y="-11.0%"
-          width="132.2%"
-          height="132.2%"
+          x="-15.3%"
+          y="-10.5%"
+          width="130.7%"
+          height="130.7%"
           filterUnits="objectBoundingBox"
           id="filter-12"
         >
@@ -269,23 +269,23 @@ const RadarSvg = ({ connections }: { connections: IConnection[] }) => {
                   stroke="none"
                   strokeWidth={1}
                   fillRule="evenodd"
-                  transform="translate(376.260504, 376.260504)"
+                  transform="translate(387.000000, 388.000000)"
                   opacity="0.504779412"
                 >
                   <circle
                     id="Oval"
                     stroke="#E2E8F0"
                     strokeWidth="1.00336134"
-                    cx="124.157549"
-                    cy="124.157549"
-                    r="124.157549"
+                    cx="112.815098"
+                    cy="112.5"
+                    r="112.5"
                   />
                 </g>
               </g>
             </g>
             <g id="integrations" mask="url(#mask-2)">
-              <g transform="translate(182.397947, 45.334499)" id="Group">
-                <g filter="url(#filter-3)" transform="translate(520.602053, 217.665501)">
+              <g transform="translate(174.397947, 43.334499)" id="Group">
+                <g filter="url(#filter-3)" transform="translate(543.602053, 227.665501)">
                   <circle
                     id="Oval"
                     strokeOpacity="0.3"
@@ -293,24 +293,24 @@ const RadarSvg = ({ connections }: { connections: IConnection[] }) => {
                     strokeWidth="1.00336134"
                     fill="#FFFFFF"
                     fillRule="nonzero"
-                    cx="41.5369128"
-                    cy="41.3825503"
-                    r={41}
+                    cx="35.0311312"
+                    cy="34.9009461"
+                    r="34.5783133"
                   />
                   <image
                     id="Bitmap"
                     opacity="0.847817"
-                    x="19.5369128"
-                    y="20.3825503"
-                    width={44}
-                    height={44}
+                    x="16.4769144"
+                    y="17.1901027"
+                    width="37.1084337"
+                    height="37.1084337"
                     xlinkHref={
-                      (uniqueConnections?.length >= 6 && uniqueConnections[5].icon) ||
-                      '/img/integrations/intercom.png'
+                      (uniqueConnections?.length && uniqueConnections[0].icon) ||
+                      '/img/integrations/drive.png'
                     }
                   />
                 </g>
-                <g transform="translate(220.085274, 193.276239)">
+                <g transform="translate(200.602053, 180.665501)">
                   <g id="Oval" fillRule="nonzero">
                     <use fill="black" fillOpacity={1} filter="url(#filter-5)" xlinkHref="#path-4" />
                     <use
@@ -324,17 +324,17 @@ const RadarSvg = ({ connections }: { connections: IConnection[] }) => {
                   <image
                     id="icon128x128"
                     opacity="0.853814"
-                    x="17.5167785"
-                    y="16.3892617"
-                    width={38}
-                    height={38}
+                    x="16.0364874"
+                    y="15.0042537"
+                    width="34.7887324"
+                    height="34.7887324"
                     xlinkHref={
-                      (uniqueConnections?.length >= 1 && uniqueConnections[0].icon) ||
-                      '/img/integrations/dropbox.png'
+                      (uniqueConnections?.length >= 3 && uniqueConnections[2].icon) ||
+                      '/img/integrations/hubspot.png'
                     }
                   />
                 </g>
-                <g filter="url(#filter-6)" transform="translate(0.769838, 300.142011)">
+                <g filter="url(#filter-6)" transform="translate(0.602053, 302.665501)">
                   <circle
                     id="Oval"
                     strokeOpacity="0.3"
@@ -342,24 +342,24 @@ const RadarSvg = ({ connections }: { connections: IConnection[] }) => {
                     strokeWidth="1.00336134"
                     fill="#FFFFFF"
                     fillRule="nonzero"
-                    cx="47.3322148"
-                    cy="47.0234899"
-                    r="46.5"
+                    cx="37.765065"
+                    cy="37.518742"
+                    r="37.1010638"
                   />
                   <image
                     id="Bitmap"
                     opacity="0.852895"
-                    x="20.8322148"
-                    y="20.5234899"
-                    width={52}
-                    height={53}
+                    x="16.621448"
+                    y="16.3751249"
+                    width="41.4893617"
+                    height="42.287234"
                     xlinkHref={
                       (uniqueConnections?.length >= 2 && uniqueConnections[1].icon) ||
-                      '/img/integrations/drive.png'
+                      '/img/integrations/intercom.png'
                     }
                   />
                 </g>
-                <g transform="translate(411.843664, 62.242682)">
+                <g transform="translate(426.602053, 56.665501)">
                   <g id="Oval" fillRule="nonzero">
                     <use fill="black" fillOpacity={1} filter="url(#filter-8)" xlinkHref="#path-7" />
                     <use
@@ -373,17 +373,17 @@ const RadarSvg = ({ connections }: { connections: IConnection[] }) => {
                   <image
                     id="icon128x128"
                     opacity="0.85"
-                    x="14.7583893"
-                    y="15.4228188"
-                    width={29}
-                    height={29}
+                    x="15.2672992"
+                    y="15.9546401"
+                    width={30}
+                    height={30}
                     xlinkHref={
-                      (uniqueConnections?.length >= 3 && uniqueConnections[2].icon) ||
-                      '/img/integrations/hubspot.png'
+                      (uniqueConnections?.length >= 5 && uniqueConnections[4].icon) ||
+                      '/img/integrations/mailchimp.png'
                     }
                   />
                 </g>
-                <g transform="translate(117.644295, 0.325701)">
+                <g transform="translate(126.602053, 5.665501)">
                   <g id="Oval" fillRule="nonzero">
                     <use
                       fill="black"
@@ -402,20 +402,17 @@ const RadarSvg = ({ connections }: { connections: IConnection[] }) => {
                   <image
                     id="Bitmap"
                     opacity="0.85"
-                    x="14.9577576"
-                    y="14.3398003"
+                    x="15.7084176"
+                    y="15.100116"
                     width={33}
                     height={33}
                     xlinkHref={
-                      (uniqueConnections?.length >= 4 && uniqueConnections[3].icon) ||
+                      (uniqueConnections?.length >= 6 && uniqueConnections[5].icon) ||
                       '/img/integrations/drive.png'
                     }
                   />
                 </g>
-                <g
-                  transform="translate(582.306751, 61.725904)"
-                  className="rotate-reverse animation-duration--1s"
-                >
+                <g transform="translate(604.602053, 0.665501)">
                   <g id="Oval" fillRule="nonzero">
                     <use
                       fill="black"
@@ -434,13 +431,13 @@ const RadarSvg = ({ connections }: { connections: IConnection[] }) => {
                   <image
                     id="icon128x128"
                     opacity="0.85"
-                    x="13.295302"
-                    y="14.9395973"
-                    width={32}
-                    height={32}
+                    x="13.9600671"
+                    y="14.7173464"
+                    width="33.6"
+                    height="33.6"
                     xlinkHref={
-                      (uniqueConnections?.length >= 5 && uniqueConnections[4].icon) ||
-                      '/img/integrations/mailchimp.png'
+                      (uniqueConnections?.length >= 4 && uniqueConnections[3].icon) ||
+                      '/img/integrations/dropbox.png'
                     }
                   />
                 </g>
