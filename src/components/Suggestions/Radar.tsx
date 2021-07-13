@@ -1,12 +1,19 @@
 import { IConnection } from 'types/Connection'
 
 const Radar = ({ connections }: { connections: IConnection[] }) => (
-  <div className="absolute w-full -top-2 -z-10 opacity-90">
-    <New1 connections={connections} />
+  <div className="absolute top-0 w-full -z-10 opacity-90">
+    <RadarSvg connections={connections} />
   </div>
 )
 
-const New1 = ({ connections }: { connections: IConnection[] }) => {
+const RadarSvg = ({ connections }: { connections: IConnection[] }) => {
+  const uniqueConnections: IConnection[] = []
+
+  connections.map((connection) => {
+    const isPresent = uniqueConnections.find((con) => con.service_id === connection.service_id)
+    if (!isPresent) uniqueConnections.push(connection)
+  })
+
   return (
     <svg
       width="100%"
@@ -298,7 +305,7 @@ const New1 = ({ connections }: { connections: IConnection[] }) => {
                     width={44}
                     height={44}
                     xlinkHref={
-                      (connections?.length >= 6 && connections[5].icon) ||
+                      (uniqueConnections?.length >= 6 && uniqueConnections[5].icon) ||
                       '/img/integrations/intercom.png'
                     }
                   />
@@ -322,7 +329,7 @@ const New1 = ({ connections }: { connections: IConnection[] }) => {
                     width={38}
                     height={38}
                     xlinkHref={
-                      (connections?.length >= 1 && connections[0].icon) ||
+                      (uniqueConnections?.length >= 1 && uniqueConnections[0].icon) ||
                       '/img/integrations/dropbox.png'
                     }
                   />
@@ -347,7 +354,7 @@ const New1 = ({ connections }: { connections: IConnection[] }) => {
                     width={52}
                     height={53}
                     xlinkHref={
-                      (connections?.length >= 2 && connections[1].icon) ||
+                      (uniqueConnections?.length >= 2 && uniqueConnections[1].icon) ||
                       '/img/integrations/drive.png'
                     }
                   />
@@ -371,7 +378,7 @@ const New1 = ({ connections }: { connections: IConnection[] }) => {
                     width={29}
                     height={29}
                     xlinkHref={
-                      (connections?.length >= 3 && connections[2].icon) ||
+                      (uniqueConnections?.length >= 3 && uniqueConnections[2].icon) ||
                       '/img/integrations/hubspot.png'
                     }
                   />
@@ -400,7 +407,7 @@ const New1 = ({ connections }: { connections: IConnection[] }) => {
                     width={33}
                     height={33}
                     xlinkHref={
-                      (connections?.length >= 4 && connections[3].icon) ||
+                      (uniqueConnections?.length >= 4 && uniqueConnections[3].icon) ||
                       '/img/integrations/drive.png'
                     }
                   />
@@ -432,7 +439,7 @@ const New1 = ({ connections }: { connections: IConnection[] }) => {
                     width={32}
                     height={32}
                     xlinkHref={
-                      (connections?.length >= 5 && connections[4].icon) ||
+                      (uniqueConnections?.length >= 5 && uniqueConnections[4].icon) ||
                       '/img/integrations/mailchimp.png'
                     }
                   />
@@ -440,143 +447,6 @@ const New1 = ({ connections }: { connections: IConnection[] }) => {
               </g>
             </g>
           </g>
-        </g>
-      </g>
-    </svg>
-  )
-}
-
-const darkColor = '111'
-
-const RadarSvg = ({ connections }) => {
-  console.log(connections)
-  return (
-    <svg width="100%" height="auto" viewBox="0 0 1190 1190" xmlns="http://www.w3.org/2000/svg">
-      {/* <defs>
-      <linearGradient x1='135.035%' y1='-34.879%' x2='0%' y2='100%' id='linearGradient-1'>
-        <stop stopColor='#BE2AFA' offset='0%' />
-        <stop stopColor='#5C51CE' offset='100%' />
-      </linearGradient>
-    </defs> */}
-      <g fill="none" fillRule="evenodd" transform="translate(4, 0)">
-        <g id="radar">
-          <g id="circles-and-dots" fillRule="nonzero">
-            <g className="rotate animation-duration--80s">
-              <circle strokeWidth="2" opacity="0.1" cx="594" cy="594" r="594" stroke="#A2B0D0" />
-              <circle fill="#775AD8" cx="21" cy="750" r="7" />
-            </g>
-            <g className="rotate-reverse animation-duration--80s">
-              <circle strokeWidth="2" opacity="0.05" cx="594" cy="594" r="443" stroke="#A2B0D0" />
-              <circle fill="#775AD8" cx="160" cy="680" r="7" />
-              <circle fill="#775AD8" cx="818" cy="212" r="7" />
-            </g>
-            <g className="rotate animation-duration--80s">
-              <circle strokeWidth="2" opacity="0.1" cx="594" cy="594" r="345" stroke="#775AD8" />
-              <circle fill="#775AD8" cx="363" cy="338" r="7" />
-            </g>
-            <circle opacity="0.15" cx="594" cy="594" r="257" stroke="#A2B0D0" />
-            <g className="rotate-reverse animation-duration--80s">
-              <circle opacity="0.2" cx="594" cy="594" r="197" stroke="#A2B0D0" />
-              <circle fill="#775AD8" cx="488" cy="760" r="7" />
-            </g>
-            <g className="rotate animation-duration--80s">
-              <circle opacity="0.3" cx="594.5" cy="594.5" r="147.5" stroke="#A2B0D0" />
-              <circle fill="#775AD8" cx="712" cy="506" r="7" />
-            </g>
-            <circle opacity="0.35" cx="594.5" cy="594.5" r="107.5" stroke="#A2B0D0" />
-          </g>
-          <g id="integrations">
-            <g transform="translate(684 253)">
-              <circle
-                transform="translate(17 15)"
-                r="28"
-                fill="white"
-                fillRule="nonzero"
-                stroke="#A2B0D0"
-                strokeOpacity="0.3"
-              />
-              <image
-                width="35px"
-                height="30px"
-                preserveAspectRatio="xMidYMid slice"
-                xlinkHref={connections?.length && connections[0].icon}
-                opacity=".75"
-              />
-            </g>
-            <g transform="translate(819 504)">
-              <circle
-                transform="translate(16 16)"
-                r="28"
-                fill="white"
-                fillRule="nonzero"
-                stroke="#A2B0D0"
-                strokeOpacity="0.3"
-              />
-              <image
-                width="32px"
-                height="32px"
-                preserveAspectRatio="xMidYMid slice"
-                xlinkHref={connections?.length && connections[1].icon}
-                opacity=".75"
-              />
-            </g>
-            <g transform="translate(452 428)">
-              <circle
-                transform="translate(17 15)"
-                r="28"
-                fill="white"
-                fillRule="nonzero"
-                stroke="#A2B0D0"
-                strokeOpacity="0.3"
-              />
-              <image
-                width="35px"
-                height="31px"
-                preserveAspectRatio="xMidYMid slice"
-                xlinkHref={connections?.length && connections[2].icon}
-                opacity=".75"
-              />
-            </g>
-            <g transform="translate(331 661)">
-              <circle
-                transform="translate(19 20)"
-                r="28"
-                fill="white"
-                fillRule="nonzero"
-                stroke="#A2B0D0"
-                strokeOpacity="0.3"
-              />
-              <image
-                width="39px"
-                height="41px"
-                preserveAspectRatio="xMidYMid slice"
-                xlinkHref={connections?.length && connections[3].icon}
-                opacity=".75"
-              />
-            </g>
-            <g transform="translate(888 732)">
-              <circle
-                transform="translate(16 16)"
-                r="28"
-                fill="white"
-                fillRule="nonzero"
-                stroke="#A2B0D0"
-                strokeOpacity="0.3"
-              />
-              <image
-                width="32px"
-                height="32px"
-                preserveAspectRatio="xMidYMid slice"
-                xlinkHref={connections?.length && connections[4].icon}
-                opacity=".75"
-              />
-            </g>
-          </g>
-          <defs>
-            <clipPath id="myCircle">
-              <circle cx="250" cy="145" r="125" fill="#FFFFFF" />
-            </clipPath>
-          </defs>
         </g>
       </g>
     </svg>

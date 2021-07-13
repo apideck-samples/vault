@@ -63,7 +63,10 @@ const DiscoverPage = ({ jwt, token }: IProps) => {
     <StepLayout prevPath="/" nextPath={`/suggestions/${domain}`} stepIndex={0}>
       <div className="flex items-center justify-center max-w-3xl mx-auto bg-white">
         <div className="text-center">
-          <p className="max-w-md mb-8 text-lg font-medium tracking-tight text-gray-900 sm:text-xl">
+          <h1 className="mb-4 text-2xl font-medium tracking-tight text-center text-gray-900 sm:text-2xl">
+            {`Let's get started`}
+          </h1>
+          <p className="max-w-md mb-8 text-lg tracking-tight text-gray-900 sm:text-xl">
             We use technographics to suggest relevant integrations based on your domain.
           </p>
           <form onSubmit={getTech}>
