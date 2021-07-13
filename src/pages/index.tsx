@@ -97,6 +97,17 @@ const Home = ({ jwt, token }: IProps): any => {
     }
   }, [])
 
+  useEffect(() => {
+    if (!data || error) return
+
+    const addedConnections = connections?.filter((connection) => connection.state !== 'available')
+    const isOnBoarded = sessionStorage.getItem('isOnBoarded')
+    if (!addedConnections?.length && !isOnBoarded) {
+      push('/suggestions')
+      sessionStorage.setItem('isOnBoarded', 'true')
+    }
+  }, [connections, data, error, push])
+
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.code === 'ArrowUp' && cursor > 0) {
       setCursor(cursor - 1)
@@ -164,7 +175,7 @@ const Home = ({ jwt, token }: IProps): any => {
       setIsLoading(false)
       addToast({
         title: `Something went wrong`,
-        description: `The integration has nog been added. Please try again.`,
+        description: `The integration has not been added. Please try again.`,
         type: 'error',
         autoClose: true
       })

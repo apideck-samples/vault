@@ -1,9 +1,10 @@
+import { HiChevronLeft, HiHome } from 'react-icons/hi'
 import { ThemeContext, ThemeContextType } from 'utils/context'
 import { useContext, useEffect, useState } from 'react'
 
+import { FiCompass } from 'react-icons/fi'
 import Head from 'next/head'
 import Link from 'next/link'
-import MenuLeftIcon from 'mdi-react/MenuLeftIcon'
 import Router from 'next/router'
 import { Transition } from 'components'
 import classNames from 'classnames'
@@ -211,19 +212,50 @@ const Layout: React.FC<IProps> = ({
                   )}
                 </a>
               </Link>
-              <a
-                className="inline-flex items-center text-sm text-gray-500 group hover:text-gray-800"
-                href={redirectUri ? redirectUri : 'https://app.apideck.com'}
-                style={customTextColor ? { color: customTextColor } : {}}
-              >
-                <span className="text-gray-600 group-hover:text-gray-800">
-                  <MenuLeftIcon
-                    className="transition duration-150 ease-in-out"
+              <Link href="/">
+                <a
+                  className="flex items-center mb-6 text-sm text-gray-500 group hover:text-gray-800"
+                  style={customTextColor ? { color: customTextColor } : {}}
+                >
+                  <HiHome
+                    className="text-gray-600 transition duration-150 ease-in-out group-hover:text-gray-800"
                     color={customTextColor ? customTextColor : 'currentColor'}
                     size={20}
                   />
-                </span>
-                <span className="ml-2 leading-none transition duration-150 ease-in-out transform group-hover:-translate-x-1">
+
+                  <span className="ml-3 leading-none transition duration-150 ease-in-out transform group-hover:-translate-x-0.5">
+                    Integrations
+                  </span>
+                </a>
+              </Link>
+              <Link href="/suggestions">
+                <a
+                  className="flex items-center mb-6 text-sm text-gray-500 group hover:text-gray-800"
+                  style={customTextColor ? { color: customTextColor } : {}}
+                >
+                  <FiCompass
+                    className="text-gray-600 transition duration-150 ease-in-out group-hover:text-gray-800"
+                    color={customTextColor ? customTextColor : 'currentColor'}
+                    size={20}
+                  />
+
+                  <span className="ml-3 leading-none transition duration-150 ease-in-out transform group-hover:-translate-x-0.5">
+                    Suggestions
+                  </span>
+                </a>
+              </Link>
+              <a
+                className="flex items-center text-sm text-gray-500 group hover:text-gray-800"
+                href={redirectUri ? redirectUri : 'https://app.apideck.com'}
+                style={customTextColor ? { color: customTextColor } : {}}
+              >
+                <HiChevronLeft
+                  className="text-gray-600 transition duration-150 ease-in-out group-hover:text-gray-800"
+                  color={customTextColor ? customTextColor : 'currentColor'}
+                  size={20}
+                />
+
+                <span className="ml-3 leading-none transition duration-150 ease-in-out transform group-hover:-translate-x-0.5">
                   Return to application
                 </span>
               </a>
@@ -311,7 +343,7 @@ const Layout: React.FC<IProps> = ({
             { 'lg:overflow-hidden max-h-screen fixed': navIsOpen }
           )}
         >
-          <div className="flex flex-col max-w-4xl min-h-screen py-8 mx-4 sm:py-16 sm:mx-8 md:mx-12 lg:m-auto lg:py-32">
+          <div className="flex flex-col max-w-4xl py-8 mx-4 sm:py-16 sm:mx-8 md:mx-12 lg:m-auto lg:py-32">
             <Transition location={router.pathname}>{children}</Transition>
           </div>
         </main>
