@@ -59,7 +59,7 @@ const DiscoverPage = ({ jwt, token }: IProps) => {
   }
 
   return (
-    <StepLayout prevPath="/" nextPath={`/suggestions/${domain}`} stepIndex={0}>
+    <StepLayout stepIndex={0}>
       <div className="flex items-center justify-center max-w-3xl mx-auto bg-white">
         <div className="text-center">
           <h1 className="mb-4 text-2xl font-medium tracking-tight text-center text-gray-900 sm:text-2xl">

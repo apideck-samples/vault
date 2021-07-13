@@ -1,6 +1,7 @@
 import Link from 'next/link'
+import { ReactNode } from 'react'
 
-const StepLayout = ({ prevPath, nextPath, stepIndex, children }) => {
+const StepLayout = ({ stepIndex, children }: { stepIndex: number; children: ReactNode }) => {
   const steps = [
     {
       id: 'Step 1',
