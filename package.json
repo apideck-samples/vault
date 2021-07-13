@@ -41,7 +41,8 @@
     "react-markdown": "^6.0.2",
     "react-select": "^4.1.0",
     "react-transition-group": "^4.4.1",
-    "swr": "^0.4.2"
+    "swr": "^0.4.2",
+    "use-local-storage": "^2.2.1"
   },
   "devDependencies": {
     "@testing-library/dom": "^7.29.6",

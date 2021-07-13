@@ -228,7 +228,7 @@ const Layout: React.FC<IProps> = ({
                   </span>
                 </a>
               </Link>
-              <Link href="/discover">
+              <Link href="/suggestions">
                 <a
                   className="flex items-center mb-6 text-sm text-gray-500 group hover:text-gray-800"
                   style={customTextColor ? { color: customTextColor } : {}}
@@ -240,7 +240,7 @@ const Layout: React.FC<IProps> = ({
                   />
 
                   <span className="ml-3 leading-none transition duration-150 ease-in-out transform group-hover:-translate-x-0.5">
-                    Discover
+                    Suggestions
                   </span>
                 </a>
               </Link>

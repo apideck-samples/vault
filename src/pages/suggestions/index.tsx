@@ -2,7 +2,6 @@ import { Button, TextInput } from '@apideck/components'
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from 'react'
 
 import { JWTSession } from 'types/JWTSession'
-import Link from 'next/link'
 import StepLayout from 'components/Suggestions/StepLayout'
 import { applySession } from 'next-session'
 import { options } from 'utils/sessionOptions'
@@ -28,27 +27,24 @@ const DiscoverPage = ({ token }: IProps) => {
 
   const getTech = async (e: SyntheticEvent) => {
     e.preventDefault()
-    push(`/discover/${domain}`)
+    push(`/suggestions/${domain}`)
   }
 
   return (
-    <StepLayout prevPath="/" nextPath={`/discover/${domain}`} stepIndex={0}>
+    <StepLayout prevPath="/" nextPath={`/suggestions/${domain}`} stepIndex={0}>
       <div className="flex items-center justify-center max-w-3xl">
         <div className="text-center">
-          <p className="max-w-sm mb-6 text-lg font-medium tracking-tight text-gray-500 sm:text-xl">
-            Enter your domain and we will provide you with some suggestions.
+          <p className="max-w-md mb-6 text-lg font-medium tracking-tight text-gray-500 sm:text-xl">
+            We use technographics to suggest relevant integrations based on your domain
           </p>
           <form onSubmit={getTech}>
             <TextInput
               name="domain"
               value={domain}
-              placeholder="apideck.com"
+              placeholder="yourdomain.com"
               onChange={(e: ChangeEvent<HTMLInputElement>) => setDomain(e.currentTarget.value)}
               className="block max-w-xs mx-auto mb-6"
             />
-            <Link href="/">
-              <Button text="Skip" size="large" variant="outline" className="mr-3" />
-            </Link>
             <Button text="Continue" size="large" type="submit" />
           </form>
         </div>

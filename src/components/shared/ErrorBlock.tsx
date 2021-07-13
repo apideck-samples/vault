@@ -58,7 +58,14 @@ const ErrorBlock = ({ error, token = {} }: IErrorProps) => {
   const createVaultSession = async () => {
     const response = await fetch('/api/vault/sessions', {
       method: 'POST',
-      body: JSON.stringify({ redirect_uri: window.location.href })
+      body: JSON.stringify({
+        redirect_uri: window.location.href,
+        consumer_metadata: {
+          account_name: 'test@salesforce.com',
+          user_name: 'Test User',
+          image: 'https://unavatar.now.sh/jake'
+        }
+      })
     })
     return response.json()
   }

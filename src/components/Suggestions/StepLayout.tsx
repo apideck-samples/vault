@@ -5,7 +5,7 @@ const StepLayout = ({ prevPath, nextPath, stepIndex, children }) => {
     {
       id: 'Step 1',
       name: 'Enter domain',
-      href: stepIndex === 0 ? 'current' : '/discover',
+      href: stepIndex === 0 ? 'current' : '/suggestions',
       status: stepIndex === 0 ? 'current' : 'complete'
     },
     {

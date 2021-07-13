@@ -100,7 +100,7 @@ const DiscoverDomainPage = ({ jwt, token, domain }: IProps) => {
   }
 
   return (
-    <StepLayout prevPath="/discover" nextPath="/" stepIndex={1}>
+    <StepLayout prevPath="/suggestions" nextPath="/" stepIndex={1}>
       <div className="flex items-center justify-center px-2">
         <div className="text-center ">
           {/* <h2 className="mb-4 text-2xl font-extrabold tracking-tight text-center text-gray-900 sm:text-3xl">
@@ -108,10 +108,10 @@ const DiscoverDomainPage = ({ jwt, token, domain }: IProps) => {
             {loading || matchedConnections?.length ? 'Integration suggestions' : ''}
           </h2> */}
 
-          <p className="max-w-sm mx-auto mb-8 text-lg font-medium tracking-tight text-gray-500 sm:text-xl">
+          <p className="max-w-md mx-auto mb-8 text-lg font-medium tracking-tight text-gray-500 sm:text-xl">
             {loading ? 'Searching for relative suggestions...' : ''}
             {!loading && matchedConnections?.length
-              ? 'Select any suggested integrations to enable them.'
+              ? 'Select the integrations you would like to enable and manage settings.'
               : ''}
             {!loading && !connections?.length
               ? 'It seem like you have not added any connectors.'

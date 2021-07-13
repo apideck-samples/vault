@@ -19,6 +19,7 @@ import { applySession } from 'next-session'
 import client from 'lib/axios'
 import { options } from 'utils/sessionOptions'
 import useDebounce from 'utils/useDebounce'
+import useLocalStorage from 'use-local-storage'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
@@ -40,6 +41,7 @@ const Home = ({ jwt, token }: IProps): any => {
   const [isLoading, setIsLoading] = useState<boolean | string>(false)
   const [browserDetected, setBrowserDetected] = useState(false)
   const [actionKey, setActionKey] = useState(ACTION_KEY_DEFAULT)
+  const [isOnBoarded, setIsOnBoarded] = useLocalStorage<boolean>('onBoarded', false)
   const { push } = useRouter()
   const { addToast } = useToast()
   const ref: any = useRef()
@@ -101,8 +103,11 @@ const Home = ({ jwt, token }: IProps): any => {
     if (!data || error) return
 
     const addedConnections = connections?.filter((connection) => connection.state !== 'available')
-    if (!addedConnections?.length) push('/discover')
-  }, [connections, data, error, push])
+    if (!addedConnections?.length && !isOnBoarded) {
+      setIsOnBoarded(true)
+      push('/suggestions')
+    }
+  }, [connections, data, error, isOnBoarded, push])
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.code === 'ArrowUp' && cursor > 0) {
