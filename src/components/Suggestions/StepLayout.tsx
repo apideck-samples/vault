@@ -17,8 +17,8 @@ const StepLayout = ({ prevPath, nextPath, stepIndex, children }) => {
     { id: 'Step 3', name: 'Manage settings', href: '/', status: 'upcoming' }
   ]
   return (
-    <div className="w-full max-w-3xl mx-auto">
-      <nav aria-label="Progress" className="mb-12">
+    <div className="w-full max-w-4xl mx-auto bg-white">
+      <nav aria-label="Progress" className="mb-12 lg:mb-20">
         <ol className="space-y-4 md:flex md:space-y-0 md:space-x-8">
           {steps.map((step) => (
             <li key={step.name} className="md:flex-1">

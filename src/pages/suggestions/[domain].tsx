@@ -2,6 +2,7 @@ import { Button, useToast } from '@apideck/components'
 import { useEffect, useState } from 'react'
 
 import { ErrorBlock } from 'components'
+import { HiArrowRight } from 'react-icons/hi'
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
 import Link from 'next/link'
@@ -108,13 +109,13 @@ const DiscoverDomainPage = ({ jwt, token, domain }: IProps) => {
             {loading || matchedConnections?.length ? 'Integration suggestions' : ''}
           </h2> */}
 
-          <p className="max-w-md mx-auto mb-8 text-lg font-medium tracking-tight text-gray-500 sm:text-xl">
+          <p className="max-w-md mx-auto mb-8 text-lg font-medium tracking-tight text-gray-900 sm:text-xl">
             {loading ? 'Searching for relative suggestions...' : ''}
             {!loading && matchedConnections?.length
               ? 'Select the integrations you would like to enable and manage settings.'
               : ''}
             {!loading && !connections?.length
-              ? 'It seem like you have not added any connectors.'
+              ? 'It seems like you have not added any connectors.'
               : ''}
           </p>
 
@@ -149,7 +150,9 @@ const DiscoverDomainPage = ({ jwt, token, domain }: IProps) => {
       {!loading ? (
         <div className="w-full text-center">
           <Link href="/">
-            <Button text="Continue" size="large" />
+            <Button size="large" type="button">
+              Continue <HiArrowRight className="ml-2" />
+            </Button>
           </Link>
         </div>
       ) : (
