@@ -214,15 +214,16 @@ const Layout: React.FC<IProps> = ({
               </Link>
               <Link href="/">
                 <a
-                  className="flex items-center mb-6 text-sm text-gray-500 group hover:text-gray-800"
+                  className={classNames(
+                    'flex items-center mb-6 text-sm  group hover:text-gray-800',
+                    {
+                      'text-gray-800': router.pathname === '/',
+                      'text-gray-500': router.pathname !== '/'
+                    }
+                  )}
                   style={customTextColor ? { color: customTextColor } : {}}
                 >
-                  <HiHome
-                    className="text-gray-600 transition duration-150 ease-in-out group-hover:text-gray-800"
-                    color={customTextColor ? customTextColor : 'currentColor'}
-                    size={20}
-                  />
-
+                  <HiHome color={customTextColor ? customTextColor : 'currentColor'} size={20} />
                   <span className="ml-3 leading-none transition duration-150 ease-in-out transform group-hover:-translate-x-0.5">
                     Integrations
                   </span>
@@ -230,14 +231,16 @@ const Layout: React.FC<IProps> = ({
               </Link>
               <Link href="/suggestions">
                 <a
-                  className="flex items-center mb-6 text-sm text-gray-500 group hover:text-gray-800"
+                  className={classNames(
+                    'flex items-center mb-6 text-sm group hover:text-gray-800',
+                    {
+                      'text-gray-800': router.pathname === '/suggestions',
+                      'text-gray-500': router.pathname !== '/suggestions'
+                    }
+                  )}
                   style={customTextColor ? { color: customTextColor } : {}}
                 >
-                  <FiCompass
-                    className="text-gray-600 transition duration-150 ease-in-out group-hover:text-gray-800"
-                    color={customTextColor ? customTextColor : 'currentColor'}
-                    size={20}
-                  />
+                  <FiCompass color={customTextColor ? customTextColor : 'currentColor'} size={20} />
 
                   <span className="ml-3 leading-none transition duration-150 ease-in-out transform group-hover:-translate-x-0.5">
                     Suggestions
