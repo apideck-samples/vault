@@ -1,4 +1,4 @@
-import { Button, TextInput } from '@apideck/components'
+import { Button, TextInput, useToast } from '@apideck/components'
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from 'react'
 
 import { ErrorBlock } from 'components'
@@ -10,6 +10,7 @@ import StepLayout from 'components/Suggestions/StepLayout'
 import { Transition } from '@headlessui/react'
 import { applySession } from 'next-session'
 import client from 'lib/axios'
+import { isEmailProvider } from 'utils/isEmailProvider'
 import { options } from 'utils/sessionOptions'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
@@ -23,6 +24,7 @@ const DiscoverPage = ({ jwt, token }: IProps) => {
   const [domain, setDomain] = useState<string>()
   const { push } = useRouter()
   const consumer = token?.consumerMetadata
+  const { addToast } = useToast()
 
   const fetcher = (url: string) => {
     return client.get(url, {
@@ -42,14 +44,49 @@ const DiscoverPage = ({ jwt, token }: IProps) => {
   const connections: IConnection[] = data?.data?.data
 
   useEffect(() => {
-    if (consumer?.user_name?.includes('@'))
+    // Check if userName or AccountName is an email address
+    const regex = /\S+@\S+\.\S+/
+    if (
+      consumer?.user_name &&
+      regex.test(consumer.user_name) &&
+      !isEmailProvider(consumer.user_name)
+    ) {
+      // Set domain if userName is a business email address
       setDomain(consumer.user_name.substring(consumer.user_name.lastIndexOf('@') + 1))
-    if (consumer?.account_name?.includes('@'))
+    }
+
+    if (
+      consumer?.account_name &&
+      regex.test(consumer?.account_name) &&
+      !isEmailProvider(consumer.account_name)
+    ) {
+      // Set domain if accountName is a business email address
       setDomain(consumer.account_name.substring(consumer.account_name.lastIndexOf('@') + 1))
-  }, [consumer])
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const getTech = async (e: SyntheticEvent) => {
     e.preventDefault()
+    if (!domain?.length) {
+      addToast({
+        title: 'Please enter a domain',
+        description: '',
+        type: 'warning',
+        autoClose: true
+      })
+      return
+    }
+    if (domain.includes('/') || domain.includes('@')) {
+      addToast({
+        title: 'Please enter a valid domain',
+        description: `Example: salesforce.com`,
+        type: 'warning',
+        autoClose: true
+      })
+      return
+    }
     push(`/suggestions/${domain}`)
   }
 
@@ -59,7 +96,10 @@ const DiscoverPage = ({ jwt, token }: IProps) => {
   }
 
   return (
-    <StepLayout stepIndex={0}>
+    <StepLayout
+      stepIndex={0}
+      nextPath={domain?.length && !domain.includes('/') ? `/suggestions/${domain}` : ''}
+    >
       <div className="flex items-center justify-center max-w-3xl mx-auto bg-white">
         <div className="text-center">
           <h1 className="mb-4 text-2xl font-medium tracking-tight text-center text-gray-900 sm:text-2xl">

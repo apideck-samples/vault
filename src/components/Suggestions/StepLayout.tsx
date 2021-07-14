@@ -1,7 +1,18 @@
 import Link from 'next/link'
 import { ReactNode } from 'react'
+import { useToast } from '@apideck/components'
 
-const StepLayout = ({ stepIndex, children }: { stepIndex: number; children: ReactNode }) => {
+const StepLayout = ({
+  stepIndex,
+  nextPath,
+  children
+}: {
+  stepIndex: number
+  nextPath?: string
+  children: ReactNode
+}) => {
+  const { addToast } = useToast()
+  const secondStepPath = nextPath ? nextPath : ''
   const steps = [
     {
       id: 'Step 1',
@@ -12,11 +23,22 @@ const StepLayout = ({ stepIndex, children }: { stepIndex: number; children: Reac
     {
       id: 'Step 2',
       name: 'Select suggestions',
-      href: '',
+      href: secondStepPath || '',
       status: stepIndex === 1 ? 'current' : 'upcoming'
     },
     { id: 'Step 3', name: 'Manage settings', href: '/', status: 'upcoming' }
   ]
+
+  const validateStep = () => {
+    if (stepIndex === 0 && !nextPath) {
+      addToast({
+        title: 'Please enter a valid domain',
+        description: '',
+        type: 'warning',
+        autoClose: true
+      })
+    }
+  }
   return (
     <div className="w-full max-w-4xl mx-auto bg-white">
       <nav aria-label="Progress" className="mb-12 lg:mb-20">
@@ -46,7 +68,10 @@ const StepLayout = ({ stepIndex, children }: { stepIndex: number; children: Reac
                 </Link>
               ) : (
                 <Link href={step.href}>
-                  <a className="flex flex-col py-2 pl-4 border-l-4 border-gray-200 group hover:border-gray-300 md:pl-0 md:pt-4 md:pb-0 md:border-l-0 md:border-t-4">
+                  <a
+                    className="flex flex-col py-2 pl-4 border-l-4 border-gray-200 group hover:border-gray-300 md:pl-0 md:pt-4 md:pb-0 md:border-l-0 md:border-t-4"
+                    onClick={validateStep}
+                  >
                     <span className="text-xs font-semibold tracking-wide text-gray-500 uppercase group-hover:text-gray-700">
                       {step.id}
                     </span>
