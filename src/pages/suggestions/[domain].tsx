@@ -5,7 +5,6 @@ import { ErrorBlock } from 'components'
 import { HiArrowRight } from 'react-icons/hi'
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
-import Link from 'next/link'
 import LoadingSuggestionCard from 'components/Suggestions/LoadingSuggestionCard'
 import StepLayout from 'components/Suggestions/StepLayout'
 import SuggestionCard from 'components/Suggestions/SuggestionCard'
@@ -88,6 +87,21 @@ const DiscoverDomainPage = ({ jwt, token, domain }: IProps) => {
     }
   }
 
+  const finishSteps = () => {
+    const enabledConnections = connections.filter((con) => con.enabled)
+    if (enabledConnections.length) {
+      addToast({
+        title: `Well done!`,
+        description: `You have ${enabledConnections.length} enabled integration${
+          enabledConnections.length > 1 ? 's' : ''
+        }`,
+        type: 'success',
+        autoClose: true
+      })
+    }
+    push('/')
+  }
+
   const matchedConnections = suggestions
     ?.map((suggestion) => connections?.filter((con) => con.service_id === suggestion?.id))
     .flat()
@@ -149,11 +163,9 @@ const DiscoverDomainPage = ({ jwt, token, domain }: IProps) => {
       </div>
       {!loading ? (
         <div className="w-full text-center">
-          <Link href="/">
-            <Button size="large" type="button">
-              Continue <HiArrowRight className="ml-2" />
-            </Button>
-          </Link>
+          <Button size="large" type="button" onClick={finishSteps}>
+            Continue <HiArrowRight className="ml-2" />
+          </Button>
         </div>
       ) : (
         ''
