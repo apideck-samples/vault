@@ -70,14 +70,20 @@ const DiscoverPage = ({ jwt, token }: IProps) => {
   const getTech = async (e: SyntheticEvent) => {
     e.preventDefault()
     if (!domain?.length) {
-      addToast({ title: 'Please enter a domain', description: '', type: 'warning' })
+      addToast({
+        title: 'Please enter a domain',
+        description: '',
+        type: 'warning',
+        autoClose: true
+      })
       return
     }
-    if (domain.includes('/')) {
+    if (domain.includes('/') || domain.includes('@')) {
       addToast({
-        title: 'Please only add the domain',
+        title: 'Please enter a valid domain',
         description: `Example: salesforce.com`,
-        type: 'warning'
+        type: 'warning',
+        autoClose: true
       })
       return
     }
@@ -90,7 +96,10 @@ const DiscoverPage = ({ jwt, token }: IProps) => {
   }
 
   return (
-    <StepLayout stepIndex={0}>
+    <StepLayout
+      stepIndex={0}
+      nextPath={domain?.length && !domain.includes('/') ? `/suggestions/${domain}` : ''}
+    >
       <div className="flex items-center justify-center max-w-3xl mx-auto bg-white">
         <div className="text-center">
           <h1 className="mb-4 text-2xl font-medium tracking-tight text-center text-gray-900 sm:text-2xl">
