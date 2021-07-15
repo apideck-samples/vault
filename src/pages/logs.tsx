@@ -44,18 +44,21 @@ const LogsPage = ({ jwt, token }: IProps) => {
   }
 
   if (error) {
-    const errorObj = error?.response ? error.response : { status: 400 }
-    return <ErrorBlock error={errorObj} token={token} />
+    return <ErrorBlock error={error?.response} token={token} />
   }
 
   const isLoading = !data && !error
   const isLoadingMore = size > 0 && data && typeof data[size - 1] === 'undefined'
   const logs = data?.map((page) => page?.data?.data).flat() || []
-
   return (
     <div>
       <h1 className="mb-4 text-lg font-medium text-gray-800 md:mb-6 lg:mb-8 md:text-2xl">Logs</h1>
-      <LogsTable logs={logs} isLoading={isLoading} isLoadingMore={isLoadingMore} />
+      {!logs?.length && !isLoading ? <p>No logs found</p> : ''}
+      {logs?.length || isLoading ? (
+        <LogsTable logs={logs} isLoading={isLoading} isLoadingMore={isLoadingMore} />
+      ) : (
+        ''
+      )}
       {logs?.length && !isLoadingMore ? (
         <div className="flex flex-row-reverse py-4 border-gray-200">
           <Waypoint onEnter={() => nextPage()} />
