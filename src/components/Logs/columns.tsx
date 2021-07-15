@@ -16,9 +16,7 @@ export const columns: any[] = [
     Header: 'Status',
     accessor: 'status_code',
     // eslint-disable-next-line react/display-name
-    Cell: ({ value, row }: { value: string; row: any }) => (
-      <Status statusCode={value} success={row?.original?.success} />
-    )
+    Cell: ({ value }: { value: number }) => <Status statusCode={value} />
   },
   {
     Header: 'Path',
@@ -56,16 +54,15 @@ const Timestamp = ({ value }: { value: string }) => {
   )
 }
 
-const Status = ({ statusCode, success }: any) => {
+const Status = ({ statusCode }: { statusCode: number }) => {
+  const code = statusCode.toString()
   return (
     <span
-      className={classNames(
-        'inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full',
-        {
-          'text-green-800 bg-green-100': success,
-          'text-red-800 bg-red-100': !success
-        }
-      )}
+      className={classNames('inline-flex px-2 text-xs font-semibold leading-5 rounded-full', {
+        'text-green-800 bg-green-100': code?.charAt(0) !== '4' && code?.charAt(0) !== '5',
+        'text-yellow-800 bg-yellow-100': code?.charAt(0) === '4',
+        'text-red-800 bg-red-100': code?.charAt(0) === '5'
+      })}
     >
       {statusCode}
     </span>
