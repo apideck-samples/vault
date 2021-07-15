@@ -91,7 +91,7 @@ const Table = ({ logs, isLoading, isLoadingMore }: Props) => {
                 {row.cells.map((cell: any, i: number) => {
                   return (
                     <td
-                      className="py-4 space-x-6 text-sm font-medium text-gray-900 truncate whitespace-nowrap"
+                      className="max-w-xs py-4 space-x-6 text-sm font-medium text-gray-900 truncate whitespace-nowrap"
                       {...cell.getCellProps()}
                       key={`cell-${i}`}
                     >
