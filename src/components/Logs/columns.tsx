@@ -1,3 +1,4 @@
+import ImgWithFallback from 'components/shared/ImgWithFallback'
 import classNames from 'classnames'
 
 export const columns: any[] = [
@@ -32,13 +33,18 @@ export const columns: any[] = [
 ]
 
 const Service = ({ serviceId }: { serviceId: string }) => {
-  const getIcon = () => {
-    const iconName = serviceId === 'vault' ? 'apideck' : serviceId
+  const iconName = serviceId === 'vault' ? 'apideck' : serviceId
 
-    return `https://res.cloudinary.com/apideck/icons/${iconName === 'close' ? 'closeio' : iconName}`
-  }
-
-  return <img src={getIcon()} className="block w-8 h-8 text-gray-900 rounded" />
+  return (
+    <ImgWithFallback
+      src={`https://res.cloudinary.com/apideck/icons/${
+        iconName === 'close' ? 'closeio' : iconName
+      }`}
+      className="block w-8 h-8 text-gray-900 rounded"
+      alt={serviceId}
+      fallbackSrc={`https://via.placeholder.com/100?text=?`}
+    />
+  )
 }
 
 const Timestamp = ({ value }: { value: string }) => {

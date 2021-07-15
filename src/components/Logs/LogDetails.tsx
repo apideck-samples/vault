@@ -1,4 +1,5 @@
 import { ILog } from 'types/Log'
+import ImgWithFallback from 'components/shared/ImgWithFallback'
 
 const httpColors: { [key: string]: string } = {
   GET: '#006BE6',
@@ -33,12 +34,7 @@ const LogDetails = ({ log }: IProps) => {
   const durationString = duration ? formatToMsString(duration) : '-'
   const latencyString = latency ? formatToMsString(latency) : '-'
   const unifiedApiFormatted = unifiedApi.charAt(0).toUpperCase() + unifiedApi.slice(1).toLowerCase()
-
-  const getIcon = () => {
-    const iconName = service?.id === 'vault' ? 'apideck' : service?.id
-
-    return `https://res.cloudinary.com/apideck/icons/${iconName === 'close' ? 'closeio' : iconName}`
-  }
+  const iconName = service?.id === 'vault' ? 'apideck' : service?.id
 
   return (
     <div className="-m-5 overflow-hidden bg-white sm:rounded-lg">
@@ -52,10 +48,30 @@ const LogDetails = ({ log }: IProps) => {
             <span className="text-gray-700 dark:text-gray-400">{`${baseUrl}${path}`}</span>
           </p>
         </div>
-        <img src={getIcon()} className="block w-8 h-8 text-gray-900 rounded" />
+        {iconName ? (
+          <ImgWithFallback
+            src={`https://res.cloudinary.com/apideck/icons/${
+              iconName === 'close' ? 'closeio' : iconName
+            }`}
+            className="block w-8 h-8 text-gray-900 rounded"
+            alt={service.id}
+            loading="lazy"
+            fallbackSrc={`https://via.placeholder.com/100?text=?`}
+          />
+        ) : (
+          ''
+        )}
       </div>
       <div className="px-4 py-5 border-t border-gray-200 sm:px-6">
         <dl className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+          {service?.id ? (
+            <div className="sm:col-span-1">
+              <dt className="text-sm font-medium text-gray-500">Service</dt>
+              <dd className="mt-1 text-sm text-gray-900">{service?.name}</dd>
+            </div>
+          ) : (
+            ''
+          )}
           <div className="sm:col-span-1">
             <dt className="text-sm font-medium text-gray-500">API</dt>
             <dd className="mt-1 text-sm text-gray-900">
@@ -69,16 +85,6 @@ const LogDetails = ({ log }: IProps) => {
             <dd className="mt-1 text-sm text-gray-900">{statusCode}</dd>
           </div>
           <div className="sm:col-span-1">
-            <dt className="text-sm font-medium text-gray-500">Duration</dt>
-            <dd className="mt-1 text-sm text-gray-900">{durationString}</dd>
-          </div>
-          {latency > 0.9 && (
-            <div className="sm:col-span-1">
-              <dt className="text-sm font-medium text-gray-500">Latency</dt>
-              <dd className="mt-1 text-sm text-gray-900">{latencyString}</dd>
-            </div>
-          )}
-          <div className="sm:col-span-1">
             <dt className="text-sm font-medium text-gray-500">Date</dt>
             <dd className="mt-1 text-sm text-gray-900">
               <div>
@@ -90,6 +96,18 @@ const LogDetails = ({ log }: IProps) => {
             </dd>
           </div>
           <div className="sm:col-span-1">
+            <dt className="text-sm font-medium text-gray-500">Duration</dt>
+            <dd className="mt-1 text-sm text-gray-900">{durationString}</dd>
+          </div>
+          {latency > 0.9 ? (
+            <div className="sm:col-span-1">
+              <dt className="text-sm font-medium text-gray-500">Latency</dt>
+              <dd className="mt-1 text-sm text-gray-900">{latencyString}</dd>
+            </div>
+          ) : (
+            ''
+          )}
+          <div className="sm:col-span-1">
             <dt className="text-sm font-medium text-gray-500">API Style</dt>
             <dd className="mt-1 text-sm text-gray-900">{apiStyle}</dd>
           </div>
@@ -97,11 +115,13 @@ const LogDetails = ({ log }: IProps) => {
             <dt className="text-sm font-medium text-gray-500">Request ID</dt>
             <dd className="mt-1 text-sm text-gray-900">{id}</dd>
           </div>
-          {errorMessage && (
+          {errorMessage ? (
             <div className="sm:col-span-2">
               <dt className="text-sm font-medium text-gray-500">Error message</dt>
               <dd className="mt-1 text-sm text-gray-900">{errorMessage}</dd>
             </div>
+          ) : (
+            ''
           )}
         </dl>
       </div>
