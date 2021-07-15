@@ -111,7 +111,7 @@ const DiscoverPage = ({ jwt, token }: IProps) => {
           </form>
         </div>
       </div>
-      <div className="relative">
+      <div className="relative hidden lg:block">
         <div className="absolute inset-x-0 z-10 hidden h-16 pointer-events-none lg:block bg-gradient-to-b from-white" />
         <Transition
           show={connections?.length > 0}
