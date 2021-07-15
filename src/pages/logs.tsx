@@ -1,6 +1,3 @@
-import LoadingTable, { LoadingRow } from 'components/Logs/LoadingTable'
-
-import { Button } from '@apideck/components'
 import ErrorBlock from 'components/shared/ErrorBlock'
 import { JWTSession } from 'types/JWTSession'
 import LogsTable from 'components/Logs/LogsTable'

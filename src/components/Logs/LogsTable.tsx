@@ -1,6 +1,7 @@
 import { LoadingRow, LoadingTable } from './LoadingTable'
 import { useSortBy, useTable } from 'react-table'
 
+import LogDetails from './LogDetails'
 import { columns } from './columns'
 import { useModal } from '@apideck/components'
 
@@ -99,16 +100,12 @@ const Table = ({ logs, isLoading, isLoadingMore }: Props) => {
                   )
                 })}
                 <td className="py-4 text-sm font-medium text-right whitespace-nowrap">
-                  <button
-                    className="font-semibold text-blue-600 cursor-pointer hover:text-blue-900"
-                    onClick={() =>
-                      addModal('Details', {
-                        style: { maxWidth: 480 }
-                      })
-                    }
+                  <span
+                    className="font-semibold cursor-pointer text-primary-600 hover:text-primary-900"
+                    onClick={() => addModal(<LogDetails log={row.original} />)}
                   >
                     Details
-                  </button>
+                  </span>
                 </td>
               </tr>
             )
