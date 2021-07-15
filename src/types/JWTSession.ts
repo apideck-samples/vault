@@ -4,6 +4,7 @@ export interface JWTSession {
   consumerMetadata?: {
     account_name: string
     user_name: string
+    email: string
     image: string
   }
   exp: number
@@ -19,5 +20,8 @@ export interface JWTSession {
     sidepanel_text_color: string
     terms_url: string
     vault_name: string
+  }
+  settings?: {
+    show_logs: boolean
   }
 }

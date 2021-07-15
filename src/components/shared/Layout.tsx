@@ -1,4 +1,4 @@
-import { HiChevronLeft, HiHome } from 'react-icons/hi'
+import { HiChevronLeft, HiHome, HiOutlineDocumentText } from 'react-icons/hi'
 import { ThemeContext, ThemeContextType } from 'utils/context'
 import { useContext, useEffect, useState } from 'react'
 
@@ -12,6 +12,7 @@ import { useRouter } from 'next/router'
 
 interface IProps {
   consumerMetadata: { [key: string]: string }
+  showLogs: boolean
   redirectUri: string
   hideConsumerCard: boolean
 }
@@ -20,6 +21,7 @@ const Layout: React.FC<IProps> = ({
   consumerMetadata,
   redirectUri,
   hideConsumerCard = false,
+  showLogs,
   children
 }) => {
   const router = useRouter()
@@ -247,6 +249,30 @@ const Layout: React.FC<IProps> = ({
                   </span>
                 </a>
               </Link>
+              {showLogs ? (
+                <Link href="/logs">
+                  <a
+                    className={classNames(
+                      'flex items-center mb-6 text-sm  group hover:text-gray-800',
+                      {
+                        'text-gray-800': router.pathname === '/logs',
+                        'text-gray-500': router.pathname !== '/logs'
+                      }
+                    )}
+                    style={customTextColor ? { color: customTextColor } : {}}
+                  >
+                    <HiOutlineDocumentText
+                      color={customTextColor ? customTextColor : 'currentColor'}
+                      size={20}
+                    />
+                    <span className="ml-3 leading-none transition duration-150 ease-in-out transform group-hover:-translate-x-0.5">
+                      Logs
+                    </span>
+                  </a>
+                </Link>
+              ) : (
+                ''
+              )}
               <a
                 className="flex items-center text-sm text-gray-500 group hover:text-gray-800"
                 href={redirectUri ? redirectUri : 'https://app.apideck.com'}

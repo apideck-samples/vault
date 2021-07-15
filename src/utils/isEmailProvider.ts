@@ -9,6 +9,7 @@ export const isEmailProvider = (domain: string) => {
   if (/@hey.com\s*$/.test(domain)) return true
   if (/@msn.com\s*$/.test(domain)) return true
   if (/@live.com\s*$/.test(domain)) return true
+  if (/@test.com\s*$/.test(domain)) return true
 
   return false
 }
