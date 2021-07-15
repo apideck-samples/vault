@@ -25,7 +25,7 @@ const Table = ({ logs, isLoading, isLoadingMore }: IProps) => {
   if (isLoading) return <LoadingTable />
 
   return (
-    <div>
+    <div className="overflow-auto">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="">
           {headerGroups.map((headerGroup: any, i: number) => (
