@@ -47,7 +47,7 @@ const DiscoverPage = ({ jwt, token }: IProps) => {
     // Check if userName or AccountName is an email address
     const regex = /\S+@\S+\.\S+/
     if (consumer?.email && regex.test(consumer.email) && !isEmailProvider(consumer.email)) {
-      // Set domain if userName is a business email address
+      // Set domain if email is a business email address
       setDomain(consumer.email.substring(consumer.email.lastIndexOf('@') + 1))
     }
 
@@ -65,7 +65,7 @@ const DiscoverPage = ({ jwt, token }: IProps) => {
       })
       return
     }
-    if (domain.includes('/') || domain.includes('@')) {
+    if (domain.includes('@')) {
       addToast({
         title: 'Please enter a valid domain',
         description: `Example: salesforce.com`,
@@ -74,7 +74,9 @@ const DiscoverPage = ({ jwt, token }: IProps) => {
       })
       return
     }
-    push(`/suggestions/${domain}`)
+
+    const cleanDomain = domain.replace(/^(?:https?:\/\/)?(?:www\.)?/i, '').split('/')[0]
+    push(`/suggestions/${cleanDomain}`)
   }
 
   if (!data && error) {
