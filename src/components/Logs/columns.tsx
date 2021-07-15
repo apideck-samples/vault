@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-export const columns = [
+export const columns: any[] = [
   {
     Header: 'Service',
     accessor: 'service.id',

@@ -1,6 +1,6 @@
-import classNames from 'classnames'
+import { ILog } from 'types/Log'
 
-export const httpColors: { [key: string]: string } = {
+const httpColors: { [key: string]: string } = {
   GET: '#006BE6',
   POST: '#178387',
   PUT: '#CC4B00',
@@ -8,7 +8,11 @@ export const httpColors: { [key: string]: string } = {
   DELETE: '#DC2626'
 }
 
-const LogDetails = ({ log }) => {
+interface IProps {
+  log: ILog
+}
+
+const LogDetails = ({ log }: IProps) => {
   const {
     http_method: httpMethod,
     base_url: baseUrl,
@@ -19,7 +23,6 @@ const LogDetails = ({ log }) => {
     duration,
     id,
     service,
-    success,
     latency,
     timestamp,
     error_message: errorMessage,

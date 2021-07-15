@@ -1,17 +1,18 @@
 import { LoadingRow, LoadingTable } from './LoadingTable'
 import { useSortBy, useTable } from 'react-table'
 
+import { ILog } from 'types/Log'
 import LogDetails from './LogDetails'
 import { columns } from './columns'
 import { useModal } from '@apideck/components'
 
-interface Props {
-  logs: any[]
+interface IProps {
+  logs: ILog[]
   isLoading?: boolean
   isLoadingMore?: boolean
 }
 
-const Table = ({ logs, isLoading, isLoadingMore }: Props) => {
+const Table = ({ logs, isLoading, isLoadingMore }: IProps) => {
   const { getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
     {
       columns,
