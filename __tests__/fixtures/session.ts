@@ -5,6 +5,7 @@ export const token: JWTSession = {
   consumerId: 'test-consumer-ckgrs95l3y4er0b99qa37buj2',
   consumerMetadata: {
     account_name: 'Apideck Sandbox',
+    email: 'test@test.com',
     user_name: 'nick@apideck.com',
     image: 'https://unavatar.now.sh/nick@apideck.com'
   },
