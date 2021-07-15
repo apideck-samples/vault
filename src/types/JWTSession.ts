@@ -4,6 +4,7 @@ export interface JWTSession {
   consumerMetadata?: {
     account_name: string
     user_name: string
+    email: string
     image: string
   }
   exp: number

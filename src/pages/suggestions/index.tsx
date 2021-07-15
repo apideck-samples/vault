@@ -46,22 +46,9 @@ const DiscoverPage = ({ jwt, token }: IProps) => {
   useEffect(() => {
     // Check if userName or AccountName is an email address
     const regex = /\S+@\S+\.\S+/
-    if (
-      consumer?.user_name &&
-      regex.test(consumer.user_name) &&
-      !isEmailProvider(consumer.user_name)
-    ) {
+    if (consumer?.email && regex.test(consumer.email) && !isEmailProvider(consumer.email)) {
       // Set domain if userName is a business email address
-      setDomain(consumer.user_name.substring(consumer.user_name.lastIndexOf('@') + 1))
-    }
-
-    if (
-      consumer?.account_name &&
-      regex.test(consumer?.account_name) &&
-      !isEmailProvider(consumer.account_name)
-    ) {
-      // Set domain if accountName is a business email address
-      setDomain(consumer.account_name.substring(consumer.account_name.lastIndexOf('@') + 1))
+      setDomain(consumer.email.substring(consumer.email.lastIndexOf('@') + 1))
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
