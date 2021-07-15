@@ -14,7 +14,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   const [sessionExpired, setSessionExpired] = useState<boolean>(false)
   const { token } = pageProps
   let consumerMetadata = {}
-  let settings = {}
+  let showLogs = true
   const persistedTheme = typeof window !== 'undefined' && window.localStorage.getItem('theme')
   let theme = persistedTheme ? JSON.parse(persistedTheme) : {}
   let redirectUri = ''
@@ -24,7 +24,10 @@ const App = ({ Component, pageProps }: AppProps) => {
     redirectUri = token.redirectUri
     theme = token.theme || defaults.theme
     if (typeof window !== 'undefined') window.localStorage.setItem('theme', JSON.stringify(theme))
-    settings = token.settings || defaults.settings
+    console.log(token.settings)
+    if (token.settings && 'show_logs' in token.settings) {
+      showLogs = token.settings.show_logs
+    }
   }
 
   return (
@@ -37,7 +40,7 @@ const App = ({ Component, pageProps }: AppProps) => {
                 consumerMetadata={consumerMetadata}
                 redirectUri={redirectUri}
                 hideConsumerCard={sessionExpired}
-                settings={settings}
+                showLogs={showLogs}
               >
                 <Component {...pageProps} />
                 <SessionExpiredModal

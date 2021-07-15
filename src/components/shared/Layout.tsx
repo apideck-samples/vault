@@ -12,7 +12,7 @@ import { useRouter } from 'next/router'
 
 interface IProps {
   consumerMetadata: { [key: string]: string }
-  settings: { [key: string]: string }
+  showLogs: boolean
   redirectUri: string
   hideConsumerCard: boolean
 }
@@ -21,7 +21,7 @@ const Layout: React.FC<IProps> = ({
   consumerMetadata,
   redirectUri,
   hideConsumerCard = false,
-  settings,
+  showLogs,
   children
 }) => {
   const router = useRouter()
@@ -42,7 +42,6 @@ const Layout: React.FC<IProps> = ({
   } = theme
   const { user_name: userName, account_name: accountName, image } = consumerMetadata
   const hasConsumerMetadata = Object.keys(consumerMetadata).length > 0
-  const showLogs = settings?.show_logs
 
   useEffect(() => {
     const styles = { ...customStyles } as any

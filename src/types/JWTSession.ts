@@ -20,4 +20,7 @@ export interface JWTSession {
     terms_url: string
     vault_name: string
   }
+  settings?: {
+    show_logs: boolean
+  }
 }

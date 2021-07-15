@@ -5,6 +5,8 @@ import { Waypoint } from 'react-waypoint'
 import { applySession } from 'next-session'
 import client from 'lib/axios'
 import { options } from 'utils/sessionOptions'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 import { useSWRInfinite } from 'swr'
 
 interface IProps {
@@ -13,6 +15,7 @@ interface IProps {
 }
 
 const LogsPage = ({ jwt, token }: IProps) => {
+  const { push } = useRouter()
   const fetcher = (url: string) => {
     return client.get(url, {
       headers: {
@@ -72,6 +75,17 @@ const LogsPage = ({ jwt, token }: IProps) => {
 
 export const getServerSideProps = async ({ req, res }: any): Promise<any> => {
   await applySession(req, res, options)
+
+  // Redirect if show_logs is set to false in settings
+  const token = req.session?.token
+  if (token?.settings && 'show_logs' in token?.settings && !token?.settings?.show_logs) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/'
+      }
+    }
+  }
 
   return {
     props: {
