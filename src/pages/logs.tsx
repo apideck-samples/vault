@@ -8,7 +8,6 @@ import { Waypoint } from 'react-waypoint'
 import { applySession } from 'next-session'
 import client from 'lib/axios'
 import { options } from 'utils/sessionOptions'
-import { useEffect } from 'react'
 import { useSWRInfinite } from 'swr'
 
 interface IProps {
@@ -34,7 +33,7 @@ const LogsPage = ({ jwt, token }: IProps) => {
     return `/vault/logs?cursor=${cursor}`
   }
 
-  const { data, setSize, size, error, isValidating } = useSWRInfinite(getKey, fetcher, {
+  const { data, setSize, size, error } = useSWRInfinite(getKey, fetcher, {
     shouldRetryOnError: false,
     revalidateOnFocus: false
   })
@@ -59,7 +58,6 @@ const LogsPage = ({ jwt, token }: IProps) => {
   return (
     <div>
       <h1 className="mb-12 text-lg font-medium text-gray-800 md:text-2xl">Logs</h1>
-
       <LogsTable logs={logs} isLoading={isLoading} isLoadingMore={isLoadingMore} />
       {isLoading && 'isLoading'}
       {logs?.length && !isLoadingMore && (
