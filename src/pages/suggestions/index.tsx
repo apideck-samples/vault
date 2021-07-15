@@ -1,19 +1,18 @@
 import { Button, TextInput, useToast } from '@apideck/components'
-import { ChangeEvent, SyntheticEvent, useEffect, useState } from 'react'
-
+import { Transition } from '@headlessui/react'
 import { ErrorBlock } from 'components'
-import { HiArrowRight } from 'react-icons/hi'
-import { IConnection } from 'types/Connection'
-import { JWTSession } from 'types/JWTSession'
 import Radar from 'components/Suggestions/Radar'
 import StepLayout from 'components/Suggestions/StepLayout'
-import { Transition } from '@headlessui/react'
-import { applySession } from 'next-session'
 import client from 'lib/axios'
+import { applySession } from 'next-session'
+import { useRouter } from 'next/router'
+import { ChangeEvent, SyntheticEvent, useEffect, useState } from 'react'
+import { HiArrowRight } from 'react-icons/hi'
+import useSWR from 'swr'
+import { IConnection } from 'types/Connection'
+import { JWTSession } from 'types/JWTSession'
 import { isEmailProvider } from 'utils/isEmailProvider'
 import { options } from 'utils/sessionOptions'
-import { useRouter } from 'next/router'
-import useSWR from 'swr'
 
 interface IProps {
   jwt: string
@@ -95,7 +94,7 @@ const DiscoverPage = ({ jwt, token }: IProps) => {
             {`Let's get started`}
           </h1>
           <p className="max-w-md mb-8 text-lg tracking-tight text-gray-900 sm:text-xl">
-            We use technographics to suggest relevant integrations based on your domain.
+            We use technographics to suggest relevant integrations based on your technology stack.
           </p>
           <form onSubmit={getTech}>
             <TextInput

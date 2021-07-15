@@ -1,3 +1,9 @@
+import { TextInput, useToast } from '@apideck/components'
+import { ConnectionCard, ConnectionsList, ErrorBlock, ListPlaceholder } from 'components'
+import client from 'lib/axios'
+import { applySession } from 'next-session'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import {
   ChangeEvent,
   KeyboardEvent,
@@ -7,20 +13,13 @@ import {
   useRef,
   useState
 } from 'react'
-import { ConnectionCard, ConnectionsList, ErrorBlock, ListPlaceholder } from 'components'
-import { TextInput, useToast } from '@apideck/components'
-
 import { GlobalHotKeys } from 'react-hotkeys'
+import useSWR from 'swr'
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
-import Link from 'next/link'
 import { SessionExpiredModalContext } from 'utils/context'
-import { applySession } from 'next-session'
-import client from 'lib/axios'
 import { options } from 'utils/sessionOptions'
 import useDebounce from 'utils/useDebounce'
-import { useRouter } from 'next/router'
-import useSWR from 'swr'
 
 const keyMap = { FOCUS_INPUT: ['command+k', 'control+k'] }
 const ACTION_KEY_DEFAULT = ['Ctrl ', 'Control']
@@ -153,7 +152,7 @@ const Home = ({ jwt, token }: IProps): any => {
 
   const handleClick = (connection: IConnection, i: number) => {
     if (cursor !== i) setCursor(i)
-    if (connection.state !== 'available') {
+    if (connection?.state !== 'available') {
       push(`/integrations/${connection.unified_api}/${connection.service_id}`)
       return
     }
