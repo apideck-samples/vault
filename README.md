@@ -92,6 +92,10 @@ You should now be able to make requests to the Vault API.
 
 By default, the Vault will match the colors of your Apideck ecosystem. If you haven't made any changes in the theming settings of your ecosystem, you could also overwrite the default settings inside `src/config/defaults` or send a `theme` object in the body of the `session` request.
 
+#### Logs
+
+By default, the logs are show. If you want to hide the logs, send `show_logs: false` inside the `settings` object when creating a session or change the default settings inside `src/config/defaults`.
+
 ## Hosted Vault
 
 A hosted version of the Vault is a simple solution, so you don't need to build your own UI to handle the integration settings and authentication. The Hosted Vault is a great way to explore Unify without needing to build an integrations overview to get started. Visit https://app.apideck.com/ to learn more.

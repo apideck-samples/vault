@@ -13,5 +13,8 @@ export const defaults = {
     terms_url: 'https://www.termsfeed.com/terms-conditions/957c85c1b089ae9e3219c83eff65377e',
     vault_name: 'Vault Sample Project',
     logo: ''
+  },
+  settings: {
+    show_logs: true
   }
 }

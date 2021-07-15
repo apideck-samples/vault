@@ -12,6 +12,7 @@ import { useRouter } from 'next/router'
 
 interface IProps {
   consumerMetadata: { [key: string]: string }
+  settings: { [key: string]: string }
   redirectUri: string
   hideConsumerCard: boolean
 }
@@ -20,6 +21,7 @@ const Layout: React.FC<IProps> = ({
   consumerMetadata,
   redirectUri,
   hideConsumerCard = false,
+  settings,
   children
 }) => {
   const router = useRouter()
@@ -40,6 +42,7 @@ const Layout: React.FC<IProps> = ({
   } = theme
   const { user_name: userName, account_name: accountName, image } = consumerMetadata
   const hasConsumerMetadata = Object.keys(consumerMetadata).length > 0
+  const showLogs = settings?.show_logs
 
   useEffect(() => {
     const styles = { ...customStyles } as any
@@ -247,26 +250,30 @@ const Layout: React.FC<IProps> = ({
                   </span>
                 </a>
               </Link>
-              <Link href="/logs">
-                <a
-                  className={classNames(
-                    'flex items-center mb-6 text-sm  group hover:text-gray-800',
-                    {
-                      'text-gray-800': router.pathname === '/logs',
-                      'text-gray-500': router.pathname !== '/logs'
-                    }
-                  )}
-                  style={customTextColor ? { color: customTextColor } : {}}
-                >
-                  <HiOutlineDocumentText
-                    color={customTextColor ? customTextColor : 'currentColor'}
-                    size={20}
-                  />
-                  <span className="ml-3 leading-none transition duration-150 ease-in-out transform group-hover:-translate-x-0.5">
-                    Logs
-                  </span>
-                </a>
-              </Link>
+              {showLogs ? (
+                <Link href="/logs">
+                  <a
+                    className={classNames(
+                      'flex items-center mb-6 text-sm  group hover:text-gray-800',
+                      {
+                        'text-gray-800': router.pathname === '/logs',
+                        'text-gray-500': router.pathname !== '/logs'
+                      }
+                    )}
+                    style={customTextColor ? { color: customTextColor } : {}}
+                  >
+                    <HiOutlineDocumentText
+                      color={customTextColor ? customTextColor : 'currentColor'}
+                      size={20}
+                    />
+                    <span className="ml-3 leading-none transition duration-150 ease-in-out transform group-hover:-translate-x-0.5">
+                      Logs
+                    </span>
+                  </a>
+                </Link>
+              ) : (
+                ''
+              )}
               <a
                 className="flex items-center text-sm text-gray-500 group hover:text-gray-800"
                 href={redirectUri ? redirectUri : 'https://app.apideck.com'}
