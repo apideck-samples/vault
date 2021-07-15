@@ -94,7 +94,7 @@ By default, the Vault will match the colors of your Apideck ecosystem. If you ha
 
 #### Logs
 
-By default, the logs are show. If you want to hide the logs, send `show_logs: false` inside the `settings` object when creating a session or change the default settings inside `src/config/defaults`.
+By default, the logs are shown. If you want to hide the logs view, send `show_logs: false` inside the `settings` object when creating a session or change the default settings inside `src/config/defaults`.
 
 ## Hosted Vault
 

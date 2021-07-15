@@ -5,8 +5,6 @@ import { Waypoint } from 'react-waypoint'
 import { applySession } from 'next-session'
 import client from 'lib/axios'
 import { options } from 'utils/sessionOptions'
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
 import { useSWRInfinite } from 'swr'
 
 interface IProps {
@@ -15,7 +13,6 @@ interface IProps {
 }
 
 const LogsPage = ({ jwt, token }: IProps) => {
-  const { push } = useRouter()
   const fetcher = (url: string) => {
     return client.get(url, {
       headers: {
