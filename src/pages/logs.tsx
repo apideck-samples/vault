@@ -54,7 +54,7 @@ const LogsPage = ({ jwt, token }: IProps) => {
 
   return (
     <div>
-      <h1 className="mb-12 text-lg font-medium text-gray-800 md:text-2xl">Logs</h1>
+      <h1 className="mb-4 text-lg font-medium text-gray-800 md:mb-6 lg:mb-8 md:text-2xl">Logs</h1>
       <LogsTable logs={logs} isLoading={isLoading} isLoadingMore={isLoadingMore} />
       {isLoading && 'isLoading'}
       {logs?.length && !isLoadingMore && (

@@ -3,6 +3,7 @@ import { useSortBy, useTable } from 'react-table'
 
 import { ILog } from 'types/Log'
 import LogDetails from './LogDetails'
+import { Transition } from '@headlessui/react'
 import { columns } from './columns'
 import { useModal } from '@apideck/components'
 
@@ -33,7 +34,7 @@ const Table = ({ logs, isLoading, isLoadingMore }: IProps) => {
               {headerGroup.headers.map((column: any, i: number) => (
                 <th
                   key={`column-${i}`}
-                  className="py-3 space-x-6 text-xs tracking-wide text-left text-gray-500 uppercase font-semi-bold"
+                  className="py-3 pr-1 space-x-6 text-xs tracking-wide text-left text-gray-500 uppercase font-semi-bold"
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                 >
                   {column.render('Header')}
@@ -88,7 +89,18 @@ const Table = ({ logs, isLoading, isLoadingMore }: IProps) => {
             prepareRow(row)
 
             return (
-              <tr {...row.getRowProps()} key={`row-${i}`}>
+              <Transition
+                show={true}
+                enter="transition ease-out duration-300"
+                enterFrom="transform opacity-30"
+                enterTo="transform opacity-100"
+                leave="transition ease-in duration-300"
+                leaveFrom="transform opacity-100"
+                leaveTo="transform opacity-0"
+                as="tr"
+                {...row.getRowProps()}
+                key={`row-${i}`}
+              >
                 {row.cells.map((cell: any, i: number) => {
                   return (
                     <td
@@ -108,7 +120,7 @@ const Table = ({ logs, isLoading, isLoadingMore }: IProps) => {
                     Details
                   </span>
                 </td>
-              </tr>
+              </Transition>
             )
           })}
         </tbody>
