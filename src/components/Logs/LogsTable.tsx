@@ -92,7 +92,7 @@ const Table = ({ logs, isLoading, isLoadingMore }: IProps) => {
               <Transition
                 show={true}
                 enter="transition ease-out duration-300"
-                enterFrom="transform opacity-30"
+                enterFrom="transform opacity-40"
                 enterTo="transform opacity-100"
                 leave="transition ease-in duration-300"
                 leaveFrom="transform opacity-100"

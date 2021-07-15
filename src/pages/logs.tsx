@@ -25,9 +25,9 @@ const LogsPage = ({ jwt, token }: IProps) => {
 
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData?.data?.data?.length) return null
-    if (pageIndex === 0) return `/vault/logs`
+    if (pageIndex === 0) return `/vault/logs?filter[exclude_unified_apis][0]=vault`
     const cursor = previousPageData?.data?.meta?.cursors?.next
-    return `/vault/logs?cursor=${cursor}`
+    return `/vault/logs?filter[exclude_unified_apis][0]=vault&cursor=${cursor}`
   }
 
   const { data, setSize, size, error } = useSWRInfinite(getKey, fetcher, {
@@ -56,11 +56,12 @@ const LogsPage = ({ jwt, token }: IProps) => {
     <div>
       <h1 className="mb-4 text-lg font-medium text-gray-800 md:mb-6 lg:mb-8 md:text-2xl">Logs</h1>
       <LogsTable logs={logs} isLoading={isLoading} isLoadingMore={isLoadingMore} />
-      {isLoading && 'isLoading'}
-      {logs?.length && !isLoadingMore && (
+      {logs?.length && !isLoadingMore ? (
         <div className="flex flex-row-reverse py-4 border-gray-200">
           <Waypoint onEnter={() => nextPage()} />
         </div>
+      ) : (
+        ''
       )}
     </div>
   )
