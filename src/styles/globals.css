@@ -2,21 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'basier_circle';
-  src: url('/fonts/basier_circle_regular-webfont.woff2') format('woff2'),
-    url('/fonts/basier_circle_regular-webfont.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'basier_circle';
-  src: url('/fonts/basier_circle_medium-webfont.woff2') format('woff2'),
-    url('/fonts/basier_circle_medium-webfont.woff') format('woff');
-  font-weight: 500;
-  font-style: normal;
-}
-
 body {
   @apply antialiased text-gray-800 font-basier-circle;
 }

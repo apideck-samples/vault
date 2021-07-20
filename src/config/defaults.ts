@@ -6,7 +6,7 @@ export const defaults = {
     image: 'https://unavatar.now.sh/jake'
   },
   theme: {
-    favicon: 'https://www.apideck.com/favicon.ico',
+    favicon: '',
     primary_color: '',
     privacy_url: 'https://compliance.apideck.com/privacy-policy',
     sidepanel_background_color: '',
