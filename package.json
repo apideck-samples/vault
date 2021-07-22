@@ -22,7 +22,7 @@
     "@apideck/components": "^0.6.4",
     "@bugsnag/js": "^7.7.0",
     "@bugsnag/plugin-react": "^7.7.0",
-    "@headlessui/react": "^0.3.1",
+    "@headlessui/react": "^0.3.2",
     "axios": "^0.21.1",
     "camelcase-keys": "^6.2.2",
     "classnames": "^2.2.6",
