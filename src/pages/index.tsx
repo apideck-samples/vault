@@ -196,7 +196,7 @@ const Home = ({ jwt, token }: IProps): any => {
     <GlobalHotKeys handlers={handlers} keyMap={keyMap}>
       <h1 className="text-lg font-medium text-gray-800 md:text-2xl">Manage your integrations</h1>
       {!data && !error ? <ListPlaceholder /> : ''}
-      {connections?.length && (
+      {connections?.length ? (
         <>
           <div className="relative mt-6 lg:mt-8">
             <div className="absolute left-0 flex items-center pt-2.5 md:pt-3 pl-3 pointer-events-none">
@@ -273,6 +273,8 @@ const Home = ({ jwt, token }: IProps): any => {
             })
           )}
         </>
+      ) : (
+        ''
       )}
       {data && !connections?.length && <div className="mt-12">No integrations available.</div>}
     </GlobalHotKeys>
