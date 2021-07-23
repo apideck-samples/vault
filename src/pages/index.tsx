@@ -195,7 +195,7 @@ const Home = ({ jwt, token }: IProps): any => {
   return (
     <GlobalHotKeys handlers={handlers} keyMap={keyMap}>
       <h1 className="text-lg font-medium text-gray-800 md:text-2xl">Manage your integrations</h1>
-      {!data && !error && <ListPlaceholder />}
+      {!data && !error ? <ListPlaceholder /> : ''}
       {connections?.length && (
         <>
           <div className="relative mt-6 lg:mt-8">
