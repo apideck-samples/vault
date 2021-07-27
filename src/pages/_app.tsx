@@ -1,18 +1,21 @@
-import { ModalProvider, ToastProvider } from '@apideck/components'
+import '../styles/globals.css'
+
 import { Layout, SessionExpiredModal } from 'components'
-import { defaults } from 'config/defaults'
-import { applySession } from 'next-session'
-import { AppProps } from 'next/app'
+import { ModalProvider, ToastProvider } from '@apideck/components'
 import React, { Fragment, useState } from 'react'
 import { SessionExpiredModalContext, ThemeContext } from 'utils/context'
+
+import { AppProps } from 'next/app'
+import { applySession } from 'next-session'
+import { defaults } from 'config/defaults'
 import { options } from 'utils/sessionOptions'
-import '../styles/globals.css'
 
 const App = ({ Component, pageProps }: AppProps) => {
   const [sessionExpired, setSessionExpired] = useState<boolean>(false)
   const { token } = pageProps
   let consumerMetadata = {}
   let showLogs = true
+  const sandboxMode = token?.settings?.sandbox_mode
   const persistedTheme = typeof window !== 'undefined' && window.localStorage.getItem('theme')
   let theme = persistedTheme ? JSON.parse(persistedTheme) : {}
   let redirectUri = ''
@@ -38,6 +41,7 @@ const App = ({ Component, pageProps }: AppProps) => {
                 redirectUri={redirectUri}
                 hideConsumerCard={sessionExpired}
                 showLogs={showLogs}
+                sandboxMode={sandboxMode}
               >
                 <Component {...pageProps} />
                 <SessionExpiredModal
