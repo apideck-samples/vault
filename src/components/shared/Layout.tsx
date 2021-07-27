@@ -1,14 +1,12 @@
-import { HiChevronLeft, HiHome, HiOutlineDocumentText } from 'react-icons/hi'
-import { ThemeContext, ThemeContextType } from 'utils/context'
-import { useContext, useEffect, useState } from 'react'
-
-import { FiCompass } from 'react-icons/fi'
+import classNames from 'classnames'
+import { Transition } from 'components'
 import Head from 'next/head'
 import Link from 'next/link'
-import Router from 'next/router'
-import { Transition } from 'components'
-import classNames from 'classnames'
-import { useRouter } from 'next/router'
+import Router, { useRouter } from 'next/router'
+import { useContext, useEffect, useState } from 'react'
+import { FiCompass } from 'react-icons/fi'
+import { HiChevronLeft, HiHome, HiOutlineDocumentText } from 'react-icons/hi'
+import { ThemeContext, ThemeContextType } from 'utils/context'
 
 interface IProps {
   consumerMetadata: { [key: string]: string }
@@ -311,7 +309,7 @@ const Layout: React.FC<IProps> = ({
               )}
               <a
                 className="inline-flex items-center mb-8"
-                href="https://www.apideck.com/products/unify"
+                href="https://www.apideck.com/products/vault"
               >
                 <span
                   className="text-sm text-gray-600"
@@ -332,12 +330,6 @@ const Layout: React.FC<IProps> = ({
                     fill={customTextColor ? customTextColor : 'currentColor'}
                   />
                 </svg>
-                <span
-                  className="text-sm leading-none text-gray-900 uppercase"
-                  style={customTextColor ? { color: customTextColor } : {}}
-                >
-                  Unify
-                </span>
               </a>
               <ul>
                 <li className="inline-block mr-6">
