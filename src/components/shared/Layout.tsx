@@ -6,6 +6,7 @@ import { FiCompass } from 'react-icons/fi'
 import Head from 'next/head'
 import Link from 'next/link'
 import Router from 'next/router'
+import SandboxBanner from './SandboxBanner'
 import { Transition } from 'components'
 import classNames from 'classnames'
 import { useRouter } from 'next/router'
@@ -15,6 +16,7 @@ interface IProps {
   showLogs: boolean
   redirectUri: string
   hideConsumerCard: boolean
+  sandboxMode: boolean
 }
 
 const Layout: React.FC<IProps> = ({
@@ -22,6 +24,7 @@ const Layout: React.FC<IProps> = ({
   redirectUri,
   hideConsumerCard = false,
   showLogs,
+  sandboxMode = false,
   children
 }) => {
   const router = useRouter()
@@ -332,14 +335,8 @@ const Layout: React.FC<IProps> = ({
                     fill={customTextColor ? customTextColor : 'currentColor'}
                   />
                 </svg>
-                <span
-                  className="text-sm leading-none text-gray-900 uppercase"
-                  style={customTextColor ? { color: customTextColor } : {}}
-                >
-                  Unify
-                </span>
               </a>
-              <ul>
+              <ul className={sandboxMode ? 'pb-4' : ''}>
                 <li className="inline-block mr-6">
                   <a
                     className="text-sm text-gray-500 hover:text-gray-800"
@@ -372,6 +369,7 @@ const Layout: React.FC<IProps> = ({
             { 'lg:overflow-hidden max-h-screen fixed': navIsOpen }
           )}
         >
+          {sandboxMode ? <SandboxBanner /> : null}
           <div className="flex flex-col max-w-4xl py-8 mx-4 sm:py-16 sm:mx-8 md:mx-12 lg:m-auto lg:py-32">
             <Transition location={router.pathname}>{children}</Transition>
           </div>

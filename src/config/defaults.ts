@@ -16,6 +16,7 @@ export const defaults = {
     logo: ''
   },
   settings: {
-    show_logs: true
+    show_logs: true,
+    sandbox_mode: false
   }
 }
