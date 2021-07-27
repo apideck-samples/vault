@@ -25,9 +25,9 @@ const LogsPage = ({ jwt, token }: IProps) => {
 
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData?.data?.data?.length) return null
-    if (pageIndex === 0) return `/vault/logs?filter[exclude_unified_apis][0]=vault`
+    if (pageIndex === 0) return `/vault/logs?filter[exclude_unified_apis]=vault`
     const cursor = previousPageData?.data?.meta?.cursors?.next
-    return `/vault/logs?filter[exclude_unified_apis][0]=vault&cursor=${cursor}`
+    return `/vault/logs?filter[exclude_unified_apis]=vault&cursor=${cursor}`
   }
 
   const { data, setSize, size, error } = useSWRInfinite(getKey, fetcher, {
