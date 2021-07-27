@@ -1,15 +1,14 @@
 import { HiChevronLeft, HiHome, HiOutlineDocumentText } from 'react-icons/hi'
+import Router, { useRouter } from 'next/router'
 import { ThemeContext, ThemeContextType } from 'utils/context'
 import { useContext, useEffect, useState } from 'react'
 
 import { FiCompass } from 'react-icons/fi'
 import Head from 'next/head'
 import Link from 'next/link'
-import Router from 'next/router'
 import SandboxBanner from './SandboxBanner'
 import { Transition } from 'components'
 import classNames from 'classnames'
-import { useRouter } from 'next/router'
 
 interface IProps {
   consumerMetadata: { [key: string]: string }
@@ -314,7 +313,7 @@ const Layout: React.FC<IProps> = ({
               )}
               <a
                 className="inline-flex items-center mb-8"
-                href="https://www.apideck.com/products/unify"
+                href="https://www.apideck.com/products/vault"
               >
                 <span
                   className="text-sm text-gray-600"

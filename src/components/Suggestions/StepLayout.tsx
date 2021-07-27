@@ -1,6 +1,6 @@
+import { useToast } from '@apideck/components'
 import Link from 'next/link'
 import { ReactNode } from 'react'
-import { useToast } from '@apideck/components'
 
 const StepLayout = ({
   stepIndex,
@@ -16,7 +16,7 @@ const StepLayout = ({
   const steps = [
     {
       id: 'Step 1',
-      name: 'Enter domain',
+      name: 'Enter your domain',
       href: stepIndex === 0 ? 'current' : '/suggestions',
       status: stepIndex === 0 ? 'current' : 'complete'
     },
