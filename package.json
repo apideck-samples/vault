@@ -27,7 +27,7 @@
     "camelcase-keys": "^6.2.2",
     "classnames": "^2.2.6",
     "date-fns": "^2.22.1",
-    "formik": "^2.2.6",
+    "formik": "^2.2.9",
     "http-status-codes": "^2.1.4",
     "jsonwebtoken": "^8.5.1",
     "mdi-react": "^7.4.0",
