@@ -1,4 +1,5 @@
 import { TextInput, useToast } from '@apideck/components'
+import classNames from 'classnames'
 import { ConnectionCard, ConnectionsList, ErrorBlock, ListPlaceholder } from 'components'
 import client from 'lib/axios'
 import { applySession } from 'next-session'
@@ -240,14 +241,18 @@ const Home = ({ jwt, token }: IProps): any => {
                 if (state !== 'available') {
                   return (
                     <Link href={`/integrations/${unified_api}/${service_id}`} key={id}>
-                      <a>
+                      <a className={classNames('block', { 'mt-5': i !== 0 })}>
                         <ConnectionCard connection={connection} isActive={cursor === i} />
                       </a>
                     </Link>
                   )
                 } else {
                   return (
-                    <button onClick={() => handleClick(connection, i)} key={id} className="w-full">
+                    <button
+                      onClick={() => handleClick(connection, i)}
+                      key={id}
+                      className={classNames('w-full', { 'mt-5': i !== 0 })}
+                    >
                       <ConnectionCard
                         connection={connection}
                         isLoading={isLoading === connection.id}
