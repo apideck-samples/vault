@@ -51,12 +51,14 @@ const Resource = ({ jwt, token, url, resource }: IProps) => {
     if (connectionError) {
       const { response } = connectionError
       const errorObj = response ? response : { status: 400 }
+
       if (errorObj.data && !error) {
+        const message = errorObj.data.message || errorObj.data.detail
         addToast({
           title: `Something went wrong`,
-          description: errorObj.data.detail,
+          description: message,
           type: 'error',
-          closeAfter: 5000
+          closeAfter: 6000
         })
         back()
       }
