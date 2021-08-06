@@ -89,7 +89,7 @@
     "prettier": "^2.2.1",
     "tailwindcss": "^2.2.4",
     "ts-jest": "^26.5.1",
-    "typescript": "^4.3.5"
+    "typescript": "^4.2.4"
   },
   "husky": {
     "hooks": {
