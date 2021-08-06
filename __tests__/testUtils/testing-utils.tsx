@@ -9,6 +9,7 @@ type RenderOptions = RenderParams[1] & { router?: Partial<NextRouter> }
 
 const mockRouter: NextRouter = {
   basePath: '',
+  isPreview: false,
   pathname: '/',
   route: '/',
   asPath: '/',
