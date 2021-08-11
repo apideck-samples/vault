@@ -1,19 +1,18 @@
 import { Button, useToast } from '@apideck/components'
-import { useEffect, useState } from 'react'
-
+import classNames from 'classnames'
 import { ErrorBlock } from 'components'
-import { HiArrowRight } from 'react-icons/hi'
-import { IConnection } from 'types/Connection'
-import { JWTSession } from 'types/JWTSession'
 import LoadingSuggestionCard from 'components/Suggestions/LoadingSuggestionCard'
 import StepLayout from 'components/Suggestions/StepLayout'
 import SuggestionCard from 'components/Suggestions/SuggestionCard'
-import { applySession } from 'next-session'
-import classNames from 'classnames'
 import client from 'lib/axios'
-import { options } from 'utils/sessionOptions'
+import { applySession } from 'next-session'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { HiArrowRight } from 'react-icons/hi'
 import useSWR from 'swr'
+import { IConnection } from 'types/Connection'
+import { JWTSession } from 'types/JWTSession'
+import { options } from 'utils/sessionOptions'
 
 interface IProps {
   jwt: string
@@ -123,10 +122,10 @@ const DiscoverDomainPage = ({ jwt, token, domain }: IProps) => {
             {loading || matchedConnections?.length ? 'Integration suggestions' : ''}
           </h1>
 
-          <p className="max-w-md mx-auto mb-8 text-lg tracking-tight text-gray-600 sm:text-xl">
+          <p className="max-w-md mx-auto mb-8 text-md tracking-tight text-gray-600 sm:text-lg">
             {loading ? 'Searching for relative suggestions...' : ''}
             {!loading && matchedConnections?.length
-              ? 'Select the integrations you would like to enable and manage settings.'
+              ? 'Select the integrations you would like to enable.'
               : ''}
             {!loading && !connections?.length
               ? 'It seems like you have not added any connectors.'
