@@ -1,8 +1,7 @@
-import Select, { OptionProps, components } from 'react-select'
-import { useEffect, useRef, useState } from 'react'
-
-import { GroupTypeBase } from 'react-select/src/types'
 import classNames from 'classnames'
+import { useEffect, useRef, useState } from 'react'
+import Select, { components, OptionProps } from 'react-select'
+import { GroupTypeBase } from 'react-select/src/types'
 import theme from 'utils/theme'
 
 export interface IOptionType {
@@ -15,6 +14,7 @@ interface ISelectProps {
   placeholder: string
   value?: string | string[] | readonly string[]
   handleChange: (event: any) => void
+  disabled?: boolean
   options: IOptionType[]
   className?: string
   isMulti?: any
@@ -98,6 +98,7 @@ const SearchSelect = ({
   placeholder,
   value,
   handleChange,
+  disabled = false,
   options,
   className = '',
   ...rest
@@ -126,6 +127,7 @@ const SearchSelect = ({
       name={field}
       data-testid={field}
       value={selectedOption}
+      isDisabled={disabled}
       onChange={patchedOnChange}
       placeholder={placeholder}
       options={options}

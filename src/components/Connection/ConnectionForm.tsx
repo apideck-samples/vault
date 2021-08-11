@@ -6,27 +6,26 @@ import {
   OAuthErrorAlert,
   SearchSelect
 } from 'components'
+import { IOptionType } from 'components/Inputs/SearchSelect'
 import { Formik, FormikProps } from 'formik'
-import { Fragment, useContext, useEffect, useState } from 'react'
-import { IConnection, UpdateConnectionInput } from 'types/Connection'
-import {
-  OAuthError,
-  SessionExpiredModalContext,
-  ThemeContext,
-  ThemeContextType,
-  createOAuthErrorFromQuery
-} from 'utils'
-
+import client from 'lib/axios'
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
 import CheckIcon from 'mdi-react/CheckIcon'
-import { IOptionType } from 'components/Inputs/SearchSelect'
-import { JWTSession } from 'types/JWTSession'
 import Link from 'next/link'
-import ReactMarkdown from 'react-markdown'
-import client from 'lib/axios'
-import { mutate } from 'swr'
 import { useRouter } from 'next/router'
+import { Fragment, useContext, useEffect, useState } from 'react'
+import ReactMarkdown from 'react-markdown'
+import { mutate } from 'swr'
+import { IConnection, UpdateConnectionInput } from 'types/Connection'
+import { JWTSession } from 'types/JWTSession'
+import {
+  createOAuthErrorFromQuery,
+  OAuthError,
+  SessionExpiredModalContext,
+  ThemeContext,
+  ThemeContextType
+} from 'utils'
 
 interface IProps {
   connection: IConnection
@@ -228,7 +227,16 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
                 </div>
                 <div className="px-5 py-6 bg-gray-100 border-t border-b">
                   {filteredFormFields.map((field) => {
-                    const { id, label, required, placeholder, description, type, options } = field
+                    const {
+                      id,
+                      label,
+                      required,
+                      placeholder,
+                      description,
+                      disabled,
+                      type,
+                      options
+                    } = field
 
                     return (
                       <div key={id} className="items-start justify-center mb-4 md:flex">
@@ -255,8 +263,9 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
                               field={id}
                               value={values[id]}
                               handleChange={handleChange}
+                              disabled={disabled}
                               options={options as IOptionType[]}
-                              placeholder="Select.."
+                              placeholder={disabled ? 'Available after authorization' : 'Select..'}
                             />
                           )}
                           {description && (
