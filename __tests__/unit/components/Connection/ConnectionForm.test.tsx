@@ -13,6 +13,23 @@ import { IConnection } from 'types/Connection'
 import INTEGRATIONS from '../../../fixtures/integrations.json'
 import client from 'lib/axios'
 
+const router = {
+  route: '/',
+  pathname: '',
+  query: {
+    error_type: 'OAuthInvalidStateError',
+    error_message: 'State parameter is not a valid JWT token. It may have expired.',
+    origin: 'authorize',
+    service_id: 'zoho-crm',
+    application_id: '1111',
+    ref: 'https://developers.apideck.com/errors#oauthinvalidstateerror'
+  },
+  asPath: ''
+}
+
+jest.mock('next/router', () => ({
+  useRouter: jest.fn().mockReturnValue(router)
+}))
 describe('Connection Form', () => {
   const deleteMock = jest.spyOn(client, 'delete').mockResolvedValue(true)
 
@@ -59,18 +76,7 @@ describe('Connection Form', () => {
       }) as IConnection
 
       it('Renders an Error Alert', async () => {
-        render(<ConnectionForm connection={connection} jwt={jwt} token={token} />, {
-          router: {
-            query: {
-              error_type: 'OAuthInvalidStateError',
-              error_message: 'State parameter is not a valid JWT token. It may have expired.',
-              origin: 'authorize',
-              service_id: 'zoho-crm',
-              application_id: '1111',
-              ref: 'https://developers.apideck.com/errors#oauthinvalidstateerror'
-            }
-          }
-        })
+        render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
         expect(screen.getByRole('alert')).toBeInTheDocument()
         expect(
           screen.getByText('An error occurred during the authorization flow. Please try again.')
