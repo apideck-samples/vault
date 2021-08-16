@@ -1,10 +1,3 @@
-import { TextInput, useToast } from '@apideck/components'
-import classNames from 'classnames'
-import { ConnectionCard, ConnectionsList, ErrorBlock, ListPlaceholder } from 'components'
-import client from 'lib/axios'
-import { applySession } from 'next-session'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import {
   ChangeEvent,
   KeyboardEvent,
@@ -14,13 +7,22 @@ import {
   useRef,
   useState
 } from 'react'
+import { ConnectionCard, ConnectionsList, ErrorBlock, ListPlaceholder } from 'components'
+import { TextInput, useToast } from '@apideck/components'
+
+import Fuse from 'fuse.js'
 import { GlobalHotKeys } from 'react-hotkeys'
-import useSWR from 'swr'
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
+import Link from 'next/link'
 import { SessionExpiredModalContext } from 'utils/context'
+import { applySession } from 'next-session'
+import classNames from 'classnames'
+import client from 'lib/axios'
 import { options } from 'utils/sessionOptions'
 import useDebounce from 'utils/useDebounce'
+import { useRouter } from 'next/router'
+import useSWR from 'swr'
 
 const keyMap = { FOCUS_INPUT: ['command+k', 'control+k'] }
 const ACTION_KEY_DEFAULT = ['Ctrl ', 'Control']
@@ -77,10 +79,13 @@ const Home = ({ jwt, token }: IProps): any => {
 
   useEffect(() => {
     if (debouncedSearchTerm) {
-      const results = connections.filter((connector: IConnection) =>
-        connector.name?.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
-      )
-      setList(results)
+      const fuse = new Fuse(connections, {
+        keys: ['name', 'unified_api']
+      })
+      const results = fuse.search(debouncedSearchTerm)
+      const connectionResults = results.map((result) => result.item)
+
+      setList(connectionResults)
     } else {
       setList(connections)
     }
