@@ -293,21 +293,25 @@ const Layout: React.FC<IProps> = ({
             </div>
             <div>
               {hasConsumerMetadata && !hideConsumerCard && (
-                <div className="flex items-center justify-start px-6 py-4 my-12 bg-white rounded-lg shadow md:my-24">
+                <div className="flex items-center justify-start px-5 py-4 my-12 bg-white rounded-lg shadow md:my-24">
                   {image && (
                     <img
-                      className="mr-4 rounded-full"
+                      className="mr-3 rounded-full"
                       style={{ height: '36px', width: '36px' }}
-                      src={image}
+                      src={
+                        'https://pbs.twimg.com/profile_images/1102120097081184257/61tO47TQ_400x400.jpg'
+                      }
                       title={userName ? userName : 'user'}
                       alt={userName ? userName : 'user'}
                     />
                   )}
-                  <div>
+                  <div className="truncate">
                     {accountName && (
-                      <div className="mb-2 text-xs text-gray-500 uppercase">{accountName}</div>
+                      <div className="mb-2 text-xs text-gray-500 uppercase truncate">
+                        {accountName}
+                      </div>
                     )}
-                    {userName && <div className="text-sm leading-none">{userName}</div>}
+                    {userName && <div className="text-sm leading-none truncate">{userName}</div>}
                   </div>
                 </div>
               )}

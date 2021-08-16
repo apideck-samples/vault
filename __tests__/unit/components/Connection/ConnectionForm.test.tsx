@@ -30,6 +30,7 @@ const router = {
 jest.mock('next/router', () => ({
   useRouter: jest.fn().mockReturnValue(router)
 }))
+
 describe('Connection Form', () => {
   const deleteMock = jest.spyOn(client, 'delete').mockResolvedValue(true)
 
