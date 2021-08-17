@@ -1,14 +1,13 @@
-import { HiChevronLeft, HiHome, HiOutlineDocumentText } from 'react-icons/hi'
-import Router, { useRouter } from 'next/router'
-import { ThemeContext, ThemeContextType } from 'utils/context'
-import { useContext, useEffect, useState } from 'react'
-
-import { FiCompass } from 'react-icons/fi'
+import classNames from 'classnames'
+import { Transition } from 'components'
 import Head from 'next/head'
 import Link from 'next/link'
+import Router, { useRouter } from 'next/router'
+import { useContext, useEffect, useState } from 'react'
+import { FiCompass } from 'react-icons/fi'
+import { HiChevronLeft, HiHome, HiOutlineDocumentText } from 'react-icons/hi'
+import { ThemeContext, ThemeContextType } from 'utils/context'
 import SandboxBanner from './SandboxBanner'
-import { Transition } from 'components'
-import classNames from 'classnames'
 
 interface IProps {
   consumerMetadata: { [key: string]: string }
@@ -298,9 +297,7 @@ const Layout: React.FC<IProps> = ({
                     <img
                       className="mr-3 rounded-full"
                       style={{ height: '36px', width: '36px' }}
-                      src={
-                        'https://pbs.twimg.com/profile_images/1102120097081184257/61tO47TQ_400x400.jpg'
-                      }
+                      src={image}
                       title={userName ? userName : 'user'}
                       alt={userName ? userName : 'user'}
                     />
