@@ -1,12 +1,15 @@
-import { AxiosResponse } from 'axios'
-import camelcaseKeys from 'camelcase-keys'
-import { decode } from 'jsonwebtoken'
-import client from 'lib/axios'
-import { applySession } from 'next-session'
-import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
+
+import { AxiosResponse } from 'axios'
+import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
+import { applySession } from 'next-session'
+import camelcaseKeys from 'camelcase-keys'
+import client from 'lib/axios'
+import { decode } from 'jsonwebtoken'
 import { options } from 'utils/sessionOptions'
+import { useRouter } from 'next/router'
+import { useToast } from '@apideck/components'
 
 interface IProps {
   jwt: string
@@ -17,6 +20,7 @@ const AddResource = ({ jwt, token }: IProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
   const { query, push } = useRouter()
+  const { addToast } = useToast()
 
   useEffect(() => {
     const enableConnection = () => {
@@ -37,8 +41,14 @@ const AddResource = ({ jwt, token }: IProps) => {
             }
           }
         )
-        .then((response: AxiosResponse<{ enabled: boolean; error: string }>) => {
-          if (response.data?.enabled) {
+        .then((response: AxiosResponse<{ data: IConnection; error: string }>) => {
+          if (response.data?.data) {
+            addToast({
+              title: `${response.data?.data?.name} successfully enabled`,
+              description: `You can now manage integration settings.`,
+              type: 'success',
+              autoClose: true
+            })
             push(`/integrations/${query['unified-api']}/${query.provider}?isolation=true`)
           } else {
             setError(response.data?.error)
@@ -52,8 +62,9 @@ const AddResource = ({ jwt, token }: IProps) => {
         })
     }
 
-    if (jwt && token.applicationId && token.consumerId) enableConnection()
-  }, [jwt, push, query, token.applicationId, token.consumerId])
+    enableConnection()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   if (isLoading) {
     return (
