@@ -19,7 +19,7 @@
   "author": "apideck-samples",
   "license": "Apache-2.0",
   "dependencies": {
-    "@apideck/components": "^0.6.4",
+    "@apideck/components": "^0.6.5",
     "@bugsnag/js": "^7.11.0",
     "@bugsnag/plugin-react": "^7.11.0",
     "@headlessui/react": "^0.3.2",
