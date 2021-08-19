@@ -1,13 +1,14 @@
+import camelcaseKeys from 'camelcase-keys'
 import { ConnectionForm, ConnectionPlaceholder, ErrorBlock } from 'components'
-
+import { decode } from 'jsonwebtoken'
+import client from 'lib/axios'
+import { applySession } from 'next-session'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import useSWR from 'swr'
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
-import { applySession } from 'next-session'
-import client from 'lib/axios'
 import { options } from 'utils/sessionOptions'
-import { useEffect } from 'react'
-import useSWR from 'swr'
-import { useState } from 'react'
 
 interface IProps {
   connections: IConnection[]
@@ -20,11 +21,12 @@ interface IProps {
 
 const Connection = ({ token, jwt, connectionId }: IProps) => {
   const [connection, setConnection] = useState<IConnection>()
+  const { query } = useRouter()
 
   const fetcher = (url: string) => {
     return client.get(url, {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${query.jwt || jwt}`,
         'X-APIDECK-APP-ID': token?.applicationId,
         'X-APIDECK-CONSUMER-ID': token?.consumerId
       }
@@ -59,15 +61,22 @@ const Connection = ({ token, jwt, connectionId }: IProps) => {
   return <ConnectionForm connection={connection} token={token} jwt={jwt} />
 }
 
-export const getServerSideProps = async ({ req, res, params }: any): Promise<any> => {
+export const getServerSideProps = async ({ req, res, query }: any): Promise<any> => {
   await applySession(req, res, options)
+
+  const { jwt } = query
+  if (jwt) {
+    req.session.jwt = jwt
+    const decoded = decode(jwt) as JWTSession
+    if (decoded) req.session.token = camelcaseKeys(decoded)
+  }
 
   return {
     props: {
       jwt: req.session.jwt || '',
       token: req.session.token || {},
       hideResourceSettings: req.session.hide_resource_settings || false,
-      connectionId: `${params['unified-api']}+${params['provider']}`
+      connectionId: `${query['unified-api']}+${query['provider']}`
     }
   }
 }

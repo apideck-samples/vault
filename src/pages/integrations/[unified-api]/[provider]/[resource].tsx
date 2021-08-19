@@ -1,5 +1,7 @@
 import { useToast } from '@apideck/components'
+import camelcaseKeys from 'camelcase-keys'
 import { ErrorBlock, ResourceForm } from 'components'
+import { decode } from 'jsonwebtoken'
 import client from 'lib/axios'
 import { applySession } from 'next-session'
 import { useRouter } from 'next/router'
@@ -84,19 +86,25 @@ const Resource = ({ jwt, token, url, resource }: IProps) => {
   )
 }
 
-export const getServerSideProps = async ({ req, res, params }: any): Promise<any> => {
+export const getServerSideProps = async ({ req, res, query }: any): Promise<any> => {
   await applySession(req, res, options)
 
-  const { jwt, token } = req.session
-  const unifiedApi = params['unified-api']
-  const { provider, resource } = params
+  const unifiedApi = query['unified-api']
+  const { provider, resource } = query
+
+  const { jwt } = query
+  if (jwt) {
+    req.session.jwt = jwt
+    const decoded = decode(jwt) as JWTSession
+    if (decoded) req.session.token = camelcaseKeys(decoded)
+  }
 
   const url = `/vault/connections/${unifiedApi}/${provider}/${resource}/config`
 
   return {
     props: {
-      jwt,
-      token,
+      jwt: req.session.jwt || '',
+      token: req.session.token || {},
       resource,
       url
     }
