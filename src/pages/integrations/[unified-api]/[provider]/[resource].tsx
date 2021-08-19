@@ -1,14 +1,13 @@
+import { useToast } from '@apideck/components'
 import { ErrorBlock, ResourceForm } from 'components'
+import client from 'lib/axios'
+import { applySession } from 'next-session'
+import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-
+import useSWR from 'swr'
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
-import { applySession } from 'next-session'
-import client from 'lib/axios'
 import { options } from 'utils/sessionOptions'
-import { useRouter } from 'next/router'
-import useSWR from 'swr'
-import { useToast } from '@apideck/components'
 
 interface IProps {
   connection: IConnection
@@ -22,13 +21,14 @@ const Resource = ({ jwt, token, url, resource }: IProps) => {
   const [connection, setConnection] = useState<IConnection>()
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<{ status: number; data?: any } | null>(null)
+  const { query } = useRouter()
   const { addToast } = useToast()
   const { back } = useRouter()
 
   const fetcher = (url: string) => {
     return client.get(url, {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${query.jwt || jwt}`,
         'X-APIDECK-APP-ID': token?.applicationId,
         'X-APIDECK-CONSUMER-ID': token?.consumerId
       }
