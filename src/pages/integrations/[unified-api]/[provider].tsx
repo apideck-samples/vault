@@ -1,14 +1,15 @@
-import camelcaseKeys from 'camelcase-keys'
 import { ConnectionForm, ConnectionPlaceholder, ErrorBlock } from 'components'
-import { decode } from 'jsonwebtoken'
-import client from 'lib/axios'
-import { applySession } from 'next-session'
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import useSWR from 'swr'
+
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
+import { applySession } from 'next-session'
+import camelcaseKeys from 'camelcase-keys'
+import client from 'lib/axios'
+import { decode } from 'jsonwebtoken'
 import { options } from 'utils/sessionOptions'
+import { useRouter } from 'next/router'
+import useSWR from 'swr'
 
 interface IProps {
   connections: IConnection[]
@@ -26,7 +27,7 @@ const Connection = ({ token, jwt, connectionId }: IProps) => {
   const fetcher = (url: string) => {
     return client.get(url, {
       headers: {
-        Authorization: `Bearer ${query.jwt || jwt}`,
+        Authorization: `Bearer ${jwt || query.jwt}`,
         'X-APIDECK-APP-ID': token?.applicationId,
         'X-APIDECK-CONSUMER-ID': token?.consumerId
       }
