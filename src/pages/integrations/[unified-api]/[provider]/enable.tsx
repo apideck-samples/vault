@@ -1,14 +1,15 @@
-import { useToast } from '@apideck/components'
-import { AxiosResponse } from 'axios'
-import camelcaseKeys from 'camelcase-keys'
-import { decode } from 'jsonwebtoken'
-import client from 'lib/axios'
-import { applySession } from 'next-session'
-import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
+
+import { AxiosResponse } from 'axios'
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
+import { applySession } from 'next-session'
+import camelcaseKeys from 'camelcase-keys'
+import client from 'lib/axios'
+import { decode } from 'jsonwebtoken'
 import { options } from 'utils/sessionOptions'
+import { useRouter } from 'next/router'
+import { useToast } from '@apideck/components'
 
 interface IProps {
   jwt: string
@@ -34,7 +35,7 @@ const AddResource = ({ jwt, token }: IProps) => {
           },
           {
             headers: {
-              Authorization: `Bearer ${query.jwt || jwt}`,
+              Authorization: `Bearer ${jwt || query.jwt}`,
               'X-APIDECK-APP-ID': token.applicationId,
               'X-APIDECK-CONSUMER-ID': token.consumerId
             }
