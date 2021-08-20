@@ -6,26 +6,28 @@ import {
   OAuthErrorAlert,
   SearchSelect
 } from 'components'
-import { IOptionType } from 'components/Inputs/SearchSelect'
 import { Formik, FormikProps } from 'formik'
-import client from 'lib/axios'
-import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
-import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
-import CheckIcon from 'mdi-react/CheckIcon'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { Fragment, useContext, useEffect, useState } from 'react'
-import ReactMarkdown from 'react-markdown'
-import { mutate } from 'swr'
 import { IConnection, UpdateConnectionInput } from 'types/Connection'
-import { JWTSession } from 'types/JWTSession'
 import {
-  createOAuthErrorFromQuery,
   OAuthError,
   SessionExpiredModalContext,
   ThemeContext,
-  ThemeContextType
+  ThemeContextType,
+  createOAuthErrorFromQuery
 } from 'utils'
+
+import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
+import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
+import CheckIcon from 'mdi-react/CheckIcon'
+import { ConnectionBadge } from 'components/Connections'
+import { IOptionType } from 'components/Inputs/SearchSelect'
+import { JWTSession } from 'types/JWTSession'
+import Link from 'next/link'
+import ReactMarkdown from 'react-markdown'
+import client from 'lib/axios'
+import { mutate } from 'swr'
+import { useRouter } from 'next/router'
 
 interface IProps {
   connection: IConnection
@@ -149,21 +151,26 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
 
   return (
     <Fragment>
-      {!router?.query?.isolation && (
-        <Link href="/">
-          <button
-            className="inline-flex items-center self-start justify-start mb-4 text-sm leading-none text-gray-600 group hover:text-gray-800"
-            style={{ height: '24px' }}
-          >
-            <ArrowLeftIcon
-              className="mr-1 transition duration-150 ease-in-out"
-              color="currentColor"
-              size={16}
-            />
-            <span className="transition duration-150 ease-in-out">Integrations</span>
-          </button>
-        </Link>
-      )}
+      <div className="flex items-center justify-between mb-4">
+        {!router?.query?.isolation && (
+          <Link href="/">
+            <button
+              className="inline-flex items-center self-start justify-start text-sm leading-none text-gray-600 group hover:text-gray-800"
+              style={{ height: '24px' }}
+            >
+              <ArrowLeftIcon
+                className="mr-1 transition duration-150 ease-in-out"
+                color="currentColor"
+                size={16}
+              />
+              <span className="transition duration-150 ease-in-out">Integrations</span>
+            </button>
+          </Link>
+        )}
+        <div className="block md:hidden lg:block xl:hidden">
+          <ConnectionBadge connection={connection} />
+        </div>
+      </div>
 
       {oauthError && <OAuthErrorAlert error={oauthError} />}
 
@@ -180,11 +187,14 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
             </div>
           </div>
           <div className="flex items-center h-12">
+            <div className="hidden md:block lg:hidden xl:block">
+              <ConnectionBadge connection={connection} />
+            </div>
             <Toggle
               isEnabled={connection.enabled}
               isLoading={updateLoading}
               onToggle={() => toggleConnection({ id: connection.id, enabled: !connection.enabled })}
-              className="inline-block mr-2 md:mr-3"
+              className="inline-block mx-2 md:mx-3"
             />
             <Button variant="danger-outline" text="Delete" onClick={() => setModalOpen(true)} />
           </div>
