@@ -6,28 +6,27 @@ import {
   OAuthErrorAlert,
   SearchSelect
 } from 'components'
+import { ConnectionBadge } from 'components/Connections'
+import { IOptionType } from 'components/Inputs/SearchSelect'
 import { Formik, FormikProps } from 'formik'
-import { Fragment, useContext, useEffect, useState } from 'react'
-import { IConnection, UpdateConnectionInput } from 'types/Connection'
-import {
-  OAuthError,
-  SessionExpiredModalContext,
-  ThemeContext,
-  ThemeContextType,
-  createOAuthErrorFromQuery
-} from 'utils'
-
+import client from 'lib/axios'
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
 import CheckIcon from 'mdi-react/CheckIcon'
-import { ConnectionBadge } from 'components/Connections'
-import { IOptionType } from 'components/Inputs/SearchSelect'
-import { JWTSession } from 'types/JWTSession'
 import Link from 'next/link'
-import ReactMarkdown from 'react-markdown'
-import client from 'lib/axios'
-import { mutate } from 'swr'
 import { useRouter } from 'next/router'
+import { Fragment, useContext, useEffect, useState } from 'react'
+import ReactMarkdown from 'react-markdown'
+import { mutate } from 'swr'
+import { IConnection, UpdateConnectionInput } from 'types/Connection'
+import { JWTSession } from 'types/JWTSession'
+import {
+  createOAuthErrorFromQuery,
+  OAuthError,
+  SessionExpiredModalContext,
+  ThemeContext,
+  ThemeContextType
+} from 'utils'
 
 interface IProps {
   connection: IConnection
@@ -181,9 +180,6 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
             <div>
               <h1 className="font-medium text-gray-800 text-md md:text-xl">{name}</h1>
               <div className="text-sm text-gray-700 capitalize">{`${unifiedApi} integration`}</div>
-              {tagLine && (
-                <p className="hidden my-3 mr-4 text-sm text-gray-800 md:block">{tagLine}</p>
-              )}
             </div>
           </div>
           <div className="flex items-center h-12">
@@ -198,6 +194,9 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
             />
             <Button variant="danger-outline" text="Delete" onClick={() => setModalOpen(true)} />
           </div>
+        </div>
+        <div className="flex justify-between px-3 py-4 sm:px-4 md:px-5 items-top">
+          {tagLine && <p className="hidden my-3 mr-4 text-sm text-gray-800 md:block">{tagLine}</p>}
         </div>
         {tagLine && (
           <p className="px-3 pb-3 text-sm text-gray-800 sm:px-4 sm:pb-4 md:hidden">{tagLine}</p>
