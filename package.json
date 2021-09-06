@@ -23,7 +23,7 @@
     "@bugsnag/js": "^7.11.0",
     "@bugsnag/plugin-react": "^7.11.0",
     "@headlessui/react": "^0.3.2",
-    "axios": "^0.21.1",
+    "axios": "^0.21.3",
     "camelcase-keys": "^6.2.2",
     "classnames": "^2.3.1",
     "date-fns": "^2.23.0",
