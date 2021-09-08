@@ -43,6 +43,10 @@ const DiscoverPage = ({ jwt, token }: IProps) => {
   const connections: IConnection[] = data?.data?.data
 
   useEffect(() => {
+    sessionStorage.setItem('isOnBoarded', 'true')
+  }, [])
+
+  useEffect(() => {
     // Check if userName or AccountName is an email address
     const regex = /\S+@\S+\.\S+/
     if (consumer?.email && regex.test(consumer.email) && !isEmailProvider(consumer.email)) {
