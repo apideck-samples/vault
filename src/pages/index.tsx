@@ -76,6 +76,9 @@ const Home = ({ jwt, token }: IProps): any => {
 
     return acc
   }, {})
+  const addedConnections = connections?.filter((connection) => connection.state !== 'available')
+  const isOnBoarded = process.browser && sessionStorage?.getItem('isOnBoarded')
+  const shouldOnBoard = data && !error && !addedConnections?.length && !isOnBoarded
 
   useEffect(() => {
     if (debouncedSearchTerm) {
@@ -103,15 +106,10 @@ const Home = ({ jwt, token }: IProps): any => {
   }, [])
 
   useEffect(() => {
-    if (!data || error) return
-
-    const addedConnections = connections?.filter((connection) => connection.state !== 'available')
-    const isOnBoarded = sessionStorage.getItem('isOnBoarded')
-    if (!addedConnections?.length && !isOnBoarded) {
+    if (shouldOnBoard) {
       push('/suggestions')
-      sessionStorage.setItem('isOnBoarded', 'true')
     }
-  }, [connections, data, error, push])
+  }, [push, shouldOnBoard])
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.code === 'ArrowUp' && cursor > 0) {
@@ -201,8 +199,8 @@ const Home = ({ jwt, token }: IProps): any => {
   return (
     <GlobalHotKeys handlers={handlers} keyMap={keyMap}>
       <h1 className="text-lg font-medium text-gray-800 md:text-2xl">Manage your integrations</h1>
-      {!data && !error ? <ListPlaceholder /> : ''}
-      {connections?.length ? (
+      {(!data && !error) || shouldOnBoard ? <ListPlaceholder /> : ''}
+      {connections?.length && !shouldOnBoard ? (
         <>
           <div className="relative mt-6 lg:mt-8">
             <div className="absolute left-0 flex items-center pt-2.5 md:pt-3 pl-3 pointer-events-none">
