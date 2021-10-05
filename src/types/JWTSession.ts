@@ -22,6 +22,8 @@ export interface JWTSession {
     vault_name: string
   }
   settings?: {
-    show_logs: boolean
+    show_logs?: boolean
+    sandbox_mode?: boolean
+    isolation_mode?: boolean
   }
 }

@@ -31,8 +31,7 @@ export const ConnectionBadge: FC<IProps> = ({ connection: { enabled, state } }) 
       <span className="mr-2">
         <FaExclamationTriangle />
       </span>
-      <span className="hidden sm:inline-block">Needs configuration</span>
-      <span className="inline-block sm:hidden">Config</span>
+      <span className="inline-block">Needs configuration</span>
     </div>
   )
 }

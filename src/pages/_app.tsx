@@ -16,6 +16,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   let consumerMetadata = {}
   let showLogs = true
   const sandboxMode = token?.settings?.sandbox_mode
+  const isolationMode = token?.settings?.isolation_mode
   const persistedTheme = typeof window !== 'undefined' && window.localStorage.getItem('theme')
   let theme = persistedTheme ? JSON.parse(persistedTheme) : {}
   let redirectUri = ''
@@ -42,6 +43,7 @@ const App = ({ Component, pageProps }: AppProps) => {
                 hideConsumerCard={sessionExpired}
                 showLogs={showLogs}
                 sandboxMode={sandboxMode}
+                isolationMode={isolationMode}
               >
                 <Component {...pageProps} />
                 <SessionExpiredModal

@@ -1,13 +1,14 @@
-import classNames from 'classnames'
-import { Transition } from 'components'
+import { HiChevronLeft, HiHome, HiOutlineDocumentText } from 'react-icons/hi'
+import Router, { useRouter } from 'next/router'
+import { ThemeContext, ThemeContextType } from 'utils/context'
+import { useContext, useEffect, useState } from 'react'
+
+import { FiCompass } from 'react-icons/fi'
 import Head from 'next/head'
 import Link from 'next/link'
-import Router, { useRouter } from 'next/router'
-import { useContext, useEffect, useState } from 'react'
-import { FiCompass } from 'react-icons/fi'
-import { HiChevronLeft, HiHome, HiOutlineDocumentText } from 'react-icons/hi'
-import { ThemeContext, ThemeContextType } from 'utils/context'
 import SandboxBanner from './SandboxBanner'
+import { Transition } from 'components'
+import classNames from 'classnames'
 
 interface IProps {
   consumerMetadata: { [key: string]: string }
@@ -15,6 +16,7 @@ interface IProps {
   redirectUri: string
   hideConsumerCard: boolean
   sandboxMode: boolean
+  isolationMode: boolean
 }
 
 const Layout: React.FC<IProps> = ({
@@ -23,6 +25,7 @@ const Layout: React.FC<IProps> = ({
   hideConsumerCard = false,
   showLogs,
   sandboxMode = false,
+  isolationMode = false,
   children
 }) => {
   const router = useRouter()
@@ -221,7 +224,8 @@ const Layout: React.FC<IProps> = ({
                     'flex items-center mb-6 text-sm  group hover:text-gray-800',
                     {
                       'text-gray-800': router.pathname === '/',
-                      'text-gray-500': router.pathname !== '/'
+                      'text-gray-500': router.pathname !== '/',
+                      hidden: isolationMode
                     }
                   )}
                   style={customTextColor ? { color: customTextColor } : {}}
@@ -238,7 +242,8 @@ const Layout: React.FC<IProps> = ({
                     'flex items-center mb-6 text-sm group hover:text-gray-800',
                     {
                       'text-gray-800': router.pathname === '/suggestions',
-                      'text-gray-500': router.pathname !== '/suggestions'
+                      'text-gray-500': router.pathname !== '/suggestions',
+                      hidden: isolationMode
                     }
                   )}
                   style={customTextColor ? { color: customTextColor } : {}}
@@ -257,7 +262,8 @@ const Layout: React.FC<IProps> = ({
                       'flex items-center mb-6 text-sm  group hover:text-gray-800',
                       {
                         'text-gray-800': router.pathname === '/logs',
-                        'text-gray-500': router.pathname !== '/logs'
+                        'text-gray-500': router.pathname !== '/logs',
+                        hidden: isolationMode
                       }
                     )}
                     style={customTextColor ? { color: customTextColor } : {}}
@@ -271,9 +277,7 @@ const Layout: React.FC<IProps> = ({
                     </span>
                   </a>
                 </Link>
-              ) : (
-                ''
-              )}
+              ) : null}
               <a
                 className="flex items-center text-sm text-gray-500 group hover:text-gray-800"
                 href={redirectUri ? redirectUri : 'https://app.apideck.com'}

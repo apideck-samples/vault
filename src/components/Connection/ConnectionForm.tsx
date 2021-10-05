@@ -6,27 +6,28 @@ import {
   OAuthErrorAlert,
   SearchSelect
 } from 'components'
-import { ConnectionBadge } from 'components/Connections'
-import { IOptionType } from 'components/Inputs/SearchSelect'
 import { Formik, FormikProps } from 'formik'
-import client from 'lib/axios'
-import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
-import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
-import CheckIcon from 'mdi-react/CheckIcon'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { Fragment, useContext, useEffect, useState } from 'react'
-import ReactMarkdown from 'react-markdown'
-import { mutate } from 'swr'
 import { IConnection, UpdateConnectionInput } from 'types/Connection'
-import { JWTSession } from 'types/JWTSession'
 import {
-  createOAuthErrorFromQuery,
   OAuthError,
   SessionExpiredModalContext,
   ThemeContext,
-  ThemeContextType
+  ThemeContextType,
+  createOAuthErrorFromQuery
 } from 'utils'
+
+import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
+import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
+import CheckIcon from 'mdi-react/CheckIcon'
+import { ConnectionBadge } from 'components/Connections'
+import { IOptionType } from 'components/Inputs/SearchSelect'
+import { JWTSession } from 'types/JWTSession'
+import Link from 'next/link'
+import ReactMarkdown from 'react-markdown'
+import client from 'lib/axios'
+import { mutate } from 'swr'
+import { useRouter } from 'next/router'
 
 interface IProps {
   connection: IConnection
@@ -47,6 +48,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
   const router = useRouter()
   const { query } = router
   const [oauthError, setOAuthError] = useState<OAuthError | null>(null)
+  const isolationMode = token?.settings?.isolation_mode
 
   useEffect(() => {
     setOAuthError(createOAuthErrorFromQuery(query))
@@ -151,7 +153,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
   return (
     <Fragment>
       <div className="flex items-center justify-between mb-4">
-        {!router?.query?.isolation && (
+        {router?.query?.isolation || isolationMode ? null : (
           <Link href="/">
             <button
               className="inline-flex items-center self-start justify-start text-sm leading-none text-gray-600 group hover:text-gray-800"
