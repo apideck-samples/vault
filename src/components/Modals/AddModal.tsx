@@ -1,6 +1,6 @@
 import { Button, useToast } from '@apideck/components'
 import { Fragment, useContext, useEffect, useState } from 'react'
-import { ThemeContext, ThemeContextType } from 'utils'
+import { ThemeContext } from 'utils'
 
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import { IConnection } from 'types/Connection'
@@ -8,6 +8,7 @@ import { IOptionType } from 'components/Inputs/SearchSelect'
 import ModalContainer from './ModalContainer'
 import { SearchSelect } from 'components'
 import { useRouter } from 'next/router'
+import { Theme } from 'types/JWTSession'
 
 interface IProps {
   open: boolean
@@ -33,7 +34,7 @@ const AddModal = ({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const { addToast } = useToast()
-  const { primary_color } = useContext(ThemeContext) as ThemeContextType
+  const { primaryColor } = useContext(ThemeContext) as Theme
   const connectionsOptions = availableConnections.map((connection) => {
     const { id, name, service_id: serviceId, icon } = connection
 
@@ -124,7 +125,7 @@ const AddModal = ({
               disabled={!value}
               onClick={() => handleClick()}
               className="w-20"
-              style={primary_color ? { backgroundColor: primary_color } : {}}
+              style={primaryColor ? { backgroundColor: primaryColor } : {}}
             />
           </div>
         </div>

@@ -15,8 +15,9 @@ const App = ({ Component, pageProps }: AppProps) => {
   const { token } = pageProps
   let consumerMetadata = {}
   let showLogs = true
-  const sandboxMode = token?.settings?.sandbox_mode
-  const isolationMode = token?.settings?.isolation_mode
+  let showSuggestions = true
+  const sandboxMode = token?.settings?.sandboxMode
+  const isolationMode = token?.settings?.isolationMode
   const persistedTheme = typeof window !== 'undefined' && window.localStorage.getItem('theme')
   let theme = persistedTheme ? JSON.parse(persistedTheme) : {}
   let redirectUri = ''
@@ -26,8 +27,14 @@ const App = ({ Component, pageProps }: AppProps) => {
     redirectUri = token.redirectUri
     theme = token.theme || defaults.theme
     if (typeof window !== 'undefined') window.localStorage.setItem('theme', JSON.stringify(theme))
-    if (token.settings && 'show_logs' in token.settings) {
-      showLogs = token.settings.show_logs
+
+    if (token.settings) {
+      if ('showLogs' in token.settings) {
+        showLogs = token.settings.showLogs
+      }
+      if ('showSuggestions' in token.settings) {
+        showSuggestions = token.settings.showSuggestions
+      }
     }
   }
 
@@ -42,6 +49,7 @@ const App = ({ Component, pageProps }: AppProps) => {
                 redirectUri={redirectUri}
                 hideConsumerCard={sessionExpired}
                 showLogs={showLogs}
+                showSuggestions={showSuggestions}
                 sandboxMode={sandboxMode}
                 isolationMode={isolationMode}
               >

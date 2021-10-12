@@ -1,10 +1,11 @@
 import { AddModal, ConnectionCard } from 'components'
-import { ThemeContext, ThemeContextType } from 'utils'
+import { ThemeContext } from 'utils'
 import { useContext, useState } from 'react'
 
 import { Button } from '@apideck/components'
 import { IConnection } from 'types/Connection'
 import Link from 'next/link'
+import { Theme } from 'types/JWTSession'
 
 interface IProps {
   unifiedApi?: string
@@ -21,7 +22,7 @@ const ConnectionsList = ({ unifiedApi, connections = [], createConnection }: IPr
   const addedConnections = connections.filter((connection) => connection.state !== 'available')
   const availableConnections = connections.filter((connection) => connection.state === 'available')
   const noConnectionsAdded = addedConnections.length === 0
-  const { primary_color } = useContext(ThemeContext) as ThemeContextType
+  const { primaryColor } = useContext(ThemeContext) as Theme
 
   return (
     <section className="mt-8 lg:mt-12" data-testid={'connections-list'}>
@@ -32,7 +33,7 @@ const ConnectionsList = ({ unifiedApi, connections = [], createConnection }: IPr
             text="+ Add"
             onClick={() => setModalOpen(true)}
             className="spec-add-integration"
-            style={primary_color ? { backgroundColor: primary_color } : {}}
+            style={primaryColor ? { backgroundColor: primaryColor } : {}}
           />
         </div>
       ) : (

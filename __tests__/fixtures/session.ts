@@ -4,9 +4,9 @@ export const token: JWTSession = {
   applicationId: 'cfaZrORgaH2PMQpIcjTpfhERIpIEUJHev09ucjTp',
   consumerId: 'test-consumer-ckgrs95l3y4er0b99qa37buj2',
   consumerMetadata: {
-    account_name: 'Apideck Sandbox',
+    accountName: 'Apideck Sandbox',
     email: 'test@test.com',
-    user_name: 'nick@apideck.com',
+    userName: 'nick@apideck.com',
     image: 'https://unavatar.now.sh/nick@apideck.com'
   },
   exp: 1606401003,
@@ -15,12 +15,12 @@ export const token: JWTSession = {
   redirectUri: 'http://localhost:3000/ecosystems/ckgrs95l3y4er0b99qa37buj2/unify/vault',
   theme: {
     favicon: 'https://www.apideck.com/static/favicon.png',
-    primary_color: '#16263e',
-    privacy_url: 'https://compliance.apideck.com/privacy-policy',
-    sidepanel_background_color: '#16263e',
-    sidepanel_text_color: '#FFFFFF',
-    terms_url: 'https://www.termsfeed.com/terms-conditions/957c85c1b089ae9e3219c83eff65377e',
-    vault_name: 'Apideck Sandbox'
+    primaryColor: '#16263e',
+    privacyUrl: 'https://compliance.apideck.com/privacy-policy',
+    sidepanelBackgroundColor: '#16263e',
+    sidepanelTextColor: '#FFFFFF',
+    termsUrl: 'https://www.termsfeed.com/terms-conditions/957c85c1b089ae9e3219c83eff65377e',
+    vaultName: 'Apideck Sandbox'
   }
 }
 
