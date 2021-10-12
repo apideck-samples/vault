@@ -33,7 +33,7 @@
     "jsonwebtoken": "^8.5.1",
     "mdi-react": "^7.4.0",
     "next": "^11.1.1",
-    "next-session": "^3.4.0",
+    "next-session": "^3.4.1",
     "node-fetch": "^2.6.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
