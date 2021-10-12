@@ -1,9 +1,10 @@
 import React, { memo, useContext } from 'react'
-import { ThemeContext, ThemeContextType, authorizationVariablesRequired } from 'utils'
+import { ThemeContext, authorizationVariablesRequired } from 'utils'
 
 import { Button } from '@apideck/components'
 import { IConnection } from 'types/Connection'
 import classNames from 'classnames'
+import { Theme } from 'types/JWTSession'
 
 interface IProps {
   connection: IConnection
@@ -14,7 +15,7 @@ interface IProps {
 
 const OAuthButtons = ({ connection, isAuthorized, authorizeUrl, revokeUrl }: IProps) => {
   const requiredAuth = authorizationVariablesRequired(connection)
-  const { primary_color } = useContext(ThemeContext) as ThemeContextType
+  const { primaryColor } = useContext(ThemeContext) as Theme
 
   return (
     <div className="flex items-center justify-between px-3 py-2 bg-gray-100 border-t sm:px-4 md:px-5 rounded-bl-md rounded-br-md">
@@ -36,13 +37,13 @@ const OAuthButtons = ({ connection, isAuthorized, authorizeUrl, revokeUrl }: IPr
           <Button
             text={isAuthorized ? 'Re-authorize' : 'Authorize'}
             onClick={() => (window.location.href = authorizeUrl)}
-            style={primary_color ? { backgroundColor: primary_color } : {}}
+            style={primaryColor ? { backgroundColor: primaryColor } : {}}
           />
         ) : (
           <Button
             text="Authorize"
             disabled={true}
-            style={primary_color ? { backgroundColor: primary_color } : {}}
+            style={primaryColor ? { backgroundColor: primaryColor } : {}}
           />
         )}
 

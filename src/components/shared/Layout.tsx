@@ -1,6 +1,6 @@
 import { HiChevronLeft, HiHome, HiOutlineDocumentText } from 'react-icons/hi'
 import Router, { useRouter } from 'next/router'
-import { ThemeContext, ThemeContextType } from 'utils/context'
+import { ThemeContext } from 'utils/context'
 import { useContext, useEffect, useState } from 'react'
 
 import { FiCompass } from 'react-icons/fi'
@@ -9,10 +9,12 @@ import Link from 'next/link'
 import SandboxBanner from './SandboxBanner'
 import { Transition } from 'components'
 import classNames from 'classnames'
+import { Theme } from 'types/JWTSession'
 
 interface IProps {
   consumerMetadata: { [key: string]: string }
   showLogs: boolean
+  showSuggestions: boolean
   redirectUri: string
   hideConsumerCard: boolean
   sandboxMode: boolean
@@ -24,27 +26,28 @@ const Layout: React.FC<IProps> = ({
   redirectUri,
   hideConsumerCard = false,
   showLogs,
+  showSuggestions,
   sandboxMode = false,
   isolationMode = false,
   children
 }) => {
   const router = useRouter()
-  const theme = useContext(ThemeContext) as ThemeContextType
+  const theme = useContext(ThemeContext) as Theme
   const [customStyles, setCustomStyles] = useState<any>({ backgroundColor: '#edf2f7' })
   const [customTextColor, setCustomTextColor] = useState('')
   const [navIsOpen, setNavIsOpen] = useState(false)
 
   const {
-    vault_name: vaultName,
+    vaultName,
     favicon,
     logo,
-    primary_color: primaryColor,
-    terms_url: termsUrl,
-    privacy_url: privacyUrl,
-    sidepanel_background_color: bgColor,
-    sidepanel_text_color: textColor
+    primaryColor,
+    termsUrl,
+    privacyUrl,
+    sidepanelBackgroundColor: bgColor,
+    sidepanelTextColor: textColor
   } = theme
-  const { user_name: userName, account_name: accountName, image } = consumerMetadata
+  const { userName, accountName, image } = consumerMetadata
   const hasConsumerMetadata = Object.keys(consumerMetadata).length > 0
 
   useEffect(() => {
@@ -236,25 +239,30 @@ const Layout: React.FC<IProps> = ({
                   </span>
                 </a>
               </Link>
-              <Link href="/suggestions">
-                <a
-                  className={classNames(
-                    'flex items-center mb-6 text-sm group hover:text-gray-800',
-                    {
-                      'text-gray-800': router.pathname === '/suggestions',
-                      'text-gray-500': router.pathname !== '/suggestions',
-                      hidden: isolationMode
-                    }
-                  )}
-                  style={customTextColor ? { color: customTextColor } : {}}
-                >
-                  <FiCompass color={customTextColor ? customTextColor : 'currentColor'} size={20} />
+              {showSuggestions ? (
+                <Link href="/suggestions">
+                  <a
+                    className={classNames(
+                      'flex items-center mb-6 text-sm group hover:text-gray-800',
+                      {
+                        'text-gray-800': router.pathname === '/suggestions',
+                        'text-gray-500': router.pathname !== '/suggestions',
+                        hidden: isolationMode
+                      }
+                    )}
+                    style={customTextColor ? { color: customTextColor } : {}}
+                  >
+                    <FiCompass
+                      color={customTextColor ? customTextColor : 'currentColor'}
+                      size={20}
+                    />
 
-                  <span className="ml-3 leading-none transition duration-150 ease-in-out transform group-hover:-translate-x-0.5">
-                    Suggestions
-                  </span>
-                </a>
-              </Link>
+                    <span className="ml-3 leading-none transition duration-150 ease-in-out transform group-hover:-translate-x-0.5">
+                      Suggestions
+                    </span>
+                  </a>
+                </Link>
+              ) : null}
               {showLogs ? (
                 <Link href="/logs">
                   <a

@@ -1,6 +1,7 @@
 import { Button } from '@apideck/components'
 import { useContext } from 'react'
-import { ThemeContext, ThemeContextType } from 'utils'
+import { Theme } from 'types/JWTSession'
+import { ThemeContext } from 'utils'
 import ModalContainer from './ModalContainer'
 
 interface IProps {
@@ -15,7 +16,7 @@ const SessionExpiredModal = ({
   redirectUri = 'https://app.apideck.com'
 }: IProps) => {
   const handleClick = () => (window.location.href = redirectUri)
-  const { primary_color } = useContext(ThemeContext) as ThemeContextType
+  const { primaryColor } = useContext(ThemeContext) as Theme
 
   return (
     <ModalContainer open={open} setOpen={setOpen} width={380} disableClose>
@@ -29,7 +30,7 @@ const SessionExpiredModal = ({
         <Button
           text="Return to application"
           onClick={() => handleClick()}
-          style={primary_color ? { backgroundColor: primary_color } : {}}
+          style={primaryColor ? { backgroundColor: primaryColor } : {}}
         />
       </div>
     </ModalContainer>

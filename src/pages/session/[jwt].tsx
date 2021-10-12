@@ -1,9 +1,9 @@
-import camelCaseKeys from 'camelcase-keys'
-import { decode } from 'jsonwebtoken'
-import { applySession } from 'next-session'
-import { useRouter } from 'next/router'
 import { JWTSession } from 'types/JWTSession'
+import { applySession } from 'next-session'
+import camelCaseKeys from 'camelcase-keys-deep'
+import { decode } from 'jsonwebtoken'
 import { options } from 'utils/sessionOptions'
+import { useRouter } from 'next/router'
 
 type IProps = { token: JWTSession }
 const Session = ({ token }: IProps) => {

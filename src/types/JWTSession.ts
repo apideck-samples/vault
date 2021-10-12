@@ -2,28 +2,31 @@ export interface JWTSession {
   applicationId: string
   consumerId: string
   consumerMetadata?: {
-    account_name: string
-    user_name: string
-    email: string
-    image: string
+    accountName?: string
+    userName?: string
+    email?: string
+    image?: string
   }
   exp: number
   iat: number
   hideResourceSettings: boolean
   redirectUri: string
-  theme: {
-    favicon: string
-    logo?: string
-    primary_color: string
-    privacy_url: string
-    sidepanel_background_color: string
-    sidepanel_text_color: string
-    terms_url: string
-    vault_name: string
-  }
+  theme: Theme
   settings?: {
-    show_logs?: boolean
-    sandbox_mode?: boolean
-    isolation_mode?: boolean
+    showLogs?: boolean
+    showSuggestions?: boolean
+    sandboxMode?: boolean
+    isolationMode?: boolean
   }
+}
+
+export interface Theme {
+  vaultName?: string
+  favicon?: string
+  primaryColor?: string
+  termsUrl?: string
+  privacyUrl?: string
+  sidepanelBackgroundColor?: string
+  sidepanelTextColor?: string
+  logo?: string
 }

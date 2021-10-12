@@ -3,13 +3,13 @@ import { FilteredSelect, SearchSelect } from 'components/Inputs'
 import { Formik, FormikProps } from 'formik'
 import { IConnection, UpdateConnectionConfigInput } from 'types/Connection'
 import React, { ChangeEvent, useContext, useState } from 'react'
-import { SessionExpiredModalContext, ThemeContext, ThemeContextType } from 'utils'
+import { SessionExpiredModalContext, ThemeContext } from 'utils'
 
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
 import CheckIcon from 'mdi-react/CheckIcon'
 import { IOptionType } from 'components/Inputs/SearchSelect'
-import { JWTSession } from 'types/JWTSession'
+import { JWTSession, Theme } from 'types/JWTSession'
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import { ResourcePlaceholder } from 'components'
@@ -28,7 +28,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
   const [saved, setSaved] = useState(false)
   const [formError, setFormError] = useState(false)
   const { setSessionExpired } = useContext(SessionExpiredModalContext)
-  const { primary_color } = useContext(ThemeContext) as ThemeContextType
+  const { primaryColor } = useContext(ThemeContext) as Theme
   const router = useRouter()
 
   if (loading || !connection) return <ResourcePlaceholder />
@@ -257,7 +257,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                     text="Save"
                     isLoading={isSubmitting}
                     disabled={isSubmitting}
-                    style={primary_color ? { backgroundColor: primary_color } : {}}
+                    style={primaryColor ? { backgroundColor: primaryColor } : {}}
                   />
                 </div>
               </form>

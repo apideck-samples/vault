@@ -13,7 +13,6 @@ import {
   OAuthError,
   SessionExpiredModalContext,
   ThemeContext,
-  ThemeContextType,
   createOAuthErrorFromQuery
 } from 'utils'
 
@@ -22,7 +21,7 @@ import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
 import CheckIcon from 'mdi-react/CheckIcon'
 import { ConnectionBadge } from 'components/Connections'
 import { IOptionType } from 'components/Inputs/SearchSelect'
-import { JWTSession } from 'types/JWTSession'
+import { JWTSession, Theme } from 'types/JWTSession'
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import client from 'lib/axios'
@@ -44,11 +43,11 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
   const [deleteError, setDeleteError] = useState(false)
   const { addToast } = useToast()
   const { setSessionExpired } = useContext(SessionExpiredModalContext)
-  const { primary_color } = useContext(ThemeContext) as ThemeContextType
+  const { primaryColor } = useContext(ThemeContext) as Theme
   const router = useRouter()
   const { query } = router
   const [oauthError, setOAuthError] = useState<OAuthError | null>(null)
-  const isolationMode = token?.settings?.isolation_mode
+  const isolationMode = token?.settings?.isolationMode
 
   useEffect(() => {
     setOAuthError(createOAuthErrorFromQuery(query))
@@ -315,7 +314,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
                     type="submit"
                     text="Save"
                     isLoading={isSubmitting}
-                    style={primary_color ? { backgroundColor: primary_color } : {}}
+                    style={primaryColor ? { backgroundColor: primaryColor } : {}}
                   />
                 </div>
               </form>

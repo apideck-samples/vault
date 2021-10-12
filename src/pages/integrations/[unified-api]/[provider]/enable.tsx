@@ -1,6 +1,6 @@
 import { useToast } from '@apideck/components'
 import { AxiosResponse } from 'axios'
-import camelcaseKeys from 'camelcase-keys'
+import camelcaseKeys from 'camelcase-keys-deep'
 import { decode } from 'jsonwebtoken'
 import client from 'lib/axios'
 import { applySession } from 'next-session'

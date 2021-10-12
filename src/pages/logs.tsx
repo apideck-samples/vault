@@ -73,9 +73,9 @@ const LogsPage = ({ jwt, token }: IProps) => {
 export const getServerSideProps = async ({ req, res }: any): Promise<any> => {
   await applySession(req, res, options)
 
-  // Redirect if show_logs is set to false in settings
+  // Redirect if showLogs is set to false in settings
   const token = req.session?.token
-  if (token?.settings && 'show_logs' in token?.settings && !token?.settings?.show_logs) {
+  if (token?.settings && 'showLogs' in token?.settings && !token?.settings?.showLogs) {
     return {
       redirect: {
         permanent: false,

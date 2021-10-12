@@ -45,6 +45,10 @@ const Home = ({ jwt, token }: IProps): any => {
   const { push } = useRouter()
   const { addToast } = useToast()
   const ref: any = useRef()
+  let showSuggestions = true
+  if (token.settings && 'showSuggestions' in token.settings) {
+    showSuggestions = !!token.settings.showSuggestions
+  }
 
   const focusInput = useCallback(() => {
     ref?.current?.focus()
@@ -78,7 +82,8 @@ const Home = ({ jwt, token }: IProps): any => {
   }, {})
   const addedConnections = connections?.filter((connection) => connection.state !== 'available')
   const isOnBoarded = process.browser && sessionStorage?.getItem('isOnBoarded')
-  const shouldOnBoard = data && !error && !addedConnections?.length && !isOnBoarded
+  const shouldOnBoard =
+    data && !error && !addedConnections?.length && !isOnBoarded && showSuggestions
 
   useEffect(() => {
     if (debouncedSearchTerm) {
