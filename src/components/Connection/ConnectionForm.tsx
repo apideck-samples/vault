@@ -9,6 +9,7 @@ import {
 import { Formik, FormikProps } from 'formik'
 import { Fragment, useContext, useEffect, useState } from 'react'
 import { IConnection, UpdateConnectionInput } from 'types/Connection'
+import { JWTSession, Theme } from 'types/JWTSession'
 import {
   OAuthError,
   SessionExpiredModalContext,
@@ -21,7 +22,6 @@ import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
 import CheckIcon from 'mdi-react/CheckIcon'
 import { ConnectionBadge } from 'components/Connections'
 import { IOptionType } from 'components/Inputs/SearchSelect'
-import { JWTSession, Theme } from 'types/JWTSession'
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import client from 'lib/axios'
@@ -276,6 +276,8 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
                               disabled={disabled}
                               options={options as IOptionType[]}
                               placeholder={disabled ? 'Available after authorization' : 'Select..'}
+                              // TODO: Replace true with allow_custom_fields (when implemented)
+                              isCreatable={false}
                             />
                           )}
                           {description && (

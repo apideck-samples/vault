@@ -1,7 +1,9 @@
-import classNames from 'classnames'
+import Select, { OptionProps, components } from 'react-select'
 import { useEffect, useRef, useState } from 'react'
-import Select, { components, OptionProps } from 'react-select'
+
+import CreatableSelect from 'react-select/creatable'
 import { GroupTypeBase } from 'react-select/src/types'
+import classNames from 'classnames'
 import theme from 'utils/theme'
 
 export interface IOptionType {
@@ -18,6 +20,7 @@ interface ISelectProps {
   options: IOptionType[]
   className?: string
   isMulti?: any
+  isCreatable?: boolean
 }
 
 interface IOptionProps extends OptionProps<IOptionType, false, GroupTypeBase<IOptionType>> {
@@ -101,18 +104,25 @@ const SearchSelect = ({
   disabled = false,
   options,
   className = '',
+  isCreatable = false,
   ...rest
 }: ISelectProps) => {
-  const selectRef = useRef<Select>(null)
+  const selectRef = useRef(null) as any
   const [selectedOption, setSelectedOption] = useState<IOptionType | IOptionType[]>()
 
   useEffect(() => {
-    const option = rest.isMulti
+    if (!value) return
+
+    let option = rest.isMulti
       ? options?.filter((option: IOptionType) => value?.includes(option.value))
       : options?.find((option: IOptionType) => option.value === value)
 
+    if (isCreatable && value) {
+      option = rest.isMulti ? [{ label: value, value }] : { label: value, value }
+    }
+
     if (option) setSelectedOption(option)
-  }, [options, rest.isMulti, value])
+  }, [isCreatable, options, rest.isMulti, value])
 
   const patchedOnChange = (options: any) => {
     const value = rest.isMulti ? options.map((option: IOptionType) => option.value) : options.value
@@ -120,35 +130,42 @@ const SearchSelect = ({
     setSelectedOption(options)
   }
 
-  return (
-    <Select
-      ref={selectRef}
-      id={field}
-      name={field}
-      data-testid={field}
-      value={selectedOption}
-      isDisabled={disabled}
-      onChange={patchedOnChange}
-      placeholder={placeholder}
-      options={options}
-      className={classNames(
-        'text-base text-gray-600 placeholder-gray-400 border-gray-300 rounded-md shadow-sm focus:outline-none sm:text-sm focus:ring-primary-500 focus:border-primary-500 react-select',
-        className
-      )}
-      onKeyDown={(e: React.KeyboardEvent<HTMLElement>) => {
-        if (e.keyCode === 27) {
-          e.stopPropagation()
-          selectRef?.current?.blur()
-        }
-      }}
-      components={{
-        Option,
-        DropdownIndicator,
-        IndicatorSeparator: null
-      }}
-      styles={customStyles}
-      {...rest}
+  const selectProps = {
+    ref: selectRef,
+    id: field,
+    name: field,
+    ['data-testid']: field,
+    value: selectedOption,
+    isDisabled: disabled,
+    onChange: patchedOnChange,
+    placeholder: placeholder,
+    options: options,
+    className: classNames(
+      'text-base text-gray-600 placeholder-gray-400 border-gray-300 rounded-md shadow-sm focus:outline-none sm:text-sm focus:ring-primary-500 focus:border-primary-500 react-select',
+      className
+    ),
+    onKeyDown: (e: React.KeyboardEvent<HTMLElement>) => {
+      if (e.keyCode === 27) {
+        e.stopPropagation()
+        selectRef?.current?.blur()
+      }
+    },
+    components: {
+      Option,
+      DropdownIndicator,
+      IndicatorSeparator: null
+    },
+    styles: customStyles,
+    ...rest
+  }
+
+  return isCreatable ? (
+    <CreatableSelect
+      formatCreateLabel={(userInput: string) => `Select "${userInput}"`}
+      {...selectProps}
     />
+  ) : (
+    <Select {...selectProps} />
   )
 }
 
