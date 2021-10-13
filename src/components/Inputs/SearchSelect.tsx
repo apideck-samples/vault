@@ -118,7 +118,9 @@ const SearchSelect = ({
       : options?.find((option: IOptionType) => option.value === value)
 
     if (isCreatable) {
-      option = rest.isMulti ? [{ label: value, value }] : { label: value, value }
+      option = rest.isMulti
+        ? ([{ label: value, value }] as IOptionType[])
+        : ({ label: value, value } as IOptionType)
     }
 
     if (option) setSelectedOption(option)
