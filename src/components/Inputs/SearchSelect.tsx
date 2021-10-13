@@ -117,7 +117,7 @@ const SearchSelect = ({
       ? options?.filter((option: IOptionType) => value?.includes(option.value))
       : options?.find((option: IOptionType) => option.value === value)
 
-    if (isCreatable && value) {
+    if (isCreatable) {
       option = rest.isMulti ? [{ label: value, value }] : { label: value, value }
     }
 
