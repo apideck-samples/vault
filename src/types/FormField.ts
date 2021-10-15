@@ -28,6 +28,7 @@ export interface FormField {
   hidden: boolean
   target?: 'custom_fields' | 'resource'
   filter?: Record<string, string>
+  allow_custom_values?: boolean
 }
 
 export interface FormFieldOption {

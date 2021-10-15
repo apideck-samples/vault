@@ -90,20 +90,20 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
 
   const toggleConnection = async ({ id, enabled }: { id: string; enabled: boolean }) => {
     setUpdateLoading(true)
-    await updateConnection({ id, enabled })
+    await updateConnection({ id, enabled }, true)
     setUpdateLoading(false)
   }
 
-  const updateConnection = async (values: Record<string, any>) => {
+  const updateConnection = async (values: Record<string, any>, isToggle?: boolean) => {
     setFormError(false)
 
     const { enabled, apiKey, ...rest } = values
     const body: UpdateConnectionInput = {
-      settings: {},
       enabled
     }
 
-    if (Object.keys(rest).length !== 0) {
+    if (!isToggle && Object.keys(rest).length !== 0) {
+      body.settings = {}
       Object.keys(rest).forEach((setting) => {
         ;(body.settings as any)[setting] = rest[setting]
       })
@@ -245,7 +245,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
                       description,
                       disabled,
                       type,
-                      options
+                      options,
                       allow_custom_values: allowCustomValues
                     } = field
 
