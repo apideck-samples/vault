@@ -9,6 +9,7 @@ import {
 import { Formik, FormikProps } from 'formik'
 import { Fragment, useContext, useEffect, useState } from 'react'
 import { IConnection, UpdateConnectionInput } from 'types/Connection'
+import { JWTSession, Theme } from 'types/JWTSession'
 import {
   OAuthError,
   SessionExpiredModalContext,
@@ -21,7 +22,6 @@ import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
 import CheckIcon from 'mdi-react/CheckIcon'
 import { ConnectionBadge } from 'components/Connections'
 import { IOptionType } from 'components/Inputs/SearchSelect'
-import { JWTSession, Theme } from 'types/JWTSession'
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import client from 'lib/axios'
@@ -90,20 +90,20 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
 
   const toggleConnection = async ({ id, enabled }: { id: string; enabled: boolean }) => {
     setUpdateLoading(true)
-    await updateConnection({ id, enabled })
+    await updateConnection({ id, enabled }, true)
     setUpdateLoading(false)
   }
 
-  const updateConnection = async (values: Record<string, any>) => {
+  const updateConnection = async (values: Record<string, any>, isToggle?: boolean) => {
     setFormError(false)
 
     const { enabled, apiKey, ...rest } = values
     const body: UpdateConnectionInput = {
-      settings: {},
       enabled
     }
 
-    if (Object.keys(rest).length !== 0) {
+    if (!isToggle && Object.keys(rest).length !== 0) {
+      body.settings = {}
       Object.keys(rest).forEach((setting) => {
         ;(body.settings as any)[setting] = rest[setting]
       })
@@ -245,7 +245,8 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
                       description,
                       disabled,
                       type,
-                      options
+                      options,
+                      allow_custom_values: allowCustomValues
                     } = field
 
                     return (
@@ -276,6 +277,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
                               disabled={disabled}
                               options={options as IOptionType[]}
                               placeholder={disabled ? 'Available after authorization' : 'Select..'}
+                              isCreatable={allowCustomValues}
                             />
                           )}
                           {description && (

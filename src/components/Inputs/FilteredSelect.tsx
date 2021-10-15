@@ -19,7 +19,7 @@ const FilteredSelect = ({ field, formikProps, className = '' }: IProps) => {
 
   const filterValue: unknown = values[filterOn]
   const filterOptions = filterValue
-    ? (options as FormFieldOptionGroup[]).find((optionGroup: FormFieldOptionGroup) => {
+    ? (options as FormFieldOptionGroup[])?.find((optionGroup: FormFieldOptionGroup) => {
         return optionGroup.id === filterValue
       })?.options
     : []
