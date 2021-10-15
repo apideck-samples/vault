@@ -246,6 +246,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
                       disabled,
                       type,
                       options
+                      allow_custom_values: allowCustomValues
                     } = field
 
                     return (
@@ -276,8 +277,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
                               disabled={disabled}
                               options={options as IOptionType[]}
                               placeholder={disabled ? 'Available after authorization' : 'Select..'}
-                              // TODO: Replace true with allow_custom_fields (when implemented)
-                              isCreatable={false}
+                              isCreatable={allowCustomValues}
                             />
                           )}
                           {description && (
