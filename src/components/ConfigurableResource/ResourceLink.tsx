@@ -1,11 +1,11 @@
-import ChevronRightIcon from 'mdi-react/ChevronRightIcon'
-import { FaExclamationTriangle } from 'react-icons/fa'
-import { FormField } from 'types/FormField'
-import { IConnection } from 'types/Connection'
-import { JWTSession } from 'types/JWTSession'
-import Link from 'next/link'
 import client from 'lib/axios'
+import ChevronRightIcon from 'mdi-react/ChevronRightIcon'
+import Link from 'next/link'
+import { FaExclamationTriangle } from 'react-icons/fa'
 import useSWR from 'swr'
+import { IConnection } from 'types/Connection'
+import { FormField } from 'types/FormField'
+import { JWTSession } from 'types/JWTSession'
 
 interface IProps {
   connection: IConnection
@@ -48,8 +48,8 @@ const ResourceLink = ({ connection, resource, token, jwt }: IProps) => {
               <span className="mr-1 sm:mr-1.5">
                 <FaExclamationTriangle />
               </span>
-              <span className="hidden sm:inline-block">Missing required field</span>
-              <span className="sm:hidden">Required field</span>
+              <span className="hidden sm:inline-block">Configure required field(s)</span>
+              <span className="sm:hidden">Required field(s)</span>
             </div>
           ) : (
             ''

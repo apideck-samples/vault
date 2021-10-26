@@ -45,3 +45,11 @@ a {
 .react-select [type='text']:focus {
   --tw-ring-color: none;
 }
+
+form a {
+  text-decoration: underline;
+}
+
+form a:hover {
+  @apply text-gray-900;
+}
