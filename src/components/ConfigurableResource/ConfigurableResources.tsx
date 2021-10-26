@@ -1,6 +1,6 @@
-import { ResourceLink } from 'components'
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
+import { ResourceLink } from 'components'
 
 interface IProps {
   connection: IConnection
@@ -8,7 +8,7 @@ interface IProps {
   token: JWTSession
 }
 
-const ConfigurableResources = ({ connection }: IProps) => {
+const ConfigurableResources = ({ connection, token, jwt }: IProps) => {
   const { configurable_resources } = connection
 
   return (
@@ -20,7 +20,7 @@ const ConfigurableResources = ({ connection }: IProps) => {
         {configurable_resources.map((resource: string, index: number) => {
           return (
             <li key={`resource-${index}`}>
-              <ResourceLink connection={connection} resource={resource} />
+              <ResourceLink connection={connection} resource={resource} token={token} jwt={jwt} />
             </li>
           )
         })}
