@@ -5,7 +5,7 @@ import { IConnection } from 'types/Connection'
 
 interface IProps {
   connection: IConnection
-  showConfig: boolean
+  showConfig?: boolean
 }
 
 export const ConnectionBadge: FC<IProps> = ({
