@@ -185,7 +185,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
           </div>
           <div className="flex items-center h-12">
             <div className="hidden md:block lg:hidden xl:block">
-              <ConnectionBadge connection={connection} />
+              <ConnectionBadge connection={connection} showConfig={false} />
             </div>
             <Toggle
               isEnabled={connection.enabled}

@@ -40,15 +40,16 @@ const ResourceLink = ({ connection, resource, token, jwt }: IProps) => {
 
   return configurable_resources.includes(resource) ? (
     <Link href={`/integrations/${unifiedApi}/${provider}/${resource}`}>
-      <a className="flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-800 capitalize sm:px-6 hover:bg-gray-50 group">
-        <span>{resource}</span>
+      <a className="flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-800 sm:px-6 hover:bg-gray-50 group">
+        <span className="capitalize">{resource}</span>
         <div className="flex">
           {hasRequiredFieldsWithoutValue ? (
-            <div className="flex items-center px-2 py-0.5 mr-2 text-xs font-medium leading-none rounded-full bg-warning-lighter text-warning">
-              <span className="mr-1.5">
+            <div className="flex items-center px-2 py-0.5 mr-1 sm:mr-2 text-xs font-medium leading-none rounded-full bg-warning-lighter text-warning">
+              <span className="mr-1 sm:mr-1.5">
                 <FaExclamationTriangle />
               </span>
-              <span className="inline-block">Missing required value</span>
+              <span className="hidden sm:inline-block">Missing required field</span>
+              <span className="sm:hidden">Required field</span>
             </div>
           ) : (
             ''
