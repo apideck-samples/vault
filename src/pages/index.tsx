@@ -49,6 +49,7 @@ const Home = ({ jwt, token }: IProps): any => {
   if (token.settings && 'showSuggestions' in token.settings) {
     showSuggestions = !!token.settings.showSuggestions
   }
+  const unifiedApis = token?.settings?.unifiedApis
 
   const focusInput = useCallback(() => {
     ref?.current?.focus()
@@ -66,12 +67,16 @@ const Home = ({ jwt, token }: IProps): any => {
     })
   }
 
-  const { data, error, mutate } = useSWR('/vault/connections', fetcher, {
+  const { data, error, mutate } = useSWR(`/vault/connections`, fetcher, {
     shouldRetryOnError: false,
     revalidateOnFocus: false
   })
 
-  const connections: IConnection[] = data?.data?.data
+  let connections: IConnection[] = data?.data?.data
+  if (connections?.length && unifiedApis?.length) {
+    connections = connections?.filter((connection) => unifiedApis.includes(connection.unified_api))
+  }
+
   const connectionsASC = connections?.sort((a, b) => a.name.localeCompare(b.name))
   const connectionsPerUnifiedApiObj = connectionsASC?.reduce((acc: any, item) => {
     const group = item['unified_api']
@@ -97,7 +102,8 @@ const Home = ({ jwt, token }: IProps): any => {
     } else {
       setList(connections)
     }
-  }, [connections, debouncedSearchTerm])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearchTerm])
 
   useEffect(() => {
     if (typeof navigator !== 'undefined') {
