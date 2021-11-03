@@ -17,6 +17,7 @@ export interface JWTSession {
     showSuggestions?: boolean
     sandboxMode?: boolean
     isolationMode?: boolean
+    unifiedApis?: string[]
   }
 }
 
