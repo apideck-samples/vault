@@ -34,7 +34,7 @@ This project uses the Vault API. Visit https://developers.apideck.com/apis/vault
 - Run the development server with `yarn dev` or `npm run dev`
 - Visit `http://localhost:3003/` to see if it's running. You should see a message that your session is invalid.
 
-#### Step 3: Create a new session
+#### Step 3: [Create a new session](https://developers.apideck.com/apis/vault/reference#operation/sessionsCreate)
 
 You have to make a POST request to the Vault API to create a valid session for a user, hereafter referred to as the consumer ID.
 In order to make the request, you need your Apideck API Key, Application ID, and Consumer ID. The Consumer ID is stored inside Apideck Vault. This can be a user ID, account ID, device ID, or another entity that can be linked to integrations within your app.

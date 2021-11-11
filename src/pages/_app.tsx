@@ -1,21 +1,19 @@
-import '../styles/globals.css'
-
-import { Layout, SessionExpiredModal } from 'components'
 import { ModalProvider, ToastProvider } from '@apideck/components'
+import { Layout, SessionExpiredModal } from 'components'
+import { defaults } from 'config/defaults'
+import { applySession } from 'next-session'
+import { AppProps } from 'next/app'
 import React, { Fragment, useState } from 'react'
 import { SessionExpiredModalContext, ThemeContext } from 'utils/context'
-
-import { AppProps } from 'next/app'
-import { applySession } from 'next-session'
-import { defaults } from 'config/defaults'
 import { options } from 'utils/sessionOptions'
+import '../styles/globals.css'
 
 const App = ({ Component, pageProps }: AppProps) => {
   const [sessionExpired, setSessionExpired] = useState<boolean>(false)
   const { token } = pageProps
   let consumerMetadata = {}
   let showLogs = true
-  let showSuggestions = true
+  let showSuggestions = false
   const sandboxMode = token?.settings?.sandboxMode
   const isolationMode = token?.settings?.isolationMode
   const persistedTheme = typeof window !== 'undefined' && window.localStorage.getItem('theme')

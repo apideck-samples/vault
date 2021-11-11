@@ -1,15 +1,14 @@
-import { HiChevronLeft, HiHome, HiOutlineDocumentText } from 'react-icons/hi'
-import Router, { useRouter } from 'next/router'
-import { ThemeContext } from 'utils/context'
-import { useContext, useEffect, useState } from 'react'
-
-import { FiCompass } from 'react-icons/fi'
+import classNames from 'classnames'
+import { Transition } from 'components'
 import Head from 'next/head'
 import Link from 'next/link'
-import SandboxBanner from './SandboxBanner'
-import { Transition } from 'components'
-import classNames from 'classnames'
+import Router, { useRouter } from 'next/router'
+import { useContext, useEffect, useState } from 'react'
+import { FiCompass } from 'react-icons/fi'
+import { HiChevronLeft, HiHome, HiOutlineDocumentText } from 'react-icons/hi'
 import { Theme } from 'types/JWTSession'
+import { ThemeContext } from 'utils/context'
+import SandboxBanner from './SandboxBanner'
 
 interface IProps {
   consumerMetadata: { [key: string]: string }
@@ -26,7 +25,7 @@ const Layout: React.FC<IProps> = ({
   redirectUri,
   hideConsumerCard = false,
   showLogs,
-  showSuggestions,
+  showSuggestions = false,
   sandboxMode = false,
   isolationMode = false,
   children
