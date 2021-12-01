@@ -1,15 +1,14 @@
+import camelcaseKeys from 'camelcase-keys-deep'
 import { ConnectionForm, ConnectionPlaceholder, ErrorBlock } from 'components'
+import { decode } from 'jsonwebtoken'
+import client from 'lib/axios'
+import { applySession } from 'next-session'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-
+import useSWR from 'swr'
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
-import { applySession } from 'next-session'
-import camelcaseKeys from 'camelcase-keys-deep'
-import client from 'lib/axios'
-import { decode } from 'jsonwebtoken'
 import { options } from 'utils/sessionOptions'
-import { useRouter } from 'next/router'
-import useSWR from 'swr'
 
 interface IProps {
   connections: IConnection[]
@@ -17,10 +16,11 @@ interface IProps {
   loading: boolean
   jwt: string
   token: JWTSession
-  connectionId: string
+  provider: string
+  unifiedApi: string
 }
 
-const Connection = ({ token, jwt, connectionId }: IProps) => {
+const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
   const [connection, setConnection] = useState<IConnection>()
   const { query } = useRouter()
 
@@ -34,21 +34,18 @@ const Connection = ({ token, jwt, connectionId }: IProps) => {
     })
   }
 
-  const { data, error } = useSWR('/vault/connections', fetcher, {
+  const { data, error } = useSWR(`/vault/connections/${unifiedApi}/${provider}`, fetcher, {
     shouldRetryOnError: false,
     revalidateOnFocus: false
   })
 
-  const connections: IConnection[] = data?.data?.data
+  const currentConnection: IConnection = data?.data?.data
 
   useEffect(() => {
-    const currentConnection = connections?.filter(
-      (connection: IConnection) => connection.id === connectionId
-    )[0]
     if (currentConnection) {
       setConnection(currentConnection)
     }
-  }, [connectionId, connections])
+  }, [currentConnection])
 
   if (!data && !error) {
     return <ConnectionPlaceholder />
@@ -77,7 +74,8 @@ export const getServerSideProps = async ({ req, res, query }: any): Promise<any>
       jwt: req.session.jwt || '',
       token: req.session.token || {},
       hideResourceSettings: req.session.hide_resource_settings || false,
-      connectionId: `${query['unified-api']}+${query['provider']}`
+      unifiedApi: query['unified-api'],
+      provider: query['provider']
     }
   }
 }
