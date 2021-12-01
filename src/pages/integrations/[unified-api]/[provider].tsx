@@ -4,7 +4,6 @@ import { decode } from 'jsonwebtoken'
 import client from 'lib/axios'
 import { applySession } from 'next-session'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
@@ -21,7 +20,6 @@ interface IProps {
 }
 
 const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
-  const [connection, setConnection] = useState<IConnection>()
   const { query } = useRouter()
 
   const fetcher = (url: string) => {
@@ -39,13 +37,7 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
     revalidateOnFocus: false
   })
 
-  const currentConnection: IConnection = data?.data?.data
-
-  useEffect(() => {
-    if (currentConnection) {
-      setConnection(currentConnection)
-    }
-  }, [currentConnection])
+  const connection: IConnection = data?.data?.data
 
   if (!data && !error) {
     return <ConnectionPlaceholder />
