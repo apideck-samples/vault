@@ -1,13 +1,14 @@
-import camelcaseKeys from 'camelcase-keys-deep'
 import { ConnectionForm, ConnectionPlaceholder, ErrorBlock } from 'components'
-import { decode } from 'jsonwebtoken'
-import client from 'lib/axios'
-import { applySession } from 'next-session'
-import { useRouter } from 'next/router'
-import useSWR from 'swr'
+
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
+import { applySession } from 'next-session'
+import camelcaseKeys from 'camelcase-keys-deep'
+import client from 'lib/axios'
+import { decode } from 'jsonwebtoken'
 import { options } from 'utils/sessionOptions'
+import { useRouter } from 'next/router'
+import useSWR from 'swr'
 
 interface IProps {
   connections: IConnection[]
@@ -61,13 +62,36 @@ export const getServerSideProps = async ({ req, res, query }: any): Promise<any>
     if (decoded) req.session.token = camelcaseKeys(decoded)
   }
 
+  // After authorization, redirect to the provided application URL
+  // if connection is callable and redirect URL is present in the query params
+  if (query.redirectToAppUrl && req.session.jwt) {
+    const response = await client.get(
+      `/vault/connections/${query['unified-api']}/${query['provider']}`,
+      {
+        headers: {
+          Authorization: `Bearer ${req.session.jwt}`,
+          'X-APIDECK-APP-ID': req.session.token?.applicationId,
+          'X-APIDECK-CONSUMER-ID': req.session.token?.consumerId
+        }
+      }
+    )
+    const connection: IConnection = response?.data?.data
+    if (connection?.state === 'callable') {
+      res.writeHead(301, {
+        Location: `${query.redirectToAppUrl}?authorizedConnection=${connection.name}`
+      })
+      res.end()
+    }
+  }
+
   return {
     props: {
       jwt: req.session.jwt || '',
       token: req.session.token || {},
       hideResourceSettings: req.session.hide_resource_settings || false,
       unifiedApi: query['unified-api'],
-      provider: query['provider']
+      provider: query['provider'],
+      redirectAfterAuthUrl: query?.redirectAfterAuthUrl || null
     }
   }
 }
