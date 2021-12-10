@@ -20,7 +20,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@apideck/components": "^0.6.7",
-    "@bugsnag/js": "^7.11.0",
+    "@bugsnag/js": "^7.14.0",
     "@bugsnag/plugin-react": "^7.11.0",
     "@headlessui/react": "^0.3.2",
     "axios": "^0.21.4",
