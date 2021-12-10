@@ -67,7 +67,10 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
 
   const isAuthorized = connection.state === 'authorized' || connection.state === 'callable'
 
-  const redirectUrl = `${window.location.origin}/integrations/${unifiedApi}/${serviceId}`
+  let redirectUrl = `${window.location.origin}/integrations/${unifiedApi}/${serviceId}`
+  if (query?.redirectAfterAuthUrl) {
+    redirectUrl = `${redirectUrl}?redirectToAppUrl=${query?.redirectAfterAuthUrl}`
+  }
   const authorizeUrlWithRedirect = `${authorizeUrl}&redirect_uri=${redirectUrl}`
   let revokeUrlWithRedirect = ''
 
@@ -113,6 +116,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
       await client.patch(`/vault/connections/${unifiedApi}/${serviceId}`, body, {
         headers
       })
+      mutate(`/vault/connections/${unifiedApi}/${serviceId}`)
       mutate('/vault/connections')
       setSaved(true)
     } catch (error) {
@@ -149,24 +153,49 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
     }
   }
 
+  const renderBackButton = () => {
+    if (router?.query?.isolation || isolationMode) {
+      if (router?.query?.redirectAfterAuthUrl) {
+        return (
+          <a
+            href={router.query.redirectAfterAuthUrl as string}
+            className="inline-flex items-center self-start justify-start text-sm leading-none text-gray-600 group hover:text-gray-800"
+            style={{ height: '24px' }}
+          >
+            <ArrowLeftIcon
+              className="mr-1 transition duration-150 ease-in-out"
+              color="currentColor"
+              size={16}
+            />
+            <span className="transition duration-150 ease-in-out">Return to application</span>
+          </a>
+        )
+      } else {
+        return null
+      }
+    }
+
+    return (
+      <Link href="/">
+        <button
+          className="inline-flex items-center self-start justify-start text-sm leading-none text-gray-600 group hover:text-gray-800"
+          style={{ height: '24px' }}
+        >
+          <ArrowLeftIcon
+            className="mr-1 transition duration-150 ease-in-out"
+            color="currentColor"
+            size={16}
+          />
+          <span className="transition duration-150 ease-in-out">Integrations</span>
+        </button>
+      </Link>
+    )
+  }
+
   return (
     <Fragment>
       <div className="flex items-center justify-between mb-4">
-        {router?.query?.isolation || isolationMode ? null : (
-          <Link href="/">
-            <button
-              className="inline-flex items-center self-start justify-start text-sm leading-none text-gray-600 group hover:text-gray-800"
-              style={{ height: '24px' }}
-            >
-              <ArrowLeftIcon
-                className="mr-1 transition duration-150 ease-in-out"
-                color="currentColor"
-                size={16}
-              />
-              <span className="transition duration-150 ease-in-out">Integrations</span>
-            </button>
-          </Link>
-        )}
+        {renderBackButton()}
         <div className="block md:hidden lg:block xl:hidden">
           <ConnectionBadge connection={connection} />
         </div>
