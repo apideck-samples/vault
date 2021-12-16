@@ -92,7 +92,8 @@ const Home = ({ jwt, token }: IProps): any => {
   useEffect(() => {
     if (debouncedSearchTerm) {
       const fuse = new Fuse(connections, {
-        keys: ['name', 'unified_api']
+        keys: ['name', 'unified_api'],
+        threshold: 0.4
       })
       const results = fuse.search(debouncedSearchTerm)
       const connectionResults = results.map((result) => result.item)
