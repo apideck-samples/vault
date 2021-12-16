@@ -136,13 +136,13 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
         headers
       })
       mutate('/vault/connections')
-      router.push('/')
       addToast({
         title: `Integration successfully deleted`,
         description: 'You can re-add it anytime you want.',
         type: 'success',
         autoClose: true
       })
+      router.push('/')
     } catch (error) {
       setDeleteError(true)
       if (error?.response?.status === 401) {
