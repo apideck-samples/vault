@@ -1,14 +1,14 @@
 import { Button, useToast } from '@apideck/components'
-import { Fragment, useContext, useEffect, useState } from 'react'
-import { ThemeContext } from 'utils'
+import { FormEventHandler, Fragment, useContext, useEffect, useRef, useState } from 'react'
 
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import { IConnection } from 'types/Connection'
 import { IOptionType } from 'components/Inputs/SearchSelect'
 import ModalContainer from './ModalContainer'
 import { SearchSelect } from 'components'
-import { useRouter } from 'next/router'
 import { Theme } from 'types/JWTSession'
+import { ThemeContext } from 'utils'
+import { useRouter } from 'next/router'
 
 interface IProps {
   open: boolean
@@ -35,6 +35,8 @@ const AddModal = ({
   const [error, setError] = useState(false)
   const { addToast } = useToast()
   const { primaryColor } = useContext(ThemeContext) as Theme
+  const submitButtonRef: any = useRef()
+
   const connectionsOptions = availableConnections.map((connection) => {
     const { id, name, service_id: serviceId, icon } = connection
 
@@ -45,7 +47,9 @@ const AddModal = ({
       icon
     }
   })
-  const handleClick = () => {
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault()
     setLoading(true)
     setError(false)
 
@@ -70,6 +74,11 @@ const AddModal = ({
   }
 
   useEffect(() => {
+    if (!value || (!submitButtonRef && !submitButtonRef.current)) return
+    submitButtonRef.current.focus()
+  }, [value])
+
+  useEffect(() => {
     if (!open) {
       // reset state when modal is closed
       // add a little timeout to wait after animation is done
@@ -83,53 +92,60 @@ const AddModal = ({
 
   return (
     <ModalContainer open={open} setOpen={setOpen}>
-      <div className="px-5 py-4">
-        <h2 className="font-medium">Add {unifiedApi} integration</h2>
-      </div>
-      <div className="px-5 pt-10 pb-12 bg-gray-100 border-t border-b">
-        <div className="mb-1 text-sm font-medium">Integration</div>
-        <SearchSelect
-          field="connection"
-          value={value}
-          options={connectionsOptions as IOptionType[]}
-          handleChange={(e: any) => setValue(e.currentTarget.value)}
-          placeholder="Select.."
-        />
-      </div>
-      <div className="flex items-center justify-between px-5 py-2">
-        <div className="flex items-center">
-          {error && (
-            <Fragment>
-              <span className="mr-2 text-red-600">
-                <AlertCircleIcon color="currentColor" size={20} />
-              </span>
-              <span className="text-red-600" style={{ fontSize: '0.9375rem' }}>
-                Could not add integration. Please try again.
-              </span>
-            </Fragment>
-          )}
+      <form onSubmit={handleSubmit}>
+        <div className="px-5 py-4">
+          <h2 className="font-medium">Add {unifiedApi} integration</h2>
         </div>
-        <div className="flex items-center">
-          <div className="mr-4">
-            <Button
-              text="Cancel"
-              onClick={() => setOpen(false)}
-              variant="outline"
-              className="w-20"
-            />
+        <div className="px-5 pt-10 pb-12 bg-gray-100 border-t border-b">
+          <div className="mb-1 text-sm font-medium">Integration</div>
+          <SearchSelect
+            field="connection"
+            value={value}
+            options={connectionsOptions as IOptionType[]}
+            handleChange={(e: any) => {
+              setValue(e.currentTarget.value)
+              if (!submitButtonRef && !submitButtonRef.current) return
+              submitButtonRef.current.focus()
+            }}
+            placeholder="Select.."
+          />
+        </div>
+        <div className="flex items-center justify-between px-5 py-2">
+          <div className="flex items-center">
+            {error && (
+              <Fragment>
+                <span className="mr-2 text-red-600">
+                  <AlertCircleIcon color="currentColor" size={20} />
+                </span>
+                <span className="text-red-600" style={{ fontSize: '0.9375rem' }}>
+                  Could not add integration. Please try again.
+                </span>
+              </Fragment>
+            )}
           </div>
-          <div>
-            <Button
-              text="Add"
-              isLoading={loading}
-              disabled={!value}
-              onClick={() => handleClick()}
-              className="w-20"
-              style={primaryColor ? { backgroundColor: primaryColor } : {}}
-            />
+          <div className="flex items-center">
+            <div className="mr-4">
+              <Button
+                text="Cancel"
+                onClick={() => setOpen(false)}
+                variant="outline"
+                className="w-20"
+              />
+            </div>
+            <div>
+              <Button
+                ref={submitButtonRef}
+                text="Add"
+                isLoading={loading}
+                disabled={!value}
+                type="submit"
+                className="w-20"
+                style={primaryColor ? { backgroundColor: primaryColor } : {}}
+              />
+            </div>
           </div>
         </div>
-      </div>
+      </form>
     </ModalContainer>
   )
 }
