@@ -1,14 +1,15 @@
-import classNames from 'classnames'
-import { Transition } from 'components'
-import Head from 'next/head'
-import Link from 'next/link'
+import { HiChevronLeft, HiHome, HiOutlineDocumentText } from 'react-icons/hi'
 import Router, { useRouter } from 'next/router'
 import { useContext, useEffect, useState } from 'react'
+
 import { FiCompass } from 'react-icons/fi'
-import { HiChevronLeft, HiHome, HiOutlineDocumentText } from 'react-icons/hi'
+import Head from 'next/head'
+import Link from 'next/link'
+import SandboxBanner from './SandboxBanner'
 import { Theme } from 'types/JWTSession'
 import { ThemeContext } from 'utils/context'
-import SandboxBanner from './SandboxBanner'
+import { Transition } from 'components'
+import classNames from 'classnames'
 
 interface IProps {
   consumerMetadata: { [key: string]: string }
@@ -381,7 +382,7 @@ const Layout: React.FC<IProps> = ({
           )}
         >
           {sandboxMode ? <SandboxBanner /> : null}
-          <div className="flex flex-col max-w-4xl py-8 mx-4 sm:py-16 sm:mx-8 md:mx-12 lg:m-auto lg:py-32">
+          <div className="flex flex-col max-w-3xl py-8 mx-4 sm:py-16 sm:mx-8 md:m-auto lg:py-32">
             <Transition location={router.pathname}>{children}</Transition>
           </div>
         </main>
