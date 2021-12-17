@@ -16,7 +16,7 @@ const GridCard = ({ connection, handleClick, isLoading, isActive = false }: IPro
   return (
     <div
       className={classNames(
-        'mx-auto cursor-pointer relative w-full px-4 hover:bg-gray-50 pt-6 pb-4 font-medium shadow-sm hover:shadow-md border border-gray-200 rounded-md transition duration-150 ease-in-out text-gray-700 hover:text-gray-900',
+        'mx-auto cursor-pointer relative w-full px-3 sm:px-4 hover:bg-gray-50 pt-6 pb-4 font-medium shadow-sm hover:shadow-md border border-gray-200 rounded-md transition duration-150 ease-in-out text-gray-700 hover:text-gray-900',
         {
           'animate-pulse': isLoading,
           'bg-gray-50 shadow-md': isActive
@@ -40,10 +40,10 @@ const GridCard = ({ connection, handleClick, isLoading, isActive = false }: IPro
           />
         </svg>
       ) : null}
-      <div className="w-full mx-auto">
+      <div className="w-full mx-auto overflow-hidden">
         <img className="w-12 h-12 mx-auto mb-3 rounded" src={icon} alt={name} />
-        <h4 className="text-base font-medium">{name}</h4>
-        <p className="text-sm font-medium text-gray-500 uppercase">{unifiedApi} API</p>
+        <h4 className="text-sm font-medium truncate sm:text-base">{name}</h4>
+        <p className="text-xs font-medium text-gray-500 uppercase sm:text-sm">{unifiedApi} API</p>
       </div>
     </div>
   )
