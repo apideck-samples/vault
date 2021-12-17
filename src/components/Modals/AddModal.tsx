@@ -1,5 +1,5 @@
 import { Button, useToast } from '@apideck/components'
-import { FormEventHandler, Fragment, useContext, useEffect, useRef, useState } from 'react'
+import { Fragment, useContext, useEffect, useRef, useState } from 'react'
 
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import { IConnection } from 'types/Connection'
