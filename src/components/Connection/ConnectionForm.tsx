@@ -113,12 +113,28 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
     }
 
     try {
-      await client.patch(`/vault/connections/${unifiedApi}/${serviceId}`, body, {
+      const response = await client.patch(`/vault/connections/${unifiedApi}/${serviceId}`, body, {
         headers
       })
       mutate(`/vault/connections/${unifiedApi}/${serviceId}`)
       mutate('/vault/connections')
       setSaved(true)
+
+      // Redirect back to application if redirectToAppUrl is present and state is callable
+      const redirectUrl = query.redirectToAppUrl || query.redirectAfterAuthUrl
+      if (redirectUrl && !isToggle) {
+        const connection: IConnection = response?.data?.data
+        if (connection?.state === 'callable') {
+          addToast({
+            title: 'Connection is ready',
+            description: 'You will now get redirected back to the application.'
+          })
+          setTimeout(
+            () => (window.location.href = `${redirectUrl}?authorizedConnection=${connection.name}`),
+            3000
+          )
+        }
+      }
     } catch (error) {
       setFormError(true)
       if (error?.response?.status === 401) {
