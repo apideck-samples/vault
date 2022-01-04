@@ -1,4 +1,5 @@
 import { Button } from '@apideck/components'
+import { createVaultSession } from 'utils/createVaultSession'
 
 interface IMessageProps {
   redirectUri?: string
@@ -53,21 +54,6 @@ const ErrorBlock = ({ error, token = {} }: IErrorProps) => {
   } else if (status === 404) {
     errorTitle = 'Error 404'
     errorMessage = 'This page was not found.'
-  }
-
-  const createVaultSession = async () => {
-    const response = await fetch('/api/vault/sessions', {
-      method: 'POST',
-      body: JSON.stringify({
-        redirect_uri: window.location.href,
-        consumer_metadata: {
-          account_name: 'test@salesforce.com',
-          user_name: 'Test User',
-          image: 'https://unavatar.now.sh/jake'
-        }
-      })
-    })
-    return response.json()
   }
 
   const redirectToSessionRoute = async () => {

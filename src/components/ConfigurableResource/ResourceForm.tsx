@@ -2,6 +2,7 @@ import { Button, CheckBox, DateInput, TextArea, TextInput } from '@apideck/compo
 import { FilteredSelect, SearchSelect } from 'components/Inputs'
 import { Formik, FormikProps } from 'formik'
 import { IConnection, UpdateConnectionConfigInput } from 'types/Connection'
+import { JWTSession, Theme } from 'types/JWTSession'
 import React, { ChangeEvent, useContext, useState } from 'react'
 import { SessionExpiredModalContext, ThemeContext } from 'utils'
 
@@ -9,7 +10,6 @@ import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
 import CheckIcon from 'mdi-react/CheckIcon'
 import { IOptionType } from 'components/Inputs/SearchSelect'
-import { JWTSession, Theme } from 'types/JWTSession'
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import { ResourcePlaceholder } from 'components'
@@ -19,7 +19,7 @@ import { useRouter } from 'next/router'
 interface IProps {
   connection?: IConnection
   loading: boolean
-  jwt: string
+  jwt?: string
   token: JWTSession
   resource: string
 }

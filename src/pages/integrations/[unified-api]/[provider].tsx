@@ -7,8 +7,10 @@ import camelcaseKeys from 'camelcase-keys-deep'
 import client from 'lib/axios'
 import { decode } from 'jsonwebtoken'
 import { options } from 'utils/sessionOptions'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
+import { useSession } from 'utils/useSession'
 
 interface IProps {
   connections: IConnection[]
@@ -22,6 +24,14 @@ interface IProps {
 
 const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
   const { query } = useRouter()
+  const { session, setSession } = useSession()
+
+  useEffect(() => {
+    if (!session && jwt?.length) {
+      setSession({ ...token, jwt })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const fetcher = (url: string) => {
     return client.get(url, {
@@ -46,10 +56,12 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
 
   if (error || !connection) {
     const errorObj = error?.response ? error.response : { status: 400 }
-    return <ErrorBlock error={errorObj} token={token} />
+    return <ErrorBlock error={errorObj} token={session || token} />
   }
 
-  return <ConnectionForm connection={connection} token={token} jwt={jwt} />
+  return (
+    <ConnectionForm connection={connection} token={session || token} jwt={session?.jwt || jwt} />
+  )
 }
 
 export const getServerSideProps = async ({ req, res, query }: any): Promise<any> => {

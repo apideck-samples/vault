@@ -20,6 +20,7 @@ export interface JWTSession {
     isolationMode?: boolean
     unifiedApis?: string[]
   }
+  jwt?: string
 }
 
 export interface Theme {

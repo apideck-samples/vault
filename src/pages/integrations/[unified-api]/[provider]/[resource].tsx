@@ -10,6 +10,7 @@ import { decode } from 'jsonwebtoken'
 import { options } from 'utils/sessionOptions'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
+import { useSession } from 'utils/useSession'
 import { useToast } from '@apideck/components'
 
 interface IProps {
@@ -28,10 +29,19 @@ const Resource = ({ jwt, token, url, resource }: IProps) => {
   const { addToast } = useToast()
   const { back } = useRouter()
 
+  const { session, setSession } = useSession()
+
+  useEffect(() => {
+    if (!session && jwt?.length) {
+      setSession({ ...token, jwt })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const fetcher = (url: string) => {
     return client.get(url, {
       headers: {
-        Authorization: `Bearer ${jwt || query.jwt}`,
+        Authorization: `Bearer ${jwt || query.jwt || session?.jwt}`,
         'X-APIDECK-APP-ID': token?.applicationId,
         'X-APIDECK-CONSUMER-ID': token?.consumerId
       }
@@ -81,8 +91,8 @@ const Resource = ({ jwt, token, url, resource }: IProps) => {
       loading={loading}
       connection={connection}
       resource={resource}
-      jwt={jwt}
-      token={token}
+      jwt={jwt || session?.jwt}
+      token={token || session}
     />
   )
 }
