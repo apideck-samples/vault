@@ -23,6 +23,7 @@ import { options } from 'utils/sessionOptions'
 import useDebounce from 'utils/useDebounce'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
+import { useSession } from 'utils/useSession'
 import { useToast } from '@apideck/components'
 
 const keyMap = { FOCUS_INPUT: ['command+k', 'control+k'] }
@@ -41,6 +42,7 @@ const Home = ({ jwt, token }: IProps): any => {
   const [isLoading, setIsLoading] = useState<boolean | string>(false)
   const { push } = useRouter()
   const { addToast } = useToast()
+  const { session, setSession } = useSession()
   const searchInputRef: any = useRef()
   let showSuggestions = false
   if (token.settings && 'showSuggestions' in token.settings) {
@@ -86,6 +88,13 @@ const Home = ({ jwt, token }: IProps): any => {
   const isOnBoarded = process.browser && sessionStorage?.getItem('isOnBoarded')
   const noAddedConnections = data && !error && !addedConnections?.length
   const shouldOnBoard = noAddedConnections && !isOnBoarded && showSuggestions
+
+  useEffect(() => {
+    if (!session && jwt?.length) {
+      setSession({ ...token, jwt })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (debouncedSearchTerm) {
@@ -190,7 +199,7 @@ const Home = ({ jwt, token }: IProps): any => {
 
   if (error) {
     const errorObj = error?.response ? error.response : { status: 400 }
-    return <ErrorBlock error={errorObj} token={token} />
+    return <ErrorBlock error={errorObj} token={session || token} />
   }
 
   return (

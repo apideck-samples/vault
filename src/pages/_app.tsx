@@ -1,12 +1,15 @@
-import { ModalProvider, ToastProvider } from '@apideck/components'
+import '../styles/globals.css'
+
 import { Layout, SessionExpiredModal } from 'components'
-import { defaults } from 'config/defaults'
-import { applySession } from 'next-session'
-import { AppProps } from 'next/app'
+import { ModalProvider, ToastProvider } from '@apideck/components'
 import React, { Fragment, useState } from 'react'
 import { SessionExpiredModalContext, ThemeContext } from 'utils/context'
+
+import { AppProps } from 'next/app'
+import { SessionProvider } from 'utils/useSession'
+import { applySession } from 'next-session'
+import { defaults } from 'config/defaults'
 import { options } from 'utils/sessionOptions'
-import '../styles/globals.css'
 
 const App = ({ Component, pageProps }: AppProps) => {
   const [sessionExpired, setSessionExpired] = useState<boolean>(false)
@@ -40,26 +43,28 @@ const App = ({ Component, pageProps }: AppProps) => {
     <Fragment>
       <ThemeContext.Provider value={theme}>
         <SessionExpiredModalContext.Provider value={{ sessionExpired, setSessionExpired }}>
-          <ToastProvider>
-            <ModalProvider>
-              <Layout
-                consumerMetadata={consumerMetadata}
-                redirectUri={redirectUri}
-                hideConsumerCard={sessionExpired}
-                showLogs={showLogs}
-                showSuggestions={showSuggestions}
-                sandboxMode={sandboxMode}
-                isolationMode={isolationMode}
-              >
-                <Component {...pageProps} />
-                <SessionExpiredModal
-                  open={sessionExpired}
-                  setOpen={setSessionExpired}
+          <SessionProvider>
+            <ToastProvider>
+              <ModalProvider>
+                <Layout
+                  consumerMetadata={consumerMetadata}
                   redirectUri={redirectUri}
-                />
-              </Layout>
-            </ModalProvider>
-          </ToastProvider>
+                  hideConsumerCard={sessionExpired}
+                  showLogs={showLogs}
+                  showSuggestions={showSuggestions}
+                  sandboxMode={sandboxMode}
+                  isolationMode={isolationMode}
+                >
+                  <Component {...pageProps} />
+                  <SessionExpiredModal
+                    open={sessionExpired}
+                    setOpen={setSessionExpired}
+                    redirectUri={redirectUri}
+                  />
+                </Layout>
+              </ModalProvider>
+            </ToastProvider>
+          </SessionProvider>
         </SessionExpiredModalContext.Provider>
       </ThemeContext.Provider>
       <div id="modal" />
