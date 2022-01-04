@@ -48,6 +48,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
   const { query } = router
   const [oauthError, setOAuthError] = useState<OAuthError | null>(null)
   const isolationMode = token?.settings?.isolationMode
+  const autoRedirect = token?.settings?.autoRedirect
 
   useEffect(() => {
     setOAuthError(createOAuthErrorFromQuery(query))
@@ -68,8 +69,11 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
   const isAuthorized = connection.state === 'authorized' || connection.state === 'callable'
 
   let redirectUrl = `${window.location.origin}/integrations/${unifiedApi}/${serviceId}`
-  if (query?.redirectAfterAuthUrl) {
-    redirectUrl = `${redirectUrl}?redirectToAppUrl=${query?.redirectAfterAuthUrl}`
+
+  if (autoRedirect || query?.redirectAfterAuthUrl) {
+    redirectUrl = `${redirectUrl}?redirectToAppUrl=${
+      autoRedirect ? token?.redirectUri : query?.redirectAfterAuthUrl
+    }`
   }
   const authorizeUrlWithRedirect = `${authorizeUrl}&redirect_uri=${redirectUrl}`
   let revokeUrlWithRedirect = ''
@@ -121,8 +125,11 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
       setSaved(true)
 
       // Redirect back to application if redirectToAppUrl is present and state is callable
-      const redirectUrl = query.redirectToAppUrl || query.redirectAfterAuthUrl
-      if (redirectUrl && !isToggle) {
+      const shouldRedirect =
+        (autoRedirect || query.redirectToAppUrl || query.redirectAfterAuthUrl) && !isToggle
+      if (shouldRedirect) {
+        const redirectUrl =
+          query.redirectToAppUrl || query.redirectAfterAuthUrl || token?.redirectUri
         const connection: IConnection = response?.data?.data
         if (connection?.state === 'callable') {
           addToast({

@@ -13,6 +13,7 @@ export interface JWTSession {
   redirectUri: string
   theme: Theme
   settings?: {
+    autoRedirect?: boolean
     showLogs?: boolean
     showSuggestions?: boolean
     sandboxMode?: boolean
