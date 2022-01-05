@@ -7,9 +7,6 @@ export const createVaultSession = async (url?: string) => {
         account_name: 'test@salesforce.com',
         user_name: 'Test User',
         image: 'https://unavatar.now.sh/jake'
-      },
-      settings: {
-        auto_redirect: true
       }
     })
   })
