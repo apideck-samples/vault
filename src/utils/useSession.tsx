@@ -1,6 +1,7 @@
-import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useState } from 'react'
+import { Dispatch, ReactNode, SetStateAction, createContext, useContext } from 'react'
 
 import { JWTSession } from 'types/JWTSession'
+import { useStickyState } from './useStickyState'
 
 interface ContextProps {
   createSession: () => Promise<void>
@@ -12,7 +13,7 @@ interface ContextProps {
 const SessionContext = createContext<Partial<ContextProps>>({})
 
 export const SessionProvider = ({ children }: { children: ReactNode }) => {
-  const [session, setSession] = useState<JWTSession | null>(null)
+  const [session, setSession] = useStickyState(false, 'session')
 
   return (
     <SessionContext.Provider value={{ session, setSession }}>{children}</SessionContext.Provider>
