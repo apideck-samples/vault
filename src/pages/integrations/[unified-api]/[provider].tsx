@@ -36,9 +36,9 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
   const fetcher = (url: string) => {
     return client.get(url, {
       headers: {
-        Authorization: `Bearer ${jwt || query.jwt}`,
-        'X-APIDECK-APP-ID': token?.applicationId,
-        'X-APIDECK-CONSUMER-ID': token?.consumerId
+        Authorization: `Bearer ${session?.jwt || jwt || query.jwt}`,
+        'X-APIDECK-APP-ID': session?.applicationId || token?.applicationId,
+        'X-APIDECK-CONSUMER-ID': session?.consumerId || token?.consumerId
       }
     })
   }

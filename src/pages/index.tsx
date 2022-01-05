@@ -59,9 +59,9 @@ const Home = ({ jwt, token }: IProps): any => {
   const fetcher = (url: string) => {
     return client.get(url, {
       headers: {
-        Authorization: `Bearer ${jwt}`,
-        'X-APIDECK-APP-ID': token?.applicationId,
-        'X-APIDECK-CONSUMER-ID': token?.consumerId
+        Authorization: `Bearer ${session?.jwt || jwt}`,
+        'X-APIDECK-APP-ID': session?.applicationId || token?.applicationId,
+        'X-APIDECK-CONSUMER-ID': session?.consumerId || token?.consumerId
       }
     })
   }
@@ -141,9 +141,9 @@ const Home = ({ jwt, token }: IProps): any => {
         { enabled: true },
         {
           headers: {
-            Authorization: `Bearer ${jwt}`,
-            'X-APIDECK-APP-ID': token.applicationId,
-            'X-APIDECK-CONSUMER-ID': token.consumerId
+            Authorization: `Bearer ${session?.jwt || jwt}`,
+            'X-APIDECK-APP-ID': session?.applicationId || token.applicationId,
+            'X-APIDECK-CONSUMER-ID': session?.consumerId || token.consumerId
           }
         }
       )
