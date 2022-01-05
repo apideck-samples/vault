@@ -13,7 +13,7 @@ interface ContextProps {
 const SessionContext = createContext<Partial<ContextProps>>({})
 
 export const SessionProvider = ({ children }: { children: ReactNode }) => {
-  const [session, setSession] = useStickyState<JWTSession | null>(false, 'session')
+  const [session, setSession] = useStickyState(false, 'session')
 
   return (
     <SessionContext.Provider value={{ session, setSession }}>{children}</SessionContext.Provider>
