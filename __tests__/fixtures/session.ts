@@ -11,7 +11,6 @@ export const token: JWTSession = {
   },
   exp: 1606401003,
   iat: 1606314603,
-  hideResourceSettings: false,
   redirectUri: 'http://localhost:3000/ecosystems/ckgrs95l3y4er0b99qa37buj2/unify/vault',
   theme: {
     favicon: 'https://www.apideck.com/static/favicon.png',
@@ -21,6 +20,9 @@ export const token: JWTSession = {
     sidepanelTextColor: '#FFFFFF',
     termsUrl: 'https://www.termsfeed.com/terms-conditions/957c85c1b089ae9e3219c83eff65377e',
     vaultName: 'Apideck Sandbox'
+  },
+  settings: {
+    hideResourceSettings: false
   }
 }
 
