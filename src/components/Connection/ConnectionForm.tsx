@@ -49,6 +49,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
   const [oauthError, setOAuthError] = useState<OAuthError | null>(null)
   const isolationMode = token?.settings?.isolationMode
   const autoRedirect = token?.settings?.autoRedirect
+  const hideResourceSettings = token?.settings?.hideResourceSettings
 
   useEffect(() => {
     setOAuthError(createOAuthErrorFromQuery(query))
@@ -264,13 +265,11 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
         )}
       </div>
 
-      {isAuthorized &&
-        connection?.configurable_resources?.length > 0 &&
-        !token.hideResourceSettings && (
-          <div className="mt-10">
-            <ConfigurableResources connection={connection} token={token} jwt={jwt} />
-          </div>
-        )}
+      {isAuthorized && connection?.configurable_resources?.length > 0 && !hideResourceSettings && (
+        <div className="mt-10">
+          <ConfigurableResources connection={connection} token={token} jwt={jwt} />
+        </div>
+      )}
 
       {filteredFormFields.length > 0 && (
         <Formik

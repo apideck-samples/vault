@@ -100,7 +100,6 @@ export const getServerSideProps = async ({ req, res, query }: any): Promise<any>
     props: {
       jwt: req.session.jwt || '',
       token: req.session.token || {},
-      hideResourceSettings: req.session.hide_resource_settings || false,
       unifiedApi: query['unified-api'],
       provider: query['provider'],
       redirectAfterAuthUrl: query?.redirectAfterAuthUrl || null

@@ -9,10 +9,10 @@ export interface JWTSession {
   }
   exp: number
   iat: number
-  hideResourceSettings: boolean
   redirectUri: string
   theme: Theme
   settings?: {
+    hideResourceSettings?: boolean
     autoRedirect?: boolean
     showLogs?: boolean
     showSuggestions?: boolean
