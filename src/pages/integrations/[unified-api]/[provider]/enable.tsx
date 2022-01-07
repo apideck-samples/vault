@@ -3,12 +3,11 @@ import React, { useEffect, useState } from 'react'
 import { AxiosResponse } from 'axios'
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
-import { applySession } from 'next-session'
 import camelcaseKeys from 'camelcase-keys-deep'
 import client from 'lib/axios'
 import { decode } from 'jsonwebtoken'
-import { options } from 'utils/sessionOptions'
 import { useRouter } from 'next/router'
+import { useSession } from 'utils/useSession'
 import { useToast } from '@apideck/components'
 
 interface IProps {
@@ -21,6 +20,14 @@ const AddResource = ({ jwt, token }: IProps) => {
   const [error, setError] = useState<string | null>(null)
   const { query, push } = useRouter()
   const { addToast } = useToast()
+  const { session, setSession } = useSession()
+
+  useEffect(() => {
+    if (!session && jwt?.length) {
+      setSession({ ...token, jwt })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     const enableConnection = () => {
@@ -34,9 +41,9 @@ const AddResource = ({ jwt, token }: IProps) => {
           },
           {
             headers: {
-              Authorization: `Bearer ${jwt || query.jwt}`,
-              'X-APIDECK-APP-ID': token.applicationId,
-              'X-APIDECK-CONSUMER-ID': token.consumerId
+              Authorization: `Bearer ${session?.jwt || jwt}`,
+              'X-APIDECK-APP-ID': session?.applicationId || token?.applicationId,
+              'X-APIDECK-CONSUMER-ID': session?.consumerId || token?.consumerId
             }
           }
         )
@@ -113,20 +120,21 @@ const AddResource = ({ jwt, token }: IProps) => {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function getServerSideProps({ req, res, query }: any): Promise<any> {
-  await applySession(req, res, options)
-
+export async function getServerSideProps({ query }: any): Promise<any> {
   const { jwt } = query
+
+  let token
   if (jwt) {
-    req.session.jwt = jwt
     const decoded = decode(jwt) as JWTSession
-    if (decoded) req.session.token = camelcaseKeys(decoded)
+    if (decoded) {
+      token = camelcaseKeys(decoded)
+    }
   }
 
   return {
     props: {
-      jwt: req.session.jwt || '',
-      token: req.session.token || {}
+      jwt: jwt || null,
+      token: token || null
     }
   }
 }

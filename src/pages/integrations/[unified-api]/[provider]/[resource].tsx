@@ -3,11 +3,9 @@ import React, { useEffect, useState } from 'react'
 
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
-import { applySession } from 'next-session'
 import camelcaseKeys from 'camelcase-keys-deep'
 import client from 'lib/axios'
 import { decode } from 'jsonwebtoken'
-import { options } from 'utils/sessionOptions'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { useSession } from 'utils/useSession'
@@ -41,14 +39,14 @@ const Resource = ({ jwt, token, url, resource }: IProps) => {
   const fetcher = (url: string) => {
     return client.get(url, {
       headers: {
-        Authorization: `Bearer ${jwt || query.jwt || session?.jwt}`,
-        'X-APIDECK-APP-ID': token?.applicationId,
-        'X-APIDECK-CONSUMER-ID': token?.consumerId
+        Authorization: `Bearer ${session?.jwt || jwt || query.jwt}`,
+        'X-APIDECK-APP-ID': session?.applicationId || token?.applicationId,
+        'X-APIDECK-CONSUMER-ID': session?.consumerId || token?.consumerId
       }
     })
   }
 
-  const { data, error: connectionError } = useSWR(url, fetcher, {
+  const { data, error: connectionError } = useSWR(session?.jwt ? url : null, fetcher, {
     shouldRetryOnError: false,
     revalidateOnFocus: false
   })
@@ -91,31 +89,30 @@ const Resource = ({ jwt, token, url, resource }: IProps) => {
       loading={loading}
       connection={connection}
       resource={resource}
-      jwt={jwt || session?.jwt}
-      token={token || session}
+      jwt={session?.jwt || jwt}
+      token={session || token}
     />
   )
 }
 
-export const getServerSideProps = async ({ req, res, query }: any): Promise<any> => {
-  await applySession(req, res, options)
-
+export const getServerSideProps = async ({ query }: any): Promise<any> => {
   const unifiedApi = query['unified-api']
-  const { provider, resource } = query
+  const { provider, resource, jwt } = query
 
-  const { jwt } = query
+  let token
   if (jwt) {
-    req.session.jwt = jwt
     const decoded = decode(jwt) as JWTSession
-    if (decoded) req.session.token = camelcaseKeys(decoded)
+    if (decoded) {
+      token = camelcaseKeys(decoded)
+    }
   }
 
   const url = `/vault/connections/${unifiedApi}/${provider}/${resource}/config`
 
   return {
     props: {
-      jwt: req.session.jwt || '',
-      token: req.session.token || {},
+      jwt: jwt || null,
+      token: token || null,
       resource,
       url
     }

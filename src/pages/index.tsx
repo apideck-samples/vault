@@ -13,13 +13,10 @@ import ConnectionsGrid from 'components/Connection/ConnectionsGrid'
 import Fuse from 'fuse.js'
 import { GlobalHotKeys } from 'react-hotkeys'
 import { IConnection } from 'types/Connection'
-import { JWTSession } from 'types/JWTSession'
 import SearchInput from 'components/Inputs/SearchInput'
 import SearchedConnectionsList from 'components/Connection/SearchedConnectionsList'
 import { SessionExpiredModalContext } from 'utils/context'
-import { applySession } from 'next-session'
 import client from 'lib/axios'
-import { options } from 'utils/sessionOptions'
 import useDebounce from 'utils/useDebounce'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
@@ -28,12 +25,8 @@ import { useToast } from '@apideck/components'
 
 const keyMap = { FOCUS_INPUT: ['command+k', 'control+k'] }
 
-interface IProps {
-  jwt: string
-  token: JWTSession
-}
-
-const Home = ({ jwt, token }: IProps): any => {
+const Home = (): any => {
+  const { session } = useSession()
   const { setSessionExpired } = useContext(SessionExpiredModalContext)
   const [searchTerm, setSearchTerm] = useState('')
   const [list, setList] = useState<IConnection[]>([])
@@ -42,13 +35,12 @@ const Home = ({ jwt, token }: IProps): any => {
   const [isLoading, setIsLoading] = useState<boolean | string>(false)
   const { push } = useRouter()
   const { addToast } = useToast()
-  const { session, setSession } = useSession()
   const searchInputRef: any = useRef()
   let showSuggestions = false
-  if (token.settings && 'showSuggestions' in token.settings) {
-    showSuggestions = !!token.settings.showSuggestions
+  if (session?.settings && 'showSuggestions' in session?.settings) {
+    showSuggestions = !!session?.settings.showSuggestions
   }
-  const unifiedApis = token?.settings?.unifiedApis
+  const unifiedApis = session?.settings?.unifiedApis
 
   const focusInput = useCallback(() => {
     searchInputRef?.current?.focus()
@@ -59,9 +51,9 @@ const Home = ({ jwt, token }: IProps): any => {
   const fetcher = (url: string) => {
     return client.get(url, {
       headers: {
-        Authorization: `Bearer ${session?.jwt || jwt}`,
-        'X-APIDECK-APP-ID': session?.applicationId || token?.applicationId,
-        'X-APIDECK-CONSUMER-ID': session?.consumerId || token?.consumerId
+        Authorization: `Bearer ${session?.jwt}`,
+        'X-APIDECK-APP-ID': session?.applicationId,
+        'X-APIDECK-CONSUMER-ID': session?.consumerId
       }
     })
   }
@@ -88,13 +80,6 @@ const Home = ({ jwt, token }: IProps): any => {
   const isOnBoarded = process.browser && sessionStorage?.getItem('isOnBoarded')
   const noAddedConnections = data && !error && !addedConnections?.length
   const shouldOnBoard = noAddedConnections && !isOnBoarded && showSuggestions
-
-  useEffect(() => {
-    if (!session && jwt?.length) {
-      setSession({ ...token, jwt })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   useEffect(() => {
     if (debouncedSearchTerm) {
@@ -141,9 +126,9 @@ const Home = ({ jwt, token }: IProps): any => {
         { enabled: true },
         {
           headers: {
-            Authorization: `Bearer ${session?.jwt || jwt}`,
-            'X-APIDECK-APP-ID': session?.applicationId || token.applicationId,
-            'X-APIDECK-CONSUMER-ID': session?.consumerId || token.consumerId
+            Authorization: `Bearer ${session?.jwt}`,
+            'X-APIDECK-APP-ID': session?.applicationId,
+            'X-APIDECK-CONSUMER-ID': session?.consumerId
           }
         }
       )
@@ -199,7 +184,7 @@ const Home = ({ jwt, token }: IProps): any => {
 
   if (error) {
     const errorObj = error?.response ? error.response : { status: 400 }
-    return <ErrorBlock error={errorObj} token={session || token} />
+    return <ErrorBlock error={errorObj} token={session} />
   }
 
   return (
@@ -249,17 +234,6 @@ const Home = ({ jwt, token }: IProps): any => {
       {data && !connections?.length && <div className="mt-12">No integrations available.</div>}
     </GlobalHotKeys>
   )
-}
-
-export const getServerSideProps = async ({ req, res }: any): Promise<any> => {
-  await applySession(req, res, options)
-
-  return {
-    props: {
-      jwt: req.session?.jwt || '',
-      token: req.session?.token || {}
-    }
-  }
 }
 
 export default Home

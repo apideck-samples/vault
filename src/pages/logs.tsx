@@ -1,24 +1,22 @@
 import ErrorBlock from 'components/shared/ErrorBlock'
-import { JWTSession } from 'types/JWTSession'
 import LogsTable from 'components/Logs/LogsTable'
 import { Waypoint } from 'react-waypoint'
-import { applySession } from 'next-session'
 import client from 'lib/axios'
-import { options } from 'utils/sessionOptions'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 import { useSWRInfinite } from 'swr'
+import { useSession } from 'utils/useSession'
 
-interface IProps {
-  jwt: string
-  token: JWTSession
-}
+const LogsPage = () => {
+  const { session } = useSession()
+  const { push } = useRouter()
 
-const LogsPage = ({ jwt, token }: IProps) => {
   const fetcher = (url: string) => {
     return client.get(url, {
       headers: {
-        Authorization: `Bearer ${jwt}`,
-        'X-APIDECK-APP-ID': token?.applicationId,
-        'X-APIDECK-CONSUMER-ID': token?.consumerId
+        Authorization: `Bearer ${session?.jwt}`,
+        'X-APIDECK-APP-ID': session?.applicationId,
+        'X-APIDECK-CONSUMER-ID': session?.consumerId
       }
     })
   }
@@ -43,8 +41,14 @@ const LogsPage = ({ jwt, token }: IProps) => {
     }
   }
 
+  useEffect(() => {
+    if (session?.settings && 'showLogs' in session?.settings && !session?.settings?.showLogs) {
+      push('/')
+    }
+  }, [push, session?.settings])
+
   if (error) {
-    return <ErrorBlock error={error?.response} token={token} />
+    return <ErrorBlock error={error?.response} token={session} />
   }
 
   const isLoading = !data && !error
@@ -68,28 +72,6 @@ const LogsPage = ({ jwt, token }: IProps) => {
       )}
     </div>
   )
-}
-
-export const getServerSideProps = async ({ req, res }: any): Promise<any> => {
-  await applySession(req, res, options)
-
-  // Redirect if showLogs is set to false in settings
-  const token = req.session?.token
-  if (token?.settings && 'showLogs' in token?.settings && !token?.settings?.showLogs) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/'
-      }
-    }
-  }
-
-  return {
-    props: {
-      jwt: req.session?.jwt || '',
-      token: req.session?.token || {}
-    }
-  }
 }
 
 export default LogsPage

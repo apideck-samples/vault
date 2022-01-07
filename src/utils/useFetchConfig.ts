@@ -1,7 +1,7 @@
-import client from 'lib/axios'
-import useSWR from 'swr'
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
+import client from 'lib/axios'
+import useSWR from 'swr'
 
 const useFetchConfig = (
   connection: IConnection,
@@ -22,7 +22,7 @@ const useFetchConfig = (
     })
   }
 
-  return useSWR(url, fetcher, {
+  return useSWR(jwt ? url : null, fetcher, {
     shouldRetryOnError: false,
     revalidateOnFocus: false
   })
