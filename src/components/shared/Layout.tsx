@@ -1,6 +1,6 @@
 import { HiChevronLeft, HiHome, HiOutlineDocumentText } from 'react-icons/hi'
+import { ReactNode, useContext, useEffect, useState } from 'react'
 import Router, { useRouter } from 'next/router'
-import { useContext, useEffect, useState } from 'react'
 
 import { FiCompass } from 'react-icons/fi'
 import Head from 'next/head'
@@ -10,32 +10,49 @@ import { Theme } from 'types/JWTSession'
 import { ThemeContext } from 'utils/context'
 import { Transition } from 'components'
 import classNames from 'classnames'
+import { defaults } from 'config/defaults'
+import { useSession } from 'utils/useSession'
 
 interface IProps {
-  consumerMetadata: { [key: string]: string }
-  showLogs?: boolean
-  showSuggestions?: boolean
-  redirectUri: string
-  hideConsumerCard: boolean
-  sandboxMode?: boolean
-  isolationMode?: boolean
+  children: ReactNode
 }
 
-const Layout: React.FC<IProps> = ({
-  consumerMetadata,
-  redirectUri,
-  hideConsumerCard = false,
-  showLogs,
-  showSuggestions = false,
-  sandboxMode = false,
-  isolationMode = false,
-  children
-}) => {
+const Layout: React.FC<IProps> = ({ children }) => {
   const router = useRouter()
-  const theme = useContext(ThemeContext) as Theme
+  let theme = useContext(ThemeContext) as Theme
   const [customStyles, setCustomStyles] = useState<any>({ backgroundColor: '#edf2f7' })
   const [customTextColor, setCustomTextColor] = useState('')
   const [navIsOpen, setNavIsOpen] = useState(false)
+
+  const { session } = useSession()
+
+  let consumerMetadata: any = {}
+  let hideConsumerCard: boolean | undefined = false
+  let showLogs: boolean | undefined = true
+  let showSuggestions: boolean | undefined = false
+  const sandboxMode = session?.settings?.sandboxMode
+  const isolationMode = session?.settings?.isolationMode
+  const persistedTheme = typeof window !== 'undefined' && window.localStorage.getItem('theme')
+  theme = persistedTheme ? JSON.parse(persistedTheme) : {}
+  let redirectUri = ''
+
+  if (session && Object.keys(session).length > 0) {
+    consumerMetadata = session.consumerMetadata || defaults.consumerMetadata
+    redirectUri = session.redirectUri
+    theme = session.theme || defaults.theme
+    if (typeof window !== 'undefined') window.localStorage.setItem('theme', JSON.stringify(theme))
+    if (session.settings) {
+      if ('showLogs' in session.settings) {
+        showLogs = session.settings?.showLogs
+      }
+      if ('showSuggestions' in session.settings) {
+        showSuggestions = session.settings.showSuggestions
+      }
+      if ('hideConsumerCard' in session.settings) {
+        hideConsumerCard = session.settings.hideConsumerCard
+      }
+    }
+  }
 
   const {
     vaultName,
@@ -71,7 +88,7 @@ const Layout: React.FC<IProps> = ({
   }, [navIsOpen])
 
   return (
-    <div>
+    <ThemeContext.Provider value={theme}>
       <Head>
         <meta
           name="viewport"
@@ -387,7 +404,7 @@ const Layout: React.FC<IProps> = ({
           </div>
         </main>
       </div>
-    </div>
+    </ThemeContext.Provider>
   )
 }
 

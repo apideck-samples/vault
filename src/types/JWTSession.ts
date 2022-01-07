@@ -14,6 +14,7 @@ export interface JWTSession {
   settings?: {
     hideResourceSettings?: boolean
     autoRedirect?: boolean
+    hideConsumerCard?: boolean
     showLogs?: boolean
     showSuggestions?: boolean
     sandboxMode?: boolean

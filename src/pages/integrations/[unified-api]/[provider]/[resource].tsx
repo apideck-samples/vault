@@ -40,13 +40,13 @@ const Resource = ({ jwt, token, url, resource }: IProps) => {
     return client.get(url, {
       headers: {
         Authorization: `Bearer ${session?.jwt || jwt || query.jwt}`,
-        'X-APIDECK-APP-ID': session?.jwt || token?.applicationId,
+        'X-APIDECK-APP-ID': session?.applicationId || token?.applicationId,
         'X-APIDECK-CONSUMER-ID': session?.consumerId || token?.consumerId
       }
     })
   }
 
-  const { data, error: connectionError } = useSWR(url, fetcher, {
+  const { data, error: connectionError } = useSWR(session?.jwt ? url : null, fetcher, {
     shouldRetryOnError: false,
     revalidateOnFocus: false
   })
@@ -89,8 +89,8 @@ const Resource = ({ jwt, token, url, resource }: IProps) => {
       loading={loading}
       connection={connection}
       resource={resource}
-      jwt={jwt || session?.jwt}
-      token={token || session}
+      jwt={session?.jwt || jwt}
+      token={session || token}
     />
   )
 }

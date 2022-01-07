@@ -12,7 +12,7 @@ export const defaults = {
     sidepanelBackgroundColor: '',
     sidepanelTextColor: '',
     termsUrl: 'https://www.termsfeed.com/terms-conditions/957c85c1b089ae9e3219c83eff65377e',
-    vaultName: 'Vault Sample Project',
+    vaultName: 'Apideck Vault',
     logo: ''
   },
   settings: {
