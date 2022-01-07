@@ -8,14 +8,15 @@ import { useSession } from 'utils/useSession'
 type IProps = { jwt: string | null; token?: JWTSession | null }
 const Session = ({ jwt, token }: IProps) => {
   const router = useRouter()
-  const { session, setSession } = useSession()
+  const { setSession } = useSession()
 
   useEffect(() => {
-    if (token && jwt && !session) {
+    if (token && jwt) {
       setSession({ ...token, jwt })
       router.push('/')
     }
-  }, [router, token, setSession, jwt, session])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return <div />
 }
