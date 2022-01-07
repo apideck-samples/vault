@@ -399,12 +399,12 @@ const Layout: React.FC<IProps> = ({ children }) => {
             { 'lg:overflow-hidden max-h-screen fixed': navIsOpen }
           )}
         >
-          {sandboxMode ? <SandboxBanner /> : null}
           <div className="flex flex-col max-w-3xl py-8 mx-4 sm:py-16 sm:mx-8 md:m-auto lg:py-32">
             <Transition location={router.pathname}>
               <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>
             </Transition>
           </div>
+          {sandboxMode ? <SandboxBanner /> : null}
         </main>
       </div>
     </div>
