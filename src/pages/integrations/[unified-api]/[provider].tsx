@@ -2,13 +2,9 @@ import { ConnectionForm, ConnectionPlaceholder, ErrorBlock } from 'components'
 
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
-import { applySession } from 'next-session'
 import camelcaseKeys from 'camelcase-keys-deep'
 import client from 'lib/axios'
 import { decode } from 'jsonwebtoken'
-import { options } from 'utils/sessionOptions'
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { useSession } from 'utils/useSession'
 
@@ -23,30 +19,26 @@ interface IProps {
 }
 
 const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
-  const { query } = useRouter()
-  const { session, setSession } = useSession()
-
-  useEffect(() => {
-    if (!session && jwt?.length) {
-      setSession({ ...token, jwt })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const { session } = useSession()
 
   const fetcher = (url: string) => {
     return client.get(url, {
       headers: {
-        Authorization: `Bearer ${session?.jwt || jwt || query.jwt}`,
+        Authorization: `Bearer ${session?.jwt || jwt}`,
         'X-APIDECK-APP-ID': session?.applicationId || token?.applicationId,
         'X-APIDECK-CONSUMER-ID': session?.consumerId || token?.consumerId
       }
     })
   }
 
-  const { data, error } = useSWR(`/vault/connections/${unifiedApi}/${provider}`, fetcher, {
-    shouldRetryOnError: false,
-    revalidateOnFocus: false
-  })
+  const { data, error } = useSWR(
+    token || session ? `/vault/connections/${unifiedApi}/${provider}` : null,
+    fetcher,
+    {
+      shouldRetryOnError: false,
+      revalidateOnFocus: false
+    }
+  )
 
   const connection: IConnection = data?.data?.data
 
@@ -64,26 +56,27 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
   )
 }
 
-export const getServerSideProps = async ({ req, res, query }: any): Promise<any> => {
-  await applySession(req, res, options)
+export const getServerSideProps = async ({ res, query }: any): Promise<any> => {
+  let token
 
   const { jwt } = query
   if (jwt) {
-    req.session.jwt = jwt
     const decoded = decode(jwt) as JWTSession
-    if (decoded) req.session.token = camelcaseKeys(decoded)
+    if (decoded) {
+      token = camelcaseKeys(decoded) as any
+    }
   }
 
   // After authorization, redirect to the provided application URL
   // if connection is callable and redirect URL is present in the query params
-  if (query.redirectToAppUrl && req.session.jwt) {
+  if (query.redirectToAppUrl && jwt && token?.applicationId) {
     const response = await client.get(
       `/vault/connections/${query['unified-api']}/${query['provider']}`,
       {
         headers: {
-          Authorization: `Bearer ${req.session.jwt}`,
-          'X-APIDECK-APP-ID': req.session.token?.applicationId,
-          'X-APIDECK-CONSUMER-ID': req.session.token?.consumerId
+          Authorization: `Bearer ${jwt}`,
+          'X-APIDECK-APP-ID': token?.applicationId,
+          'X-APIDECK-CONSUMER-ID': token?.consumerId
         }
       }
     )
@@ -98,8 +91,8 @@ export const getServerSideProps = async ({ req, res, query }: any): Promise<any>
 
   return {
     props: {
-      jwt: req.session.jwt || '',
-      token: req.session.token || {},
+      jwt: jwt || null,
+      token: token || null,
       unifiedApi: query['unified-api'],
       provider: query['provider'],
       redirectAfterAuthUrl: query?.redirectAfterAuthUrl || null

@@ -13,12 +13,12 @@ import classNames from 'classnames'
 
 interface IProps {
   consumerMetadata: { [key: string]: string }
-  showLogs: boolean
-  showSuggestions: boolean
+  showLogs?: boolean
+  showSuggestions?: boolean
   redirectUri: string
   hideConsumerCard: boolean
-  sandboxMode: boolean
-  isolationMode: boolean
+  sandboxMode?: boolean
+  isolationMode?: boolean
 }
 
 const Layout: React.FC<IProps> = ({

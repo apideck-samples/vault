@@ -1,4 +1,5 @@
 import { Button } from '@apideck/components'
+import { JWTSession } from 'types/JWTSession'
 import { createVaultSession } from 'utils/createVaultSession'
 
 interface IMessageProps {
@@ -8,10 +9,7 @@ interface IMessageProps {
 
 interface IErrorProps {
   error: { status: number }
-  token?: {
-    exp?: number
-    redirectUri?: string
-  }
+  token?: JWTSession | null
 }
 
 const ErrorMessage = ({ redirectUri, message }: IMessageProps) => {
@@ -32,7 +30,7 @@ const ErrorMessage = ({ redirectUri, message }: IMessageProps) => {
   return <div>{message}</div>
 }
 
-const ErrorBlock = ({ error, token = {} }: IErrorProps) => {
+const ErrorBlock = ({ error, token }: IErrorProps) => {
   const status = error?.status || 500
   const exp = token?.exp
   const redirectUri = token?.redirectUri

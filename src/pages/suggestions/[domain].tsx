@@ -1,42 +1,40 @@
 import { Button, useToast } from '@apideck/components'
-import classNames from 'classnames'
+import { useEffect, useState } from 'react'
+
 import { ErrorBlock } from 'components'
+import { HiArrowRight } from 'react-icons/hi'
+import { IConnection } from 'types/Connection'
 import LoadingSuggestionCard from 'components/Suggestions/LoadingSuggestionCard'
 import StepLayout from 'components/Suggestions/StepLayout'
 import SuggestionCard from 'components/Suggestions/SuggestionCard'
+import classNames from 'classnames'
 import client from 'lib/axios'
-import { applySession } from 'next-session'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { HiArrowRight } from 'react-icons/hi'
 import useSWR from 'swr'
-import { IConnection } from 'types/Connection'
-import { JWTSession } from 'types/JWTSession'
-import { options } from 'utils/sessionOptions'
+import { useSession } from 'utils/useSession'
 
 interface IProps {
-  jwt: string
-  token: JWTSession
   domain: string
 }
 
-const DiscoverDomainPage = ({ jwt, token, domain }: IProps) => {
+const DiscoverDomainPage = ({ domain }: IProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [suggestions, setSuggestions] = useState<null | IConnection[]>()
   const { addToast } = useToast()
   const { push } = useRouter()
+  const { session } = useSession()
 
   const fetcher = (url: string) => {
     return client.get(url, {
       headers: {
-        Authorization: `Bearer ${jwt}`,
-        'X-APIDECK-APP-ID': token?.applicationId,
-        'X-APIDECK-CONSUMER-ID': token?.consumerId
+        Authorization: `Bearer ${session?.jwt}`,
+        'X-APIDECK-APP-ID': session?.applicationId,
+        'X-APIDECK-CONSUMER-ID': session?.consumerId
       }
     })
   }
 
-  const { data, mutate, error } = useSWR('/vault/connections', fetcher, {
+  const { data, mutate, error } = useSWR(session ? '/vault/connections' : null, fetcher, {
     shouldRetryOnError: false,
     revalidateOnFocus: false
   })
@@ -70,9 +68,9 @@ const DiscoverDomainPage = ({ jwt, token, domain }: IProps) => {
         { enabled },
         {
           headers: {
-            Authorization: `Bearer ${jwt}`,
-            'X-APIDECK-APP-ID': token.applicationId,
-            'X-APIDECK-CONSUMER-ID': token.consumerId
+            Authorization: `Bearer ${session?.jwt}`,
+            'X-APIDECK-APP-ID': session?.applicationId,
+            'X-APIDECK-CONSUMER-ID': session?.consumerId
           }
         }
       )
@@ -110,7 +108,7 @@ const DiscoverDomainPage = ({ jwt, token, domain }: IProps) => {
   const loading = isLoading || loadingConnections
   if (error) {
     const errorObj = error?.response ? error.response : { status: 400 }
-    return <ErrorBlock error={errorObj} token={token} />
+    return <ErrorBlock error={errorObj} token={session} />
   }
 
   return (
@@ -122,7 +120,7 @@ const DiscoverDomainPage = ({ jwt, token, domain }: IProps) => {
             {loading || matchedConnections?.length ? 'Integration suggestions' : ''}
           </h1>
 
-          <p className="max-w-md mx-auto mb-8 text-md tracking-tight text-gray-600 sm:text-lg">
+          <p className="max-w-md mx-auto mb-8 tracking-tight text-gray-600 text-md sm:text-lg">
             {loading ? 'Searching for relative suggestions...' : ''}
             {!loading && matchedConnections?.length
               ? 'Select the integrations you would like to enable.'
@@ -173,13 +171,9 @@ const DiscoverDomainPage = ({ jwt, token, domain }: IProps) => {
   )
 }
 
-export const getServerSideProps = async ({ req, res, params }: any): Promise<any> => {
-  await applySession(req, res, options)
-
+export const getServerSideProps = async ({ params }: any): Promise<any> => {
   return {
     props: {
-      jwt: req.session?.jwt || '',
-      token: req.session?.token || {},
       domain: params.domain || ''
     }
   }

@@ -1,41 +1,36 @@
 import { Button, TextInput, useToast } from '@apideck/components'
-import { Transition } from '@headlessui/react'
+import { ChangeEvent, SyntheticEvent, useEffect, useState } from 'react'
+
 import { ErrorBlock } from 'components'
+import { HiArrowRight } from 'react-icons/hi'
+import { IConnection } from 'types/Connection'
 import Radar from 'components/Suggestions/Radar'
 import StepLayout from 'components/Suggestions/StepLayout'
+import { Transition } from '@headlessui/react'
 import client from 'lib/axios'
-import { applySession } from 'next-session'
-import { useRouter } from 'next/router'
-import { ChangeEvent, SyntheticEvent, useEffect, useState } from 'react'
-import { HiArrowRight } from 'react-icons/hi'
-import useSWR from 'swr'
-import { IConnection } from 'types/Connection'
-import { JWTSession } from 'types/JWTSession'
 import { isEmailProvider } from 'utils/isEmailProvider'
-import { options } from 'utils/sessionOptions'
+import { useRouter } from 'next/router'
+import useSWR from 'swr'
+import { useSession } from 'utils/useSession'
 
-interface IProps {
-  jwt: string
-  token: JWTSession
-}
-
-const DiscoverPage = ({ jwt, token }: IProps) => {
+const DiscoverPage = () => {
   const [domain, setDomain] = useState<string>()
   const { push } = useRouter()
-  const consumer = token?.consumerMetadata
   const { addToast } = useToast()
+  const { session } = useSession()
+  const consumer = session?.consumerMetadata
 
   const fetcher = (url: string) => {
     return client.get(url, {
       headers: {
-        Authorization: `Bearer ${jwt}`,
-        'X-APIDECK-APP-ID': token?.applicationId,
-        'X-APIDECK-CONSUMER-ID': token?.consumerId
+        Authorization: `Bearer ${session?.jwt}`,
+        'X-APIDECK-APP-ID': session?.applicationId,
+        'X-APIDECK-CONSUMER-ID': session?.consumerId
       }
     })
   }
 
-  const { data, error } = useSWR('/vault/connections', fetcher, {
+  const { data, error } = useSWR(session ? '/vault/connections' : null, fetcher, {
     shouldRetryOnError: false,
     revalidateOnFocus: false
   })
@@ -84,7 +79,7 @@ const DiscoverPage = ({ jwt, token }: IProps) => {
 
   if (!data && error) {
     const errorObj = error?.response ? error.response : { status: 400 }
-    return <ErrorBlock error={errorObj} token={token} />
+    return <ErrorBlock error={errorObj} token={session} />
   }
 
   return (
@@ -130,17 +125,6 @@ const DiscoverPage = ({ jwt, token }: IProps) => {
       </div>
     </StepLayout>
   )
-}
-
-export const getServerSideProps = async ({ req, res }: any): Promise<any> => {
-  await applySession(req, res, options)
-
-  return {
-    props: {
-      jwt: req.session?.jwt || '',
-      token: req.session?.token || {}
-    }
-  }
 }
 
 export default DiscoverPage
