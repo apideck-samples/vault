@@ -5,8 +5,11 @@ import { JWTSession } from 'types/JWTSession'
 import camelcaseKeys from 'camelcase-keys-deep'
 import client from 'lib/axios'
 import { decode } from 'jsonwebtoken'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { useSession } from 'utils/useSession'
+import { useToast } from '@apideck/components'
 
 interface IProps {
   connections: IConnection[]
@@ -20,6 +23,8 @@ interface IProps {
 
 const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
   const { session } = useSession()
+  const { addToast } = useToast()
+  const { query } = useRouter()
 
   const fetcher = (url: string) => {
     return client.get(url, {
@@ -41,6 +46,21 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
   )
 
   const connection: IConnection = data?.data?.data
+
+  useEffect(() => {
+    if (query?.redirectToAppUrl && connection?.state === 'callable') {
+      addToast({
+        title: 'Connection is ready',
+        description: 'You will now get redirected back to the application.'
+      })
+      setTimeout(
+        () =>
+          (window.location.href = `${query?.redirectToAppUrl}?authorizedConnection=${connection.name}`),
+        3000
+      )
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [connection?.state, query?.redirectToAppUrl])
 
   if (!data && !error) {
     return <ConnectionPlaceholder />

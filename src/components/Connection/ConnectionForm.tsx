@@ -72,10 +72,11 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
   let redirectUrl = `${window.location.origin}/integrations/${unifiedApi}/${serviceId}`
 
   if (autoRedirect || query?.redirectAfterAuthUrl) {
-    redirectUrl = `${redirectUrl}?jwt=${jwt}&redirectToAppUrl=${
+    redirectUrl = `${redirectUrl}?redirectToAppUrl=${
       autoRedirect ? token?.redirectUri : query?.redirectAfterAuthUrl
     }`
   }
+
   const authorizeUrlWithRedirect = `${authorizeUrl}&redirect_uri=${redirectUrl}`
   let revokeUrlWithRedirect = ''
 
