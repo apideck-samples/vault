@@ -23,6 +23,7 @@ const Layout: React.FC<IProps> = ({ children }) => {
   const [customStyles, setCustomStyles] = useState<any>({ backgroundColor: '#edf2f7' })
   const [customTextColor, setCustomTextColor] = useState('')
   const [navIsOpen, setNavIsOpen] = useState(false)
+  const [returnUrl, setReturnUrl] = useState('https://app.apideck.com')
 
   const { session } = useSession()
 
@@ -34,11 +35,9 @@ const Layout: React.FC<IProps> = ({ children }) => {
   const isolationMode = session?.settings?.isolationMode
   const persistedTheme = typeof window !== 'undefined' && window.localStorage.getItem('theme')
   theme = persistedTheme ? JSON.parse(persistedTheme) : {}
-  let redirectUri = ''
 
   if (session && Object.keys(session).length > 0) {
     consumerMetadata = session.consumerMetadata || defaults.consumerMetadata
-    redirectUri = session.redirectUri
     theme = session.theme || defaults.theme
     if (typeof window !== 'undefined') window.localStorage.setItem('theme', JSON.stringify(theme))
     if (session.settings) {
@@ -73,8 +72,10 @@ const Layout: React.FC<IProps> = ({ children }) => {
     if (bgColor) styles.backgroundColor = bgColor
     setCustomStyles(styles)
     if (textColor) setCustomTextColor(textColor)
+
+    if (session?.redirectUri) setReturnUrl(session.redirectUri)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bgColor, primaryColor, textColor])
+  }, [bgColor, primaryColor, textColor, session?.redirectUri])
 
   useEffect(() => {
     if (!navIsOpen) return
@@ -306,7 +307,7 @@ const Layout: React.FC<IProps> = ({ children }) => {
               ) : null}
               <a
                 className="flex items-center text-sm text-gray-500 group hover:text-gray-800"
-                href={redirectUri ? redirectUri : 'https://app.apideck.com'}
+                href={returnUrl}
                 style={customTextColor ? { color: customTextColor } : {}}
               >
                 <HiChevronLeft
