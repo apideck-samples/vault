@@ -139,7 +139,10 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
             description: 'You will now get redirected back to the application.'
           })
           setTimeout(
-            () => (window.location.href = `${redirectUrl}?authorizedConnection=${connection.name}`),
+            () =>
+              (window.location.href = `${redirectUrl}${
+                redirectUrl.includes('?') ? '&' : '?'
+              }authorizedConnection=${connection.name}`),
             3000
           )
         }
