@@ -106,7 +106,7 @@ const Layout: React.FC<IProps> = ({ children }) => {
       <div
         className="p-3 px-4 sm:px-8 md:px-12 lg:hidden"
         style={{
-          backgroundColor: bgColor ? bgColor : '#edf2f7',
+          backgroundColor: customStyles.backgroundColor ? customStyles.backgroundColor : '#edf2f7',
           color: customTextColor ? customTextColor : '#1f2937'
         }}
       >
