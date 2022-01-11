@@ -142,7 +142,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
             () =>
               (window.location.href = `${redirectUrl}${
                 redirectUrl.includes('?') ? '&' : '?'
-              }authorizedConnection=${connection.id}`),
+              }authorizedConnection=${connection.service_id}`),
             3000
           )
         }
