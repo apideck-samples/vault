@@ -57,7 +57,7 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
         () =>
           (window.location.href = `${query.redirectToAppUrl}${
             query.redirectToAppUrl?.includes('?') ? '&' : '?'
-          }authorizedConnection=${connection.name}`),
+          }authorizedConnection=${connection.id}`),
         3000
       )
     }
@@ -107,7 +107,7 @@ export const getServerSideProps = async ({ res, query }: any): Promise<any> => {
       res.writeHead(301, {
         Location: `${query.redirectToAppUrl}${
           query.redirectToAppUrl?.includes('?') ? '&' : '?'
-        }authorizedConnection=${connection.name}`
+        }authorizedConnection=${connection.id}`
       })
       res.end()
     }
