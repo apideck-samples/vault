@@ -181,6 +181,25 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
     }
   }
 
+  const authorizeConnection = async () => {
+    if (connection.oauth_grant_type === 'client_credentials') {
+      try {
+        await client.post(`/vault/connections/${unifiedApi}/${serviceId}/token`, {}, { headers })
+        mutate(`/vault/connections/${unifiedApi}/${serviceId}`)
+        mutate('/vault/connections')
+      } catch (error) {
+        addToast({
+          title: `Something went wrong`,
+          description: `The integration could not be authorized. Please make sure your settings are correct and try again.`,
+          type: 'error',
+          autoClose: true
+        })
+      }
+    } else {
+      window.location.href = authorizeUrlWithRedirect
+    }
+  }
+
   const renderBackButton = () => {
     if (router?.query?.isolation || isolationMode) {
       if (router?.query?.redirectAfterAuthUrl) {
@@ -263,7 +282,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
           <OAuthButtons
             connection={connection}
             isAuthorized={isAuthorized}
-            authorizeUrl={authorizeUrlWithRedirect}
+            onAuthorize={authorizeConnection}
             revokeUrl={revokeUrlWithRedirect}
           />
         )}
