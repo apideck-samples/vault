@@ -39,6 +39,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
   const [formError, setFormError] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
   const [updateLoading, setUpdateLoading] = useState(false)
+  const [authorizeLoading, setAuthorizeLoading] = useState(false)
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [deleteError, setDeleteError] = useState(false)
   const { addToast } = useToast()
@@ -184,7 +185,12 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
   const authorizeConnection = async () => {
     if (connection.oauth_grant_type === 'client_credentials') {
       try {
-        await client.post(`/vault/connections/${unifiedApi}/${serviceId}/token`, {}, { headers })
+        setAuthorizeLoading(true)
+        await client
+          .post(`/vault/connections/${unifiedApi}/${serviceId}/token`, {}, { headers })
+          .finally(() => {
+            setAuthorizeLoading(false)
+          })
         mutate(`/vault/connections/${unifiedApi}/${serviceId}`)
         mutate('/vault/connections')
       } catch (error) {
@@ -281,6 +287,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
         {authType === 'oauth2' && (
           <OAuthButtons
             connection={connection}
+            isLoading={authorizeLoading}
             isAuthorized={isAuthorized}
             onAuthorize={authorizeConnection}
             revokeUrl={revokeUrlWithRedirect}
