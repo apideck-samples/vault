@@ -7,12 +7,14 @@ export interface Settings extends RawJSON {
 }
 
 export type ConnectionState = 'available' | 'added' | 'authorized' | 'callable'
+export type OauthGrantType = 'client_credentials' | 'authorization_code'
 
 export interface IConnection {
   id: string
   service_id: string
   unified_api: string
   auth_type: string | null
+  oauth_grant_type?: OauthGrantType
   name: string
   icon: string
   logo?: string

@@ -39,6 +39,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
   const [formError, setFormError] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
   const [updateLoading, setUpdateLoading] = useState(false)
+  const [authorizeLoading, setAuthorizeLoading] = useState(false)
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [deleteError, setDeleteError] = useState(false)
   const { addToast } = useToast()
@@ -181,6 +182,30 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
     }
   }
 
+  const authorizeConnection = async () => {
+    if (connection.oauth_grant_type === 'client_credentials') {
+      try {
+        setAuthorizeLoading(true)
+        await client
+          .post(`/vault/connections/${unifiedApi}/${serviceId}/token`, {}, { headers })
+          .finally(() => {
+            setAuthorizeLoading(false)
+          })
+        mutate(`/vault/connections/${unifiedApi}/${serviceId}`)
+        mutate('/vault/connections')
+      } catch (error) {
+        addToast({
+          title: `Something went wrong`,
+          description: `The integration could not be authorized. Please make sure your settings are correct and try again.`,
+          type: 'error',
+          autoClose: true
+        })
+      }
+    } else {
+      window.location.href = authorizeUrlWithRedirect
+    }
+  }
+
   const renderBackButton = () => {
     if (router?.query?.isolation || isolationMode) {
       if (router?.query?.redirectAfterAuthUrl) {
@@ -262,8 +287,9 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
         {authType === 'oauth2' && (
           <OAuthButtons
             connection={connection}
+            isLoading={authorizeLoading}
             isAuthorized={isAuthorized}
-            authorizeUrl={authorizeUrlWithRedirect}
+            onAuthorize={authorizeConnection}
             revokeUrl={revokeUrlWithRedirect}
           />
         )}

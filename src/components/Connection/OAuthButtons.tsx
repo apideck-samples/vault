@@ -9,11 +9,12 @@ import { Theme } from 'types/JWTSession'
 interface IProps {
   connection: IConnection
   isAuthorized: boolean
-  authorizeUrl: string
+  isLoading: boolean
   revokeUrl: string
+  onAuthorize: () => void
 }
 
-const OAuthButtons = ({ connection, isAuthorized, authorizeUrl, revokeUrl }: IProps) => {
+const OAuthButtons = ({ connection, isAuthorized, isLoading, revokeUrl, onAuthorize }: IProps) => {
   const requiredAuth = authorizationVariablesRequired(connection)
   const { primaryColor } = useContext(ThemeContext) as Theme
 
@@ -33,16 +34,17 @@ const OAuthButtons = ({ connection, isAuthorized, authorizeUrl, revokeUrl }: IPr
       )}
 
       <div>
-        {!requiredAuth ? (
+        {!requiredAuth && !isLoading ? (
           <Button
             text={isAuthorized ? 'Re-authorize' : 'Authorize'}
-            onClick={() => (window.location.href = authorizeUrl)}
+            onClick={onAuthorize}
             style={primaryColor ? { backgroundColor: primaryColor } : {}}
           />
         ) : (
           <Button
             text="Authorize"
             disabled={true}
+            isLoading={isLoading}
             style={primaryColor ? { backgroundColor: primaryColor } : {}}
           />
         )}

@@ -5,6 +5,7 @@ export interface FormField {
   default_value?: string | string[] | number | boolean | undefined | null
   placeholder: string
   mask: boolean
+  sensitive?: boolean
   type:
     | 'select'
     | 'multi-select'
