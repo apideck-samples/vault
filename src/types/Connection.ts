@@ -14,7 +14,7 @@ export interface IConnection {
   service_id: string
   unified_api: string
   auth_type: string | null
-  oauth_grant_type: OauthGrantType
+  oauth_grant_type?: OauthGrantType
   name: string
   icon: string
   logo?: string
