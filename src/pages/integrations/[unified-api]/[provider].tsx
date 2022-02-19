@@ -22,9 +22,16 @@ interface IProps {
 }
 
 const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
-  const { session } = useSession()
+  const { session, setSession } = useSession()
   const { addToast } = useToast()
   const { query } = useRouter()
+
+  useEffect(() => {
+    if (!session?.jwt && jwt?.length) {
+      setSession({ ...token, jwt })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const fetcher = (url: string) => {
     return client.get(url, {
@@ -37,7 +44,7 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
   }
 
   const { data, error } = useSWR(
-    token || session ? `/vault/connections/${unifiedApi}/${provider}` : null,
+    session?.jwt || jwt ? `/vault/connections/${unifiedApi}/${provider}` : null,
     fetcher,
     {
       shouldRetryOnError: false,
