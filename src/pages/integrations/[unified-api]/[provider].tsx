@@ -71,6 +71,10 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connection?.state, query?.redirectToAppUrl])
 
+  if (!data && !error && !session && !jwt) {
+    return <ErrorBlock error={{ status: 401 }} />
+  }
+
   if (!data && !error) {
     return <ConnectionPlaceholder />
   }
