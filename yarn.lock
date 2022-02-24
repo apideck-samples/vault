@@ -2,12 +2,12 @@
 # yarn lockfile v1
 
 
-"@apideck/components@^0.6.10":
-  version "0.6.11"
-  resolved "https://registry.yarnpkg.com/@apideck/components/-/components-0.6.11.tgz#76dbd4b1cf3030f9744b77c1511fabe3f5c17a8c"
-  integrity sha512-daWM3jV5V2sOj7hCmVzPoJBvsl8wxPMD32kMW0b6KCz110SBfIePbF7gr/LPkqQfCGJ8o6z6rZvSfR2Vwi3UXA==
+"@apideck/components@^0.7.3":
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/@apideck/components/-/components-0.7.3.tgz#b0087b50947b5f909692bc6219e6b9f34e59524d"
+  integrity sha512-3r3ZmaSQQLtiQS5kcAPPoavoVDhQ7dRg3sZPBSTS7SbHwhK9gYjbiB08wDQX0IHpx9Z2i4pq8hZRhF8tyTmDpA==
   dependencies:
-    "@tailwindcss/forms" "^0.3.3"
+    "@tailwindcss/forms" "^0.4.0"
     deepmerge "4.2.2"
 
 "@babel/code-frame@7.12.11":
@@ -850,10 +850,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@tailwindcss/forms@^0.3.3":
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/@tailwindcss/forms/-/forms-0.3.3.tgz#a29d22668804f3dae293dcadbef1aa6315c45b64"
-  integrity sha512-U8Fi/gq4mSuaLyLtFISwuDYzPB73YzgozjxOIHsK6NXgg/IWD1FLaHbFlWmurAMyy98O+ao74ksdQefsquBV1Q==
+"@tailwindcss/forms@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@tailwindcss/forms/-/forms-0.4.0.tgz#a46715e347a32d216a3973eb67473bd29ae3798e"
+  integrity sha512-DeaQBx6EgEeuZPQACvC+mKneJsD8am1uiJugjgQK1+/Vt+Ai0GpFBC2T2fqnUad71WgOxyrZPE6BG1VaI6YqfQ==
   dependencies:
     mini-svg-data-uri "^1.2.3"
 
