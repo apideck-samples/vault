@@ -396,7 +396,7 @@ const Layout: React.FC<IProps> = ({ children }) => {
         </div>
         <main
           className={classNames(
-            'relative w-full lg:px-20 lg:overflow-x-hidden bg-white lg:rounded-l-2xl rounded-tl-2xl lg:shadow-main',
+            'relative w-full lg:px-20 lg:overflow-x-hidden bg-white lg:rounded-l-2xl rounded-tl-2xl lg:shadow-2xl',
             { 'lg:overflow-hidden max-h-screen fixed': navIsOpen }
           )}
         >

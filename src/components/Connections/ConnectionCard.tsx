@@ -18,8 +18,8 @@ const ConnectionCard = ({ connection, isLoading = false, isActive = false }: IPr
   return (
     <div
       className={classNames(
-        'flex items-center justify-between w-full px-4 py-3 overflow-hidden border rounded-md sm:px-5 sm:py-4 group hover:bg-gray-100 spec-connection',
-        { 'bg-gray-100': isActive }
+        'flex items-center justify-between w-full px-4 py-3 overflow-hidden border rounded-md sm:px-5 sm:py-4 group hover:bg-gray-50 spec-connection',
+        { 'bg-gray-50': isActive }
       )}
       data-testid={'connection-link'}
     >
