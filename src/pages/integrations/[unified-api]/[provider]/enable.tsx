@@ -42,8 +42,8 @@ const AddResource = ({ jwt, token }: IProps) => {
           {
             headers: {
               Authorization: `Bearer ${session?.jwt || jwt}`,
-              'X-APIDECK-APP-ID': session?.applicationId || token?.applicationId,
-              'X-APIDECK-CONSUMER-ID': session?.consumerId || token?.consumerId
+              'X-APIDECK-APP-ID': `${session?.applicationId}` || token?.applicationId,
+              'X-APIDECK-CONSUMER-ID': `${session?.consumerId}` || token?.consumerId
             }
           }
         )
