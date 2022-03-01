@@ -1,7 +1,8 @@
-const config = require('@apideck/components/tailwind-config')
+const colors = require('tailwindcss/colors')
 
-module.exports = config({
-  purge: ['./**/*.js', './**/*.tsx'],
+module.exports = {
+  content: ['./src/**/*.js', './src/**/*.tsx', './node_modules/@apideck/components/**/*.js'],
+  darkMode: 'class',
   theme: {
     fontFamily: {
       'basier-circle': [
@@ -18,6 +19,18 @@ module.exports = config({
     },
     extend: {
       colors: {
+        primary: {
+          50: '#f6f7fe',
+          100: '#f2f3fd',
+          200: '#e0e1fa',
+          300: '#c9c8f4',
+          400: '#aba4ea',
+          500: '#9182de',
+          600: '#775ad8',
+          700: '#6434d5',
+          800: '#5922b9',
+          900: '#5a1aa8'
+        },
         main: '#5D50CE',
         background: '#F4F6FB',
         'warning-lighter': '#FEF5E5',
@@ -29,44 +42,5 @@ module.exports = config({
       }
     }
   },
-  variants: {
-    textColor: ['responsive', 'hover', 'focus', 'group-hover'],
-    translate: ['group-hover']
-  },
-  plugins: [
-    function ({ addBase }) {
-      addBase([
-        {
-          '@font-face': {
-            fontFamily: 'Basier Circle',
-            fontWeight: '100 400',
-            fontStyle: 'normal',
-            fontNamedInstance: 'Regular',
-            fontDisplay: 'swap',
-            src: `url("/fonts/barier-circle/basiercircle-regular.woff2") format("woff2"), url("/fonts/barier-circle/basiercircle-regular.woff") format("woff"), url("/fonts/barier-circle/basiercircle-regular.otf") format("otf")`
-          }
-        },
-        {
-          '@font-face': {
-            fontFamily: 'Basier Circle',
-            fontWeight: '500 700',
-            fontStyle: 'normal',
-            fontNamedInstance: 'Medium',
-            fontDisplay: 'swap',
-            src: `url("/fonts/barier-circle/basiercircle-medium.woff2") format("woff2"), url("/fonts/barier-circle/basiercircle-medium.woff") format("woff"), url("/fonts/barier-circle/basiercircle-medium.otf") format("otf")`
-          }
-        },
-        {
-          '@font-face': {
-            fontFamily: 'Basier Circle',
-            fontWeight: '800 900',
-            fontStyle: 'normal',
-            fontNamedInstance: 'Bold',
-            fontDisplay: 'swap',
-            src: `url("/fonts/barier-circle/basiercircle-semibold.woff2") format("woff2"), url("/fonts/barier-circle/basiercircle-semibold.woff") format("woff"), url("/fonts/barier-circle/basiercircle-semibold.otf") format("otf")`
-          }
-        }
-      ])
-    }
-  ]
-})
+  plugins: [require('@tailwindcss/forms')]
+}

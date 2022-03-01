@@ -1,4 +1,4 @@
-import '../styles/globals.css'
+import 'styles/index.css'
 
 import { ModalProvider, ToastProvider } from '@apideck/components'
 import React, { Fragment, useState } from 'react'

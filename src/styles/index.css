@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwind.css';
 
 body {
   @apply antialiased text-gray-800 font-basier-circle;

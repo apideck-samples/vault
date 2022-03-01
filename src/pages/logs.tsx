@@ -15,8 +15,8 @@ const LogsPage = () => {
     return client.get(url, {
       headers: {
         Authorization: `Bearer ${session?.jwt}`,
-        'X-APIDECK-APP-ID': session?.applicationId,
-        'X-APIDECK-CONSUMER-ID': session?.consumerId
+        'X-APIDECK-APP-ID': `${session?.applicationId}`,
+        'X-APIDECK-CONSUMER-ID': `${session?.consumerId}`
       }
     })
   }
