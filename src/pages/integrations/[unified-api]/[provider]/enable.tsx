@@ -41,9 +41,9 @@ const AddResource = ({ jwt, token }: IProps) => {
           },
           {
             headers: {
-              Authorization: `Bearer ${session?.jwt || jwt}`,
-              'X-APIDECK-APP-ID': `${session?.applicationId}` || token?.applicationId,
-              'X-APIDECK-CONSUMER-ID': `${session?.consumerId}` || token?.consumerId
+              Authorization: `Bearer ${session?.jwt}`,
+              'X-APIDECK-APP-ID': `${session?.applicationId}`,
+              'X-APIDECK-CONSUMER-ID': `${session?.consumerId}`
             }
           }
         )
@@ -74,9 +74,11 @@ const AddResource = ({ jwt, token }: IProps) => {
         })
     }
 
-    enableConnection()
+    if (session?.jwt && session?.applicationId && session?.consumerId && !isLoading) {
+      enableConnection()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [session?.jwt && session?.applicationId && session?.consumerId])
 
   if (isLoading) {
     return (
