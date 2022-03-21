@@ -338,11 +338,11 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
                         </div>
                         <input name="enabled" value="true" type="hidden" readOnly />
                         <div className="w-full md:pl-2 md:w-2/3">
-                          {type === 'text' && (
+                          {(type === 'text' || type === 'password') && (
                             <TextInput
                               name={id}
                               value={(values[id] as any) || ''}
-                              type="text"
+                              type={type}
                               required={required}
                               placeholder={placeholder}
                               onChange={handleChange}
