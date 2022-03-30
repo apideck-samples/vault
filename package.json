@@ -21,7 +21,7 @@
   "dependencies": {
     "@apideck/components": "^0.8.7",
     "@bugsnag/js": "^7.16.1",
-    "@bugsnag/plugin-react": "^7.16.1",
+    "@bugsnag/plugin-react": "^7.16.2",
     "@headlessui/react": "^1.5.0",
     "axios": "^0.26.0",
     "camelcase-keys-deep": "^0.1.0",
