@@ -1,17 +1,16 @@
-import { HiChevronLeft, HiHome, HiOutlineDocumentText } from 'react-icons/hi'
-import { ReactNode, useContext, useEffect, useState } from 'react'
-import Router, { useRouter } from 'next/router'
-
-import { FiCompass } from 'react-icons/fi'
+import classNames from 'classnames'
+import { Transition } from 'components'
+import { defaults } from 'config/defaults'
 import Head from 'next/head'
 import Link from 'next/link'
-import SandboxBanner from './SandboxBanner'
+import Router, { useRouter } from 'next/router'
+import { ReactNode, useContext, useEffect, useState } from 'react'
+import { FiCompass } from 'react-icons/fi'
+import { HiChevronLeft, HiHome, HiOutlineDocumentText } from 'react-icons/hi'
 import { Theme } from 'types/JWTSession'
 import { ThemeContext } from 'utils/context'
-import { Transition } from 'components'
-import classNames from 'classnames'
-import { defaults } from 'config/defaults'
 import { useSession } from 'utils/useSession'
+import SandboxBanner from './SandboxBanner'
 
 interface IProps {
   children: ReactNode
@@ -28,6 +27,7 @@ const Layout: React.FC<IProps> = ({ children }) => {
   const { session } = useSession()
 
   let consumerMetadata: any = {}
+  let consumerId: string | undefined
   let hideConsumerCard: boolean | undefined = false
   let showLogs: boolean | undefined = true
   let showSuggestions: boolean | undefined = false
@@ -38,6 +38,7 @@ const Layout: React.FC<IProps> = ({ children }) => {
 
   if (session && Object.keys(session).length > 0) {
     consumerMetadata = session.consumerMetadata || defaults.consumerMetadata
+    consumerId = session.consumerId
     theme = session.theme || defaults.theme
     if (typeof window !== 'undefined') window.localStorage.setItem('theme', JSON.stringify(theme))
     if (session.settings) {
@@ -321,7 +322,7 @@ const Layout: React.FC<IProps> = ({ children }) => {
                 </span>
               </a>
             </div>
-            <div>
+            <div data-consumerId={consumerId}>
               {hasConsumerMetadata && !hideConsumerCard && (
                 <div className="flex items-center justify-start px-5 py-4 my-12 bg-white rounded-lg shadow md:my-24">
                   {image && (
