@@ -20,6 +20,8 @@ import {
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
 import CheckIcon from 'mdi-react/CheckIcon'
+import HelpIcon from 'mdi-react/HelpCircleOutlineIcon'
+import ExternalLinkIcon from 'mdi-react/ExternalLinkIcon'
 import { ConnectionBadge } from 'components/Connections'
 import { IOptionType } from 'components/Inputs/SearchSelect'
 import Link from 'next/link'
@@ -65,7 +67,8 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
     revoke_url: revokeUrl,
     authorize_url: authorizeUrl,
     form_fields: formFields,
-    service_id: serviceId
+    service_id: serviceId,
+    has_guide: hasGuide
   } = connection
 
   const isAuthorized = connection.state === 'authorized' || connection.state === 'callable'
@@ -391,6 +394,23 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
                           Your changes could not be saved. Please try again.
                         </span>
                       </Fragment>
+                    )}
+                    {hasGuide && !formError && !saved && (
+                      <div className="flex text-sm items-center text-gray-600">
+                        <HelpIcon className="mr-1" color="currentColor" size={20} />
+                        <span>
+                          Need help? View our{' '}
+                          <a
+                            className="inline-flex items-center text-main hover:text-main underline font-semibold"
+                            target="_blank"
+                            rel="noreferrer"
+                            href={`https://developers.apideck.com/connectors/${serviceId}/docs/consumer+connection`}
+                          >
+                            Connection Guide
+                            <ExternalLinkIcon size={16} />
+                          </a>
+                        </span>
+                      </div>
                     )}
                   </div>
                   <Button

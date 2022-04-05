@@ -24,6 +24,7 @@ export interface IConnection {
   revoke_url?: string | null
   state: ConnectionState
   enabled?: boolean
+  has_guide?: boolean
   settings?: Settings
   settings_required_for_authorization?: string[]
   configurable_resources: string[]
