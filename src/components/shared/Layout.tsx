@@ -322,7 +322,7 @@ const Layout: React.FC<IProps> = ({ children }) => {
                 </span>
               </a>
             </div>
-            <div data-consumerId={consumerId}>
+            <div data-consumer-id={consumerId}>
               {hasConsumerMetadata && !hideConsumerCard && (
                 <div className="flex items-center justify-start px-5 py-4 my-12 bg-white rounded-lg shadow md:my-24">
                   {image && (
