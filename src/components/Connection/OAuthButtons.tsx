@@ -42,14 +42,14 @@ const OAuthButtons = ({ connection, isAuthorized, isLoading, revokeUrl, onAuthor
           />
         ) : (
           <Button
-            text="Authorize"
+            text={isAuthorized ? 'Re-authorize' : 'Authorize'}
             disabled={true}
             isLoading={isLoading}
             style={primaryColor ? { backgroundColor: primaryColor } : {}}
           />
         )}
 
-        {isAuthorized && (
+        {isAuthorized && connection.oauth_grant_type === 'authorization_code' && (
           <div className="inline-block ml-2 md:ml-4">
             <Button
               variant="outline"

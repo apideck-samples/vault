@@ -186,26 +186,32 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
   }
 
   const authorizeConnection = async () => {
-    if (connection.oauth_grant_type === 'client_credentials') {
-      try {
-        setAuthorizeLoading(true)
-        await client
-          .post(`/vault/connections/${unifiedApi}/${serviceId}/token`, {}, { headers })
-          .finally(() => {
-            setAuthorizeLoading(false)
-          })
-        mutate(`/vault/connections/${unifiedApi}/${serviceId}`)
-        mutate('/vault/connections')
-      } catch (error) {
-        addToast({
-          title: `Something went wrong`,
-          description: `The integration could not be authorized. Please make sure your settings are correct and try again.`,
-          type: 'error',
-          autoClose: true
-        })
-      }
-    } else {
+    if (connection.oauth_grant_type === 'authorization_code') {
       window.location.href = authorizeUrlWithRedirect
+      return
+    }
+
+    try {
+      setAuthorizeLoading(true)
+      await client
+        .post(`/vault/connections/${unifiedApi}/${serviceId}/token`, {}, { headers })
+        .finally(() => {
+          setAuthorizeLoading(false)
+        })
+      mutate(`/vault/connections/${unifiedApi}/${serviceId}`)
+      mutate('/vault/connections')
+      addToast({
+        title: `Integration successfully authorized`,
+        type: 'success',
+        autoClose: true
+      })
+    } catch (error) {
+      addToast({
+        title: `Something went wrong`,
+        description: `The integration could not be authorized. Please make sure your settings are correct and try again.`,
+        type: 'error',
+        autoClose: true
+      })
     }
   }
 
@@ -287,7 +293,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
         {tagLine && (
           <p className="px-3 pb-3 text-sm text-gray-800 sm:px-4 sm:pb-4 md:hidden">{tagLine}</p>
         )}
-        {authType === 'oauth2' && (
+        {(authType === 'oauth2' || authType === 'session') && (
           <OAuthButtons
             connection={connection}
             isLoading={authorizeLoading}
