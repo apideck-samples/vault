@@ -357,8 +357,8 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
                               placeholder={placeholder}
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              sensitive={sensitive}
-                              canBeCopied={sensitive}
+                              sensitive={type === 'password' || sensitive}
+                              canBeCopied={type === 'password' || sensitive}
                               data-testid={id}
                             />
                           )}

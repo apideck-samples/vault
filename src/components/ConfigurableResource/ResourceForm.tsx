@@ -173,8 +173,8 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                               placeholder={placeholder}
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              sensitive={sensitive}
-                              canBeCopied={sensitive}
+                              sensitive={type === 'password' || sensitive}
+                              canBeCopied={type === 'password' || sensitive}
                               className="max-w-sm"
                               data-testid={id}
                             />
