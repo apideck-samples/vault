@@ -1,9 +1,9 @@
 import { Button, CheckBox, DateInput, TextArea, TextInput } from '@apideck/components'
+import { ChangeEvent, useContext, useState } from 'react'
 import { FilteredSelect, SearchSelect } from 'components/Inputs'
 import { Formik, FormikProps } from 'formik'
 import { IConnection, UpdateConnectionConfigInput } from 'types/Connection'
 import { JWTSession, Theme } from 'types/JWTSession'
-import React, { ChangeEvent, useContext, useState } from 'react'
 import { SessionExpiredModalContext, ThemeContext } from 'utils'
 
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
@@ -138,7 +138,16 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                 </div>
                 <div className="px-5 py-6 bg-gray-100 border-t border-b">
                   {formFields?.map((field) => {
-                    const { id, label, required, placeholder, description, type, options } = field
+                    const {
+                      id,
+                      label,
+                      required,
+                      placeholder,
+                      description,
+                      type,
+                      options,
+                      sensitive
+                    } = field
                     return (
                       <div key={id} className="items-start justify-center mb-4 md:flex">
                         <label
@@ -164,6 +173,8 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
                               placeholder={placeholder}
                               onChange={handleChange}
                               onBlur={handleBlur}
+                              sensitive={type === 'password' || sensitive}
+                              canBeCopied={type === 'password' || sensitive}
                               className="max-w-sm"
                               data-testid={id}
                             />

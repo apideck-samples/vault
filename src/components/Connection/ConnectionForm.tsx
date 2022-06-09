@@ -20,9 +20,9 @@ import {
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
 import CheckIcon from 'mdi-react/CheckIcon'
-import HelpIcon from 'mdi-react/HelpCircleOutlineIcon'
-import ExternalLinkIcon from 'mdi-react/ExternalLinkIcon'
 import { ConnectionBadge } from 'components/Connections'
+import ExternalLinkIcon from 'mdi-react/ExternalLinkIcon'
+import HelpIcon from 'mdi-react/HelpCircleOutlineIcon'
 import { IOptionType } from 'components/Inputs/SearchSelect'
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
@@ -336,7 +336,8 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
                       disabled,
                       type,
                       options,
-                      allow_custom_values: allowCustomValues
+                      allow_custom_values: allowCustomValues,
+                      sensitive
                     } = field
 
                     return (
@@ -356,6 +357,8 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
                               placeholder={placeholder}
                               onChange={handleChange}
                               onBlur={handleBlur}
+                              sensitive={type === 'password' || sensitive}
+                              canBeCopied={type === 'password' || sensitive}
                               data-testid={id}
                             />
                           )}
