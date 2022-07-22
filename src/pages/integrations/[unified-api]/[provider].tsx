@@ -27,18 +27,17 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
   const { query } = useRouter()
 
   useEffect(() => {
-    if (!session?.jwt && jwt?.length) {
+    if (jwt?.length && token) {
       setSession({ ...token, jwt })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [jwt, setSession, token])
 
   const fetcher = (url: string) => {
     return client.get(url, {
       headers: {
-        Authorization: `Bearer ${session?.jwt || jwt}`,
-        'X-APIDECK-APP-ID': `${session?.applicationId}` || token?.applicationId,
-        'X-APIDECK-CONSUMER-ID': `${session?.consumerId}` || token?.consumerId
+        Authorization: `Bearer ${jwt || session?.jwt}`,
+        'X-APIDECK-APP-ID': `${token?.applicationId || session?.applicationId}`,
+        'X-APIDECK-CONSUMER-ID': `${token?.consumerId || session?.consumerId}`
       }
     })
   }
