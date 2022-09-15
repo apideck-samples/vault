@@ -6,9 +6,6 @@ module.exports = {
     'ts-jest': {
       tsConfig: 'tsconfig.jest.json'
     },
-    'jest-playwright-preset': {
-      tsConfig: 'tsconfig.playwright.json'
-    },
     roots: ['<rootDir>'],
     verbose: true,
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
@@ -46,17 +43,15 @@ module.exports = {
         name: 'E2E',
         color: 'blue'
       },
-      preset: 'jest-playwright-preset',
       setupFiles: ['<rootDir>/__tests__/testUtils/setupBeforeEnv.ts'],
-      setupFilesAfterEnv: ['jest-playwright-preset', 'expect-playwright'],
+      setupFilesAfterEnv: [],
       testPathIgnorePatterns: [
         '/node_modules/',
         '__tests__/testUtils',
         '__tests__/fixtures',
         '__tests__/unit'
       ],
-      moduleDirectories: ['node_modules', 'src'],
-      testEnvironment: '<rootDir>/__tests__/testUtils/CustomEnvironment.js'
+      moduleDirectories: ['node_modules', 'src']
     }
   ],
   testTimeout: 20000

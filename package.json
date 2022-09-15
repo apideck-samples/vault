@@ -12,8 +12,7 @@
     "format": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "typecheck": "tsc",
     "postbuild": "./scripts/upload-sourcemaps.sh",
-    "test:e2e": "jest --detectOpenHandles --verbose --reporters=default --selectProjects=E2E --maxConcurrency=100",
-    "test:unit": "jest --detectOpenHandles --colors --verbose --reporters=default --collectCoverage --no-cache --selectProjects=Unit",
+    "test": "jest --detectOpenHandles --colors --verbose --reporters=default --collectCoverage --no-cache --selectProjects=Unit",
     "test:watch": "jest --verbose --bail --watch"
   },
   "author": "apideck-samples",
@@ -77,16 +76,12 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "expect-playwright": "^0.3.2",
     "husky": "^4.3.8",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.6.3",
-    "jest-playwright-preset": "^1.4.7",
     "jest-process-manager": "^0.2.9",
     "lint-staged": ">=10",
     "next-page-tester": "^0.20.0",
-    "playwright": "^1.8.1",
-    "playwright-core": "^1.8.1",
     "postcss": "^8.4.7",
     "prettier": "^2.2.1",
     "tailwindcss": "^3.0.23",
@@ -96,7 +91,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "yarn lint-staged",
-      "pre-push": "yarn test:unit"
+      "pre-push": "yarn test"
     }
   },
   "lint-staged": {
