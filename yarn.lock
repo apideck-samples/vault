@@ -2935,7 +2935,7 @@ expand-tilde@^1.2.2:
   dependencies:
     os-homedir "^1.0.1"
 
-expect-playwright@^0.3.2, expect-playwright@^0.3.3:
+expect-playwright@^0.3.3:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/expect-playwright/-/expect-playwright-0.3.3.tgz#575438cb221fb46ade1404b10e8e643974b731e7"
   integrity sha512-uoeyx2D5LawJdziMdweOp6cnZzFOOPT9VvPG6gOh6YC7N9pU0k2KpVlRiz/Vc/fFBiGUNNeJq2Aq+9GJ65Nfrw==
@@ -5918,29 +5918,10 @@ pkg-dir@^5.0.0:
   dependencies:
     find-up "^5.0.0"
 
-playwright-core@>=1.2.0, playwright-core@^1.8.1:
+playwright-core@>=1.2.0:
   version "1.9.2"
   resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.9.2.tgz#cef51ac7e9b862528a860b6531628598b485ac17"
   integrity sha512-XXurYB1mEFWdjlXja1J7fJUwzSJaS+1qXV64B8vQOSZvV6NgaBxlkvexbyzM3i7RNyE9pwMKKeJzJ9kj2ThB/Q==
-  dependencies:
-    commander "^6.1.0"
-    debug "^4.1.1"
-    extract-zip "^2.0.1"
-    https-proxy-agent "^5.0.0"
-    jpeg-js "^0.4.2"
-    mime "^2.4.6"
-    pngjs "^5.0.0"
-    progress "^2.0.3"
-    proper-lockfile "^4.1.1"
-    proxy-from-env "^1.1.0"
-    rimraf "^3.0.2"
-    stack-utils "^2.0.3"
-    ws "^7.3.1"
-
-playwright@^1.8.1:
-  version "1.9.2"
-  resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.9.2.tgz#294910950b76ec4c3dfed6a1e9d28e9b8560b0f4"
-  integrity sha512-Hsgfk3GZO+hgewRNW9xl9/tHjdZvVwxTseHagbiNpDf90PXICEh8UHXy/2eykeIXrZFMA6W6petEtRWNPi3gfQ==
   dependencies:
     commander "^6.1.0"
     debug "^4.1.1"
