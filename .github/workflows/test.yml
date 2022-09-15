@@ -41,7 +41,7 @@ jobs:
         run: yarn typecheck
 
       - name: Unit Test
-        run: yarn test:unit
+        run: yarn test
 
       - name: Notify slack fail
         if: ${{ failure() && github.ref =='refs/heads/master' }}
