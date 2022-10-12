@@ -17,6 +17,7 @@ export interface JWTSession {
     hideConsumerCard?: boolean
     showLogs?: boolean
     showSuggestions?: boolean
+    showSidebar?: boolean
     sandboxMode?: boolean
     isolationMode?: boolean
     unifiedApis?: string[]
