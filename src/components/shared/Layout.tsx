@@ -34,7 +34,7 @@ const Layout: React.FC<IProps> = ({ children }) => {
   let showSidebar: boolean | undefined = true
   let showSuggestions: boolean | undefined = false
   const sandboxMode = session?.settings?.sandboxMode
-  const isolationMode = session?.settings?.isolationMode
+  const isolationMode = session?.settings?.isolationMode || router?.query?.isolation
   const persistedTheme = typeof window !== 'undefined' && window.localStorage.getItem('theme')
   theme = persistedTheme ? JSON.parse(persistedTheme) : {}
 
