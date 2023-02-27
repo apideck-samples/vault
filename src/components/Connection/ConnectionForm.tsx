@@ -270,7 +270,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
           className="text-left mb-4"
           description={
             <span>
-              Configure the QuickBooks integration in the{' '}
+              Configure the {connection.name} integration in the{' '}
               <a
                 href={`https://platform.apideck.com/configuration/${connection.unified_api}/${connection.service_id}`}
                 target="_blank"
