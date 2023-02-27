@@ -35,7 +35,11 @@ const OAuthButtons = ({ connection, isAuthorized, isLoading, revokeUrl, onAuthor
       <Button
         text={isAuthorized ? 'Re-authorize' : 'Authorize'}
         onClick={onAuthorize}
-        disabled={!!requiredAuth?.length || isLoading}
+        disabled={
+          !!requiredAuth?.length ||
+          connection.integration_state === 'needs_configuration' ||
+          isLoading
+        }
         isLoading={isLoading}
         style={primaryColor ? { backgroundColor: primaryColor } : {}}
       />
