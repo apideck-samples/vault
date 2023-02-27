@@ -1,4 +1,4 @@
-import { Button, TextInput, Toggle, useToast } from '@apideck/components'
+import { Alert, Button, TextInput, Toggle, useToast } from '@apideck/components'
 import {
   ConfigurableResources,
   ConfirmModal,
@@ -264,6 +264,29 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
       </div>
 
       {oauthError && <OAuthErrorAlert error={oauthError} />}
+
+      {connection.integration_state === 'needs_configuration' && (
+        <Alert
+          className="text-left mb-4"
+          description={
+            <span>
+              Configure the {connection.name} integration in the{' '}
+              <a
+                href={`https://platform.apideck.com/configuration/${connection.unified_api}/${connection.service_id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:opacity-80"
+              >
+                Apideck admin dashboard
+              </a>{' '}
+              before linking your account. This integration will not be visible to your users until
+              configured.
+            </span>
+          }
+          title="Admin configuration required"
+          variant="warning"
+        />
+      )}
 
       <div className="border rounded-md">
         <div className="flex justify-between px-3 py-4 sm:px-4 md:px-5 items-top">
