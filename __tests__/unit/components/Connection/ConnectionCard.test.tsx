@@ -19,7 +19,8 @@ describe('Connection Card', () => {
       configurable_resources: [],
       resource_schema_support: [],
       enabled: true,
-      state: 'added'
+      state: 'added',
+      integration_state: 'configured'
     }
 
     it('Renders Integration and indicates configuration required', async () => {
@@ -47,7 +48,8 @@ describe('Connection Card', () => {
       configurable_resources: [],
       resource_schema_support: [],
       enabled: true,
-      state: 'callable'
+      state: 'callable',
+      integration_state: 'configured'
     }
 
     it('Renders Integration as enabled', async () => {
