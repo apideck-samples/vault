@@ -59,13 +59,11 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
         title: 'Connection is ready',
         description: 'You will now get redirected back to the application.'
       })
-      setTimeout(
-        () =>
-          (window.location.href = `${query.redirectToAppUrl}${
-            query.redirectToAppUrl?.includes('?') ? '&' : '?'
-          }authorizedConnection=${connection.service_id}`),
-        3000
-      )
+      setTimeout(() => {
+        const parsedRedirect = new URL(query.redirectToAppUrl as string)
+        parsedRedirect.searchParams.append('authorizedConnection', connection.service_id)
+        window.location.href = parsedRedirect.href
+      }, 3000)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connection?.state, query?.redirectToAppUrl])
@@ -101,7 +99,7 @@ export const getServerSideProps = async ({ res, query }: any): Promise<any> => {
 
   // After authorization, redirect to the provided application URL
   // if connection is callable and redirect URL is present in the query params
-  if (query.redirectToAppUrl && jwt && token?.applicationId) {
+  if (typeof query.redirectToAppUrl === 'string' && jwt && token?.applicationId) {
     const response = await client.get(
       `/vault/connections/${query['unified-api']}/${query['provider']}`,
       {
@@ -114,10 +112,11 @@ export const getServerSideProps = async ({ res, query }: any): Promise<any> => {
     )
     const connection: IConnection = response?.data?.data
     if (connection?.state === 'callable') {
+      const parsedRedirect = new URL(query.redirectToAppUrl)
+      parsedRedirect.searchParams.append('authorizedConnection', connection.service_id)
+
       res.writeHead(301, {
-        Location: `${query.redirectToAppUrl}${
-          query.redirectToAppUrl?.includes('?') ? '&' : '?'
-        }authorizedConnection=${connection.service_id}`
+        Location: parsedRedirect.href
       })
       res.end()
     }
