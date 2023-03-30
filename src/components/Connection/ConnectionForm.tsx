@@ -76,16 +76,26 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
   let redirectUrl = `${window.location.origin}/integrations/${unifiedApi}/${serviceId}`
 
   if (autoRedirect || query?.redirectAfterAuthUrl) {
-    redirectUrl = `${redirectUrl}?redirectToAppUrl=${
-      autoRedirect ? token?.redirectUri : query?.redirectAfterAuthUrl
-    }`
+    const parsedRedirect = new URL(redirectUrl)
+    parsedRedirect.searchParams.append(
+      'redirectToAppUrl',
+      autoRedirect ? token?.redirectUri : (query?.redirectAfterAuthUrl as string)
+    )
+    redirectUrl = parsedRedirect.href
   }
 
-  const authorizeUrlWithRedirect = `${authorizeUrl}&redirect_uri=${redirectUrl}`
+  let authorizeUrlWithRedirect = ''
   let revokeUrlWithRedirect = ''
 
-  if (isAuthorized) {
-    revokeUrlWithRedirect = `${revokeUrl}&redirect_uri=${redirectUrl}`
+  if (typeof authorizeUrl === 'string') {
+    const parsedAuthorizeUrl = new URL(authorizeUrl as string)
+    parsedAuthorizeUrl.searchParams.append('redirect_uri', redirectUrl)
+    authorizeUrlWithRedirect = parsedAuthorizeUrl.href
+  }
+  if (isAuthorized && typeof revokeUrl === 'string') {
+    const parsedRevokeUrl = new URL(revokeUrl)
+    parsedRevokeUrl.searchParams.append('redirect_uri', redirectUrl)
+    revokeUrlWithRedirect = parsedRevokeUrl.href
   }
 
   const initialValues = formFields.reduce((acc: any, formField) => {
@@ -134,21 +144,20 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
       const shouldRedirect =
         (autoRedirect || query.redirectToAppUrl || query.redirectAfterAuthUrl) && !isToggle
       if (shouldRedirect) {
-        const redirectUrl =
-          query.redirectToAppUrl || query.redirectAfterAuthUrl || token?.redirectUri
+        const redirectUrl = (query.redirectToAppUrl ||
+          query.redirectAfterAuthUrl ||
+          token?.redirectUri) as string
         const connection: IConnection = response?.data?.data
         if (connection?.state === 'callable') {
           addToast({
             title: 'Connection is ready',
             description: 'You will now get redirected back to the application.'
           })
-          setTimeout(
-            () =>
-              (window.location.href = `${redirectUrl}${
-                redirectUrl.includes('?') ? '&' : '?'
-              }authorizedConnection=${connection.service_id}`),
-            3000
-          )
+
+          setTimeout(() => {
+            const parsedRedirect = new URL(redirectUrl)
+            parsedRedirect.searchParams.append('authorizedConnection', connection.service_id)
+          }, 3000)
         }
       }
     } catch (error) {
