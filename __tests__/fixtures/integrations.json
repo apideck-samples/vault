@@ -39,6 +39,7 @@
       "updated_at": 1606463352997,
       "enabled": true,
       "state": "added",
+      "validation_support": false,
       "integration_state": "configured"
     },
     {
@@ -81,7 +82,8 @@
       "updated_at": 1606463352997,
       "enabled": true,
       "state": "callable",
-      "integration_state": "configured"
+      "integration_state": "configured",
+      "validation_support": false
     },
     {
       "id": "lead+pipedrive",
@@ -102,7 +104,8 @@
       "created_at": 1606215640025,
       "enabled": true,
       "state": "callable",
-      "integration_state": "configured"
+      "integration_state": "configured",
+      "validation_support": false
     },
     {
       "id": "lead+salesforce",
@@ -132,7 +135,8 @@
       "revoke_url": null,
       "enabled": false,
       "state": "available",
-      "integration_state": "configured"
+      "integration_state": "configured",
+      "validation_support": false
     },
     {
       "id": "lead+teamleader",
@@ -154,7 +158,8 @@
       "updated_at": 1605879438677,
       "enabled": true,
       "state": "callable",
-      "integration_state": "configured"
+      "integration_state": "configured",
+      "validation_support": false
     }
   ]
 }

@@ -2,12 +2,12 @@
 # yarn lockfile v1
 
 
-"@apideck/components@^0.11.2":
-  version "0.11.2"
-  resolved "https://registry.yarnpkg.com/@apideck/components/-/components-0.11.2.tgz#4824b80496795957295d149aa1fffe354e12593f"
-  integrity sha512-yRVNKDOJ8O9zDm/zBcIIf/Iwl65XAwM/blxJMZUoYIHeW287/AHOpwsXic/tyUyqZrPUOvLYPWoxG2xfayVEuw==
+"@apideck/components@^0.12.8":
+  version "0.12.8"
+  resolved "https://registry.yarnpkg.com/@apideck/components/-/components-0.12.8.tgz#dd39908a313632548c5a3623f1dad6b7228f2f79"
+  integrity sha512-UVTs/LovP2GS0whpZBLg6YsQJCqyDMfWy3qT7zMdfIBLwr818KC1vAId23X55EiFApGn2vgl36pJBLoux25VAw==
   dependencies:
-    "@headlessui/react" "^1.4.3"
+    "@headlessui/react" "^1.6.6"
     classnames "^2.2.6"
     patch-package "^6.4.7"
     postinstall-postinstall "^2.1.0"
@@ -488,10 +488,17 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@headlessui/react@^1.4.3", "@headlessui/react@^1.5.0":
+"@headlessui/react@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@headlessui/react/-/react-1.5.0.tgz#483b44ba2c8b8d4391e1d2c863898d7dd0cc0296"
   integrity sha512-aaRnYxBb3MU2FNJf3Ut9RMTUqqU3as0aI1lQhgo2n9Fa67wRu14iOGqx93xB+uMNVfNwZ5B3y/Ndm7qZGuFeMQ==
+
+"@headlessui/react@^1.6.6":
+  version "1.7.13"
+  resolved "https://registry.yarnpkg.com/@headlessui/react/-/react-1.7.13.tgz#fd150b394954e9f1d86ed2340cffd1217d6e7628"
+  integrity sha512-9n+EQKRtD9266xIHXdY5MfiXPDfYwl7zBM7KOx2Ae3Gdgxy8QML1FkCMjq6AsOf0l6N9uvI4HcFtuFlenaldKg==
+  dependencies:
+    client-only "^0.0.1"
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
@@ -1932,6 +1939,11 @@ cli-truncate@^2.1.0:
   dependencies:
     slice-ansi "^3.0.0"
     string-width "^4.2.0"
+
+client-only@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/client-only/-/client-only-0.0.1.tgz#38bba5d403c41ab150bff64a95c85013cf73bca1"
+  integrity sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==
 
 clipboard-copy@^3.0.0:
   version "3.2.0"

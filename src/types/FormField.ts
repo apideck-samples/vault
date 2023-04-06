@@ -23,6 +23,8 @@ export interface FormField {
     | unknown
   required: boolean
   description?: string
+  prefix?: string
+  suffix?: string
   disabled: boolean
   options: FormFieldOption[] | FormFieldOptionGroup[]
   custom_field: boolean
