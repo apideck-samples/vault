@@ -20,7 +20,9 @@ describe('Connection Card', () => {
       resource_schema_support: [],
       enabled: true,
       state: 'added',
-      integration_state: 'configured'
+      integration_state: 'configured',
+      has_guide: false,
+      validation_support: false
     }
 
     it('Renders Integration and indicates configuration required', async () => {
@@ -49,7 +51,9 @@ describe('Connection Card', () => {
       resource_schema_support: [],
       enabled: true,
       state: 'callable',
-      integration_state: 'configured'
+      integration_state: 'configured',
+      has_guide: false,
+      validation_support: false
     }
 
     it('Renders Integration as enabled', async () => {

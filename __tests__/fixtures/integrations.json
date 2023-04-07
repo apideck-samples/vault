@@ -39,6 +39,7 @@
       "updated_at": 1606463352997,
       "enabled": true,
       "state": "added",
+      "has_guide": false,
       "validation_support": false,
       "integration_state": "configured"
     },
@@ -83,6 +84,7 @@
       "enabled": true,
       "state": "callable",
       "integration_state": "configured",
+      "has_guide": false,
       "validation_support": false
     },
     {
@@ -105,6 +107,7 @@
       "enabled": true,
       "state": "callable",
       "integration_state": "configured",
+      "has_guide": false,
       "validation_support": false
     },
     {
@@ -136,6 +139,7 @@
       "enabled": false,
       "state": "available",
       "integration_state": "configured",
+      "has_guide": false,
       "validation_support": false
     },
     {
@@ -159,6 +163,7 @@
       "enabled": true,
       "state": "callable",
       "integration_state": "configured",
+      "has_guide": false,
       "validation_support": false
     }
   ]
