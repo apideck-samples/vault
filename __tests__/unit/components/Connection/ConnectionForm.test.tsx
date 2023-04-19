@@ -128,7 +128,7 @@ describe('Connection Form', () => {
         fireEvent.change(settingInput, { target: { value: 'foobar' } })
         fireEvent.click(saveButton)
         await waitFor(() => {
-          screen.getByText('Your changes have been saved.')
+          screen.getByText('Your changes have been saved')
         })
 
         expect(updateMock).toHaveBeenCalled()

@@ -34,6 +34,17 @@ export const ConnectionBadge: FC<IProps> = ({
     )
   }
 
+  if (state === 'invalid') {
+    return (
+      <div className="flex items-center px-2 py-1 text-xs font-medium leading-none rounded-full bg-warning-lighter text-warning">
+        <span className="mr-1.5">
+          <FaExclamationTriangle />
+        </span>
+        <span className="inline-block">Invalid configuration</span>
+      </div>
+    )
+  }
+
   if (showConfig) {
     return (
       <div className="flex items-center px-2 py-1 text-xs font-medium leading-none rounded-full bg-warning-lighter text-warning">

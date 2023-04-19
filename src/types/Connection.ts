@@ -6,7 +6,7 @@ export interface Settings extends RawJSON {
   base_url?: string
 }
 
-export type ConnectionState = 'available' | 'added' | 'authorized' | 'callable'
+export type ConnectionState = 'available' | 'added' | 'authorized' | 'callable' | 'invalid'
 export type IntegrationState = 'configured' | 'needs_configuration' | 'disabled'
 export type OauthGrantType = 'client_credentials' | 'authorization_code'
 
@@ -26,7 +26,8 @@ export interface IConnection {
   state: ConnectionState
   integration_state: IntegrationState
   enabled?: boolean
-  has_guide?: boolean
+  has_guide: boolean
+  validation_support: boolean
   settings?: Settings
   settings_required_for_authorization?: string[]
   configurable_resources: string[]

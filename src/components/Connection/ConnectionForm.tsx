@@ -29,11 +29,130 @@ import ReactMarkdown from 'react-markdown'
 import client from 'lib/axios'
 import { mutate } from 'swr'
 import { useRouter } from 'next/router'
+import { FaExclamationTriangle } from 'react-icons/fa'
 
 interface IProps {
   connection: IConnection
   jwt: string
   token: JWTSession
+}
+
+const ConnectionFormFooter = ({
+  connection,
+  saved,
+  formError,
+  updateLoading,
+  hasGuide
+}: {
+  connection: IConnection
+  formError: boolean
+  saved: boolean
+  updateLoading: boolean
+  hasGuide: boolean
+}) => {
+  if (formError) {
+    return (
+      <>
+        <span className="mr-2 text-red-600">
+          <AlertCircleIcon color="currentColor" size={20} />
+        </span>
+        <span className="text-red-600" style={{ fontSize: '0.9375rem' }}>
+          Your changes could not be saved. Please try again.
+        </span>
+      </>
+    )
+  }
+
+  if (updateLoading && connection.validation_support) {
+    return (
+      <>
+        <span className="mr-2 text-main">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-6 h-6 p-1 text-gray-500 bg-white border border-gray-300 rounded-full animate-spin"
+            fill="white"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="1.2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            />
+          </svg>
+        </span>
+        <span className="text-sm">Trying to connect to {connection.name}...</span>
+      </>
+    )
+  }
+
+  if (saved) {
+    if (connection.state === 'invalid') {
+      return (
+        <>
+          <span className="mr-2 text-red-600">
+            <FaExclamationTriangle color="currentColor" />
+          </span>
+          <span className="text-sm">
+            {' '}
+            {hasGuide ? (
+              <>
+                Could not connect to {connection.name}. View our{' '}
+                <a
+                  className="inline-flex items-center text-main hover:text-main underline font-semibold"
+                  target="_blank"
+                  rel="noreferrer"
+                  href={`https://developers.apideck.com/connectors/${connection.service_id}/docs/consumer+connection`}
+                >
+                  Connection Guide
+                  <ExternalLinkIcon size={16} />
+                </a>{' '}
+                for help
+              </>
+            ) : (
+              `Could not connect to ${connection.name}, please check your credentials`
+            )}
+          </span>
+        </>
+      )
+    } else {
+      return (
+        <>
+          <span className="mr-2 text-main">
+            <CheckIcon size={20} color="currentColor" />
+          </span>
+          <span className="text-sm">
+            {connection.validation_support
+              ? `Successfully connected to ${connection.name}`
+              : 'Your changes have been saved'}
+          </span>
+        </>
+      )
+    }
+  }
+
+  if (hasGuide) {
+    return (
+      <div className="flex text-sm items-center text-gray-600">
+        <HelpIcon className="mr-1" color="currentColor" size={20} />
+        <span>
+          Need help? View our{' '}
+          <a
+            className="inline-flex items-center text-main hover:text-main underline font-semibold"
+            target="_blank"
+            rel="noreferrer"
+            href={`https://developers.apideck.com/connectors/${connection.service_id}/docs/consumer+connection`}
+          >
+            Connection Guide
+            <ExternalLinkIcon size={16} />
+          </a>
+        </span>
+      </div>
+    )
+  }
+
+  return null
 }
 
 const ConnectionForm = ({ connection, token, jwt }: IProps) => {
@@ -133,11 +252,14 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
     }
 
     try {
+      setUpdateLoading(true)
+      setSaved(false)
       const response = await client.patch(`/vault/connections/${unifiedApi}/${serviceId}`, body, {
         headers
       })
-      mutate(`/vault/connections/${unifiedApi}/${serviceId}`)
+      await mutate(`/vault/connections/${unifiedApi}/${serviceId}`)
       mutate('/vault/connections')
+      setUpdateLoading(false)
       setSaved(true)
 
       // Redirect back to application if redirectToAppUrl is present and state is callable
@@ -364,6 +486,8 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
                       label,
                       required,
                       placeholder,
+                      prefix,
+                      suffix,
                       description,
                       disabled,
                       type,
@@ -387,8 +511,11 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
                               type={type}
                               required={required}
                               placeholder={placeholder}
+                              prepend={prefix}
+                              append={suffix}
                               onChange={handleChange}
                               onBlur={handleBlur}
+                              valid={connection.state === 'invalid' && saved ? false : undefined}
                               sensitive={type === 'password' || sensitive}
                               canBeCopied={type === 'password' || sensitive}
                               data-testid={id}
@@ -418,42 +545,15 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
 
                 <div className="flex items-center justify-between px-5 py-2">
                   <div className="flex items-center justify-start">
-                    {saved && (
-                      <Fragment>
-                        <span className="mr-2 text-main">
-                          <CheckIcon size={20} color="currentColor" />
-                        </span>
-                        <span className="text-sm">Your changes have been saved.</span>
-                      </Fragment>
-                    )}
-                    {formError && (
-                      <Fragment>
-                        <span className="mr-2 text-red-600">
-                          <AlertCircleIcon color="currentColor" size={20} />
-                        </span>
-                        <span className="text-red-600" style={{ fontSize: '0.9375rem' }}>
-                          Your changes could not be saved. Please try again.
-                        </span>
-                      </Fragment>
-                    )}
-                    {hasGuide && !formError && !saved && (
-                      <div className="flex text-sm items-center text-gray-600">
-                        <HelpIcon className="mr-1" color="currentColor" size={20} />
-                        <span>
-                          Need help? View our{' '}
-                          <a
-                            className="inline-flex items-center text-main hover:text-main underline font-semibold"
-                            target="_blank"
-                            rel="noreferrer"
-                            href={`https://developers.apideck.com/connectors/${serviceId}/docs/consumer+connection`}
-                          >
-                            Connection Guide
-                            <ExternalLinkIcon size={16} />
-                          </a>
-                        </span>
-                      </div>
-                    )}
+                    <ConnectionFormFooter
+                      connection={connection}
+                      formError={formError}
+                      hasGuide={hasGuide}
+                      saved={saved}
+                      updateLoading={updateLoading}
+                    />
                   </div>
+                  <div className="flex items-center justify-start"></div>
                   <Button
                     type="submit"
                     text="Save"
