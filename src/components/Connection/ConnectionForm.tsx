@@ -279,6 +279,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
           setTimeout(() => {
             const parsedRedirect = new URL(redirectUrl)
             parsedRedirect.searchParams.append('authorizedConnection', connection.service_id)
+            window.location.href = parsedRedirect.href
           }, 3000)
         }
       }
