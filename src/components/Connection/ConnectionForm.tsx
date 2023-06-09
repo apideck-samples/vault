@@ -1,4 +1,4 @@
-import { Alert, Button, TextInput, Toggle, useToast } from '@apideck/components'
+import { Alert, Button, TextArea, TextInput, Toggle, useToast } from '@apideck/components'
 import {
   ConfigurableResources,
   ConfirmModal,
@@ -531,6 +531,15 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
                               options={options as IOptionType[]}
                               placeholder={disabled ? 'Available after authorization' : 'Select..'}
                               isCreatable={allowCustomValues}
+                            />
+                          )}
+                          {type === 'textarea' && (
+                            <TextArea
+                              name={id}
+                              value={(values[id] as any) || ''}
+                              required={required}
+                              placeholder={placeholder}
+                              onChange={handleChange}
                             />
                           )}
                           {description && (
