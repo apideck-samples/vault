@@ -1,7 +1,7 @@
-import { ConnectionCard } from 'components'
-import { IConnection } from 'types/Connection'
-import Link from 'next/link'
 import classNames from 'classnames'
+import { ConnectionCard } from 'components'
+import Link from 'next/link'
+import { IConnection } from 'types/Connection'
 
 interface Props {
   connections: IConnection[]
@@ -20,7 +20,11 @@ const SearchedConnectionsList = ({ connections, handleClick, cursor, isLoading }
           return (
             <Link href={`/integrations/${unified_api}/${service_id}`} key={id}>
               <a className={classNames('block', { 'mt-5': i !== 0 })}>
-                <ConnectionCard connection={connection} isActive={cursor === i} />
+                <ConnectionCard
+                  connection={connection}
+                  isSearching={true}
+                  isActive={cursor === i}
+                />
               </a>
             </Link>
           )
