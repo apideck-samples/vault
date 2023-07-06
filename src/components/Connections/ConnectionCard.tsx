@@ -1,18 +1,23 @@
 import { Button } from '@apideck/components'
-import { ConnectionBadge } from 'components'
-import { IConnection } from 'types/Connection'
-import MenuRightIcon from 'mdi-react/MenuRightIcon'
-import React from 'react'
 import classNames from 'classnames'
+import { ConnectionBadge } from 'components'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
+import MenuRightIcon from 'mdi-react/MenuRightIcon'
+import { IConnection } from 'types/Connection'
 
 interface IProps {
   connection: IConnection
   isLoading?: boolean
   isActive?: boolean
+  isSearching?: boolean
 }
 
-const ConnectionCard = ({ connection, isLoading = false, isActive = false }: IProps) => {
+const ConnectionCard = ({
+  connection,
+  isLoading = false,
+  isActive = false,
+  isSearching = false
+}: IProps) => {
   const { name, icon, unified_api: unifiedApi, created_at: createdAt } = connection
 
   return (
@@ -34,7 +39,7 @@ const ConnectionCard = ({ connection, isLoading = false, isActive = false }: IPr
           <div className="font-medium text-md spec-connection-name">{name}</div>
 
           <div className="text-xs text-gray-600 sm:text-sm">
-            {createdAt
+            {createdAt && !isSearching
               ? `Added ${formatDistanceToNow(createdAt)} ago`
               : `${unifiedApi.toUpperCase()} API`}
           </div>
