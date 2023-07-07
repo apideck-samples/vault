@@ -9,7 +9,8 @@ export const createVaultSession = async (url?: string) => {
         image: 'https://unavatar.now.sh/jake'
       },
       settings: {
-        sandbox_mode: true
+        sandbox_mode: true,
+        allow_actions: ['delete', 'disconnect', 'reauthorize', 'disable']
       }
     })
   })

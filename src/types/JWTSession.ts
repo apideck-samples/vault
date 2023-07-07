@@ -11,19 +11,25 @@ export interface JWTSession {
   iat: number
   redirectUri: string
   theme: Theme
-  settings?: {
-    hideResourceSettings?: boolean
-    autoRedirect?: boolean
-    hideConsumerCard?: boolean
-    showLogs?: boolean
-    showSuggestions?: boolean
-    showSidebar?: boolean
-    sandboxMode?: boolean
-    isolationMode?: boolean
-    unifiedApis?: string[]
-  }
+  settings?: SessionSettings
   jwt?: string
 }
+
+export interface SessionSettings {
+  hideResourceSettings?: boolean
+  autoRedirect?: boolean
+  hideConsumerCard?: boolean
+  showLogs?: boolean
+  showSuggestions?: boolean
+  showSidebar?: boolean
+  sandboxMode?: boolean
+  isolationMode?: boolean
+  unifiedApis?: string[]
+  hideGuides?: boolean
+  allowActions?: VaultAction[]
+}
+
+export type VaultAction = 'delete' | 'disconnect' | 'reauthorize' | 'disable'
 
 export interface Theme {
   vaultName?: string
