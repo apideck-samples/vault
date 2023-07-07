@@ -1,10 +1,11 @@
-import { ThemeContext, authorizationVariablesRequired } from 'utils'
 import { memo, useContext } from 'react'
+import { ThemeContext, authorizationVariablesRequired } from 'utils'
 
 import { Button } from '@apideck/components'
-import { IConnection } from 'types/Connection'
-import { Theme } from 'types/JWTSession'
 import classNames from 'classnames'
+import { IConnection } from 'types/Connection'
+import { JWTSession, Theme } from 'types/JWTSession'
+import { isActionAllowed } from 'utils/isActionAllowed'
 
 interface IProps {
   connection: IConnection
@@ -12,13 +13,26 @@ interface IProps {
   isLoading: boolean
   revokeUrl: string
   onAuthorize: () => void
+  token: JWTSession
 }
 
-const OAuthButtons = ({ connection, isAuthorized, isLoading, revokeUrl, onAuthorize }: IProps) => {
+const OAuthButtons = ({
+  connection,
+  isAuthorized,
+  isLoading,
+  revokeUrl,
+  onAuthorize,
+  token
+}: IProps) => {
   const requiredAuth = authorizationVariablesRequired(connection)
   const { primaryColor } = useContext(ThemeContext) as Theme
+  const isActionAllowedForSettings = isActionAllowed(token?.settings)
 
   const renderButton = () => {
+    if (isAuthorized && !isActionAllowedForSettings('reauthorize')) {
+      return null
+    }
+
     if (connection.service_id === 'google-drive') {
       return (
         <button
@@ -64,15 +78,17 @@ const OAuthButtons = ({ connection, isAuthorized, isLoading, revokeUrl, onAuthor
       <div className="flex items-center">
         {renderButton()}
 
-        {isAuthorized && connection.oauth_grant_type === 'authorization_code' && (
-          <div className="inline-block ml-2 md:ml-4">
-            <Button
-              variant="outline"
-              text="Disconnect"
-              onClick={() => (window.location.href = revokeUrl)}
-            />
-          </div>
-        )}
+        {isAuthorized &&
+          connection.oauth_grant_type === 'authorization_code' &&
+          !isActionAllowedForSettings('disable') && (
+            <div className="inline-block ml-2 md:ml-4">
+              <Button
+                variant="outline"
+                text="Disconnect"
+                onClick={() => (window.location.href = revokeUrl)}
+              />
+            </div>
+          )}
       </div>
     </div>
   )

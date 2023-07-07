@@ -17,19 +17,20 @@ import {
   createOAuthErrorFromQuery
 } from 'utils'
 
+import { ConnectionBadge } from 'components/Connections'
+import { IOptionType } from 'components/Inputs/SearchSelect'
+import client from 'lib/axios'
 import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
 import CheckIcon from 'mdi-react/CheckIcon'
-import { ConnectionBadge } from 'components/Connections'
 import ExternalLinkIcon from 'mdi-react/ExternalLinkIcon'
 import HelpIcon from 'mdi-react/HelpCircleOutlineIcon'
-import { IOptionType } from 'components/Inputs/SearchSelect'
 import Link from 'next/link'
-import ReactMarkdown from 'react-markdown'
-import client from 'lib/axios'
-import { mutate } from 'swr'
 import { useRouter } from 'next/router'
 import { FaExclamationTriangle } from 'react-icons/fa'
+import ReactMarkdown from 'react-markdown'
+import { mutate } from 'swr'
+import { isActionAllowed } from 'utils/isActionAllowed'
 
 interface IProps {
   connection: IConnection
@@ -230,6 +231,8 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
     'X-APIDECK-CONSUMER-ID': token.consumerId
   }
 
+  const isActionAllowedForSettings = isActionAllowed(token?.settings)
+
   const toggleConnection = async ({ id, enabled }: { id: string; enabled: boolean }) => {
     setUpdateLoading(true)
     await updateConnection({ id, enabled }, true)
@@ -429,17 +432,23 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
               <div className="text-sm text-gray-700 capitalize">{`${unifiedApi} integration`}</div>
             </div>
           </div>
-          <div className="flex items-center h-12">
+          <div className="flex items-center h-12 space-x-2 md:space-x-3">
             <div className="hidden md:block lg:hidden xl:block">
               <ConnectionBadge connection={connection} showConfig={false} />
             </div>
-            <Toggle
-              isEnabled={connection.enabled}
-              isLoading={updateLoading}
-              onToggle={() => toggleConnection({ id: connection.id, enabled: !connection.enabled })}
-              className="inline-block mx-2 md:mx-3"
-            />
-            <Button variant="danger-outline" text="Delete" onClick={() => setModalOpen(true)} />
+            {isActionAllowedForSettings('disable') && (
+              <Toggle
+                isEnabled={connection.enabled}
+                isLoading={updateLoading}
+                onToggle={() =>
+                  toggleConnection({ id: connection.id, enabled: !connection.enabled })
+                }
+                className="inline-block"
+              />
+            )}
+            {isActionAllowedForSettings('delete') && (
+              <Button variant="danger-outline" text="Delete" onClick={() => setModalOpen(true)} />
+            )}
           </div>
         </div>
         <div className="flex justify-between px-3 py-4 sm:px-4 md:px-5 items-top">
@@ -455,6 +464,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
             isAuthorized={isAuthorized}
             onAuthorize={authorizeConnection}
             revokeUrl={revokeUrlWithRedirect}
+            token={token}
           />
         )}
       </div>
