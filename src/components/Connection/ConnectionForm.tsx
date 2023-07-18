@@ -182,7 +182,6 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
     name,
     icon,
     unified_api: unifiedApi,
-    tag_line: tagLine,
     auth_type: authType,
     revoke_url: revokeUrl,
     authorize_url: authorizeUrl,
@@ -451,12 +450,6 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
             )}
           </div>
         </div>
-        <div className="flex justify-between px-3 py-4 sm:px-4 md:px-5 items-top">
-          {tagLine && <p className="hidden my-3 mr-4 text-sm text-gray-800 md:block">{tagLine}</p>}
-        </div>
-        {tagLine && (
-          <p className="px-3 pb-3 text-sm text-gray-800 sm:px-4 sm:pb-4 md:hidden">{tagLine}</p>
-        )}
         {(authType === 'oauth2' || authType === 'session') && (
           <OAuthButtons
             connection={connection}
