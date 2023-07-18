@@ -182,7 +182,6 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
     name,
     icon,
     unified_api: unifiedApi,
-    tag_line: tagLine,
     auth_type: authType,
     revoke_url: revokeUrl,
     authorize_url: authorizeUrl,
@@ -429,7 +428,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
             <img className="w-8 h-8 mr-2 rounded sm:w-10 sm:h-10 sm:mr-4" src={icon} alt={name} />
             <div>
               <h1 className="font-medium text-gray-800 text-md md:text-xl">{name}</h1>
-              <div className="text-sm text-gray-700 capitalize">{`${unifiedApi} integration`}</div>
+              <div className="text-sm text-gray-700 capitalize">{`${unifiedApi} Connection`}</div>
             </div>
           </div>
           <div className="flex items-center h-12 space-x-2 md:space-x-3">
@@ -451,12 +450,6 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
             )}
           </div>
         </div>
-        <div className="flex justify-between px-3 py-4 sm:px-4 md:px-5 items-top">
-          {tagLine && <p className="hidden my-3 mr-4 text-sm text-gray-800 md:block">{tagLine}</p>}
-        </div>
-        {tagLine && (
-          <p className="px-3 pb-3 text-sm text-gray-800 sm:px-4 sm:pb-4 md:hidden">{tagLine}</p>
-        )}
         {(authType === 'oauth2' || authType === 'session') && (
           <OAuthButtons
             connection={connection}
