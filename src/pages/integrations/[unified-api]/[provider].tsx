@@ -1,15 +1,16 @@
 import { ConnectionForm, ConnectionPlaceholder, ErrorBlock } from 'components'
 
+import { useToast } from '@apideck/components'
+import camelcaseKeys from 'camelcase-keys-deep'
+import CustomMappings from 'components/FieldMapping/CustomMappings'
+import { decode } from 'jsonwebtoken'
+import client from 'lib/axios'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import useSWR from 'swr'
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
-import camelcaseKeys from 'camelcase-keys-deep'
-import client from 'lib/axios'
-import { decode } from 'jsonwebtoken'
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
-import useSWR from 'swr'
 import { useSession } from 'utils/useSession'
-import { useToast } from '@apideck/components'
 
 interface IProps {
   connections: IConnection[]
@@ -82,7 +83,19 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
   }
 
   return (
-    <ConnectionForm connection={connection} token={session || token} jwt={session?.jwt || jwt} />
+    <div>
+      <ConnectionForm connection={connection} token={session || token} jwt={session?.jwt || jwt} />
+      {connection.state === 'callable' && connection.custom_mappings?.length > 0 && (
+        <div className="mt-10 border rounded-md">
+          <div className="px-5 py-4">
+            <h2 className="font-medium">Custom mappings</h2>
+          </div>
+          <div className="bg-gray-100 border-t">
+            <CustomMappings connection={connection} />
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
 
