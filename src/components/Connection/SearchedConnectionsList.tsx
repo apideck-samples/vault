@@ -18,14 +18,12 @@ const SearchedConnectionsList = ({ connections, handleClick, cursor, isLoading }
 
         if (state !== 'available') {
           return (
-            <Link href={`/integrations/${unified_api}/${service_id}`} key={id}>
-              <a className={classNames('block', { 'mt-5': i !== 0 })}>
-                <ConnectionCard
-                  connection={connection}
-                  isSearching={true}
-                  isActive={cursor === i}
-                />
-              </a>
+            <Link
+              href={`/integrations/${unified_api}/${service_id}`}
+              key={id}
+              className={classNames('block', { 'mt-5': i !== 0 })}
+            >
+              <ConnectionCard connection={connection} isSearching={true} isActive={cursor === i} />
             </Link>
           )
         } else {

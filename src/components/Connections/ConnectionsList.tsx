@@ -43,10 +43,8 @@ const ConnectionsList = ({ unifiedApi, connections = [], createConnection }: IPr
         const { id, unified_api, service_id } = connection
 
         return (
-          <Link href={`/integrations/${unified_api}/${service_id}`} key={id}>
-            <a className="block mt-5">
-              <ConnectionCard connection={connection} />
-            </a>
+          <Link href={`/integrations/${unified_api}/${service_id}`} key={id} className="block mt-5">
+            <ConnectionCard connection={connection} />
           </Link>
         )
       })}

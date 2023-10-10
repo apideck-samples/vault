@@ -95,7 +95,7 @@ const ResourceForm = ({ loading, connection, resource, jwt, token }: IProps) => 
 
   return (
     <>
-      <Link href={`/integrations/${unifiedApi}/${serviceId}/`}>
+      <Link href={`/integrations/${unifiedApi}/${serviceId}/`} legacyBehavior>
         <button
           className="inline-flex items-center self-start justify-start mb-4 text-sm leading-none text-gray-600 group hover:text-gray-800"
           style={{ height: '24px' }}
