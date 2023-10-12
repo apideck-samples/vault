@@ -189,7 +189,7 @@ const FieldSelector = ({
 
   const sortedCustomFields = useMemo(() => {
     const fields = customFields ?? []
-    return [...fields].sort((a, b) => (a.name || a.id).localeCompare(b.name || b.id))
+    return [...fields]?.sort((a, b) => (a.name || a.id).localeCompare(b.name || b.id))
   }, [customFields])
 
   const noFieldsFound = mode !== 'advanced' && !isLoading && !propertiesToRender?.length
@@ -245,7 +245,7 @@ const FieldSelector = ({
           >
             <Menu.Items
               className="absolute rounded-t-2xl z-30 mt-2 w-[calc(100%-0px)] left-[0px] origin-top-right overflow-hidden bg-white shadow-lg ring-1 ring-gray-200 rounded-b-2xl focus:outline-none"
-              style={{ top: -8, minHeight: 150 }}
+              style={{ top: -200, minHeight: 150 }}
             >
               <div className="max-h-[380px] xl:max-h-[420px] 2xl:max-h-[480px] overflow-y-auto divide-y divide-gray-200">
                 <nav className="flex items-center justify-between" aria-label="Tabs">

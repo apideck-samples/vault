@@ -1,9 +1,10 @@
 import { Button, useModal, useToast } from '@apideck/components'
 import client from 'lib/axios'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import useSWR from 'swr'
+import useSWR, { useSWRConfig } from 'swr'
 import { extractLastAttribute } from 'utils/extractLastAttribute'
 
+import { CustomMapping } from 'types/Connection'
 import { useSession } from 'utils/useSession'
 import FieldSelector from './FieldSelector'
 
@@ -38,7 +39,7 @@ const FieldMappingModal = ({ connection, customMapping }) => {
   const [isLoading, setIsLoading] = useState(false)
   const { addToast } = useToast()
   const { session } = useSession()
-  // const { mutate } = useSWRConfig()
+  const { mutate } = useSWRConfig()
   const { removeModal } = useModal()
   const buttonRef = useRef<any>(null)
 
@@ -104,7 +105,7 @@ const FieldMappingModal = ({ connection, customMapping }) => {
 
   const schema = schemaData?.data?.data
   const schemaError = schemaData?.data?.error && schemaData?.data?.message
-  const customFields = customFieldsData?.data
+  const customFields = customFieldsData?.data?.data
   const customFieldsError = customFieldsData?.data?.error && customFieldsData?.data?.message
   const properties = schema?.properties
   const responseDataPath = schema?.response_data_path
@@ -128,7 +129,7 @@ const FieldMappingModal = ({ connection, customMapping }) => {
       }
       buttonRef?.current?.focus()
     }
-  }, [selectedMapping, extractLastAttribute, properties, customMapping.value])
+  }, [selectedMapping, properties, customMapping, customFields])
 
   const createCustomMapping = async () => {
     if (!connection || !selectedMapping) return
@@ -137,30 +138,29 @@ const FieldMappingModal = ({ connection, customMapping }) => {
       setIsLoading(true)
 
       const url = `/vault/custom-mappings/${connection.unified_api}/${connection.service_id}/${customMapping.id}`
-      const result = await client.post(url, {
-        method: customMapping?.value ? 'PATCH' : 'POST',
-        headers: {},
-        body: JSON.stringify({
+      const result = await client[customMapping?.value ? 'patch' : 'post'](
+        url,
+        {
           value: selectedMapping.finder || selectedMapping.description
-        })
+        },
+        { headers }
+      )
+
+      addToast({
+        title: `Mapping ${customMapping?.value ? 'updated' : 'created.'}`,
+        type: 'success'
       })
 
-      if (result.data?.data) {
-        addToast({
-          title: `Mapping ${customMapping?.value ? 'updated' : 'created.'}`,
-          type: 'success'
-        })
-
-        // const detailUrl = `${unifyBaseUrl}/vault/connections/${connection?.unified_api}/${connection?.service_id}`
-        // const updatedConnection = {
-        //   ...connection,
-        //   custom_mappings:
-        //     connection.custom_mappings?.map((f) => (f.id === result.data.id ? result.data : f)) ||
-        //     []
-        // }
-        // mutate(detailUrl, { data: updatedConnection }, { revalidate: false })
-        removeModal()
+      const detailUrl = `/vault/connections/${connection?.unified_api}/${connection?.service_id}`
+      const updatedConnection = {
+        ...connection,
+        custom_mappings:
+          connection.custom_mappings?.map((f: CustomMapping) =>
+            f.id === result?.data?.data?.id ? result.data.data : f
+          ) || []
       }
+      mutate(detailUrl, { data: { data: updatedConnection } }, { revalidate: false })
+      removeModal()
     } catch (error) {
       addToast({
         title: 'Error',
@@ -174,7 +174,12 @@ const FieldMappingModal = ({ connection, customMapping }) => {
 
   return (
     <div>
-      <form onSubmit={() => console.log('yo')}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          createCustomMapping()
+        }}
+      >
         <div className="isolate mx-auto grid p-5 max-w-md grid-cols-1 md:max-w-2xl md:grid-cols-2 lg:max-w-4xl xl:mx-0 xl:max-w-none lg:grid-cols-11">
           <div className="col-span-5">
             <div className="relative flex justify-start">

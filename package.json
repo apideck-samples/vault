@@ -42,7 +42,7 @@
     "react-table": "^7.7.0",
     "react-transition-group": "^4.4.2",
     "react-waypoint": "^10.1.0",
-    "swr": "^0.5.7"
+    "swr": "^2.2.4"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.4.0",

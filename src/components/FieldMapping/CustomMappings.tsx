@@ -1,18 +1,18 @@
 import { Button, useModal, useToast } from '@apideck/components'
 import client from 'lib/axios'
 import { useState } from 'react'
-import { CustomMapping, IConnection } from 'types/Connection'
+import { useSWRConfig } from 'swr'
+import { IConnection } from 'types/Connection'
 import { extractLastAttribute } from 'utils/extractLastAttribute'
 import { useSession } from 'utils/useSession'
 import FieldMappingModal from './FieldMappingModal'
 
 const CustomMappings = ({ connection }: { connection: IConnection }) => {
   const { session } = useSession()
-  const [selectedCustomMapping, setSelectedCustomMapping] = useState<null | CustomMapping>(null)
   const [deletingMappingId, setDeletingMappingId] = useState<string | null>(null)
   const { addToast } = useToast()
   const { addModal } = useModal()
-  // const { mutate } = useSWRConfig()
+  const { mutate } = useSWRConfig()
 
   const deleteCustomMapping = async (id: string) => {
     try {
@@ -31,9 +31,8 @@ const CustomMappings = ({ connection }: { connection: IConnection }) => {
         title: 'Mapping removed.',
         type: 'success'
       })
-      debugger
-      // const detailUrl = `${unifyBaseUrl}/vault/connections/${connection?.unified_api}/${connection?.service_id}`;
-      // mutate(detailUrl);
+      const detailUrl = `/vault/connections/${connection?.unified_api}/${connection?.service_id}`
+      mutate(detailUrl)
     } catch (error) {
       addToast({
         title: 'Error',
