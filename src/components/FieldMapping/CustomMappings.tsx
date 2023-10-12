@@ -49,7 +49,7 @@ const CustomMappings = ({ connection }: { connection: IConnection }) => {
       <div className="flow-root">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-10">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-10">
-            <table className="min-w-full divide-y divide-gray-200 border bg-white">
+            <table className="min-w-full divide-y divide-gray-200 border bg-white rounded-xl overflow-hidden ring-1 ring-gray-300/50 shadow">
               <thead>
                 <tr>
                   <th
@@ -69,18 +69,17 @@ const CustomMappings = ({ connection }: { connection: IConnection }) => {
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white">
+              <tbody className="bg-white divide-y">
                 {connection?.custom_mappings.map((mapping) => (
-                  <tr key={mapping?.key} className="even:bg-gray-50">
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-5">
-                      <code style={{ fontWeight: 600 }}>{mapping?.label || mapping?.key}</code>
+                  <tr key={mapping?.key} className="">
+                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 font-medium sm:pl-5">
+                      {mapping?.label || mapping?.key}
+                      {mapping?.required && <span className="ml-1 text-red-600">*</span>}
                     </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <span className="text-xs text-gray-600 font-medium">
+                    <td className="whitespace-nowrap px-3 py-4">
+                      <span className="text-sm text-gray-600">
                         {mapping?.value ? (
-                          <code className="font-semibold">
-                            {extractLastAttribute(mapping.value, mapping.custom_field)}
-                          </code>
+                          extractLastAttribute(mapping.value, mapping.custom_field)
                         ) : (
                           <span className="text-red-600">Not mapped</span>
                         )}
@@ -162,6 +161,11 @@ const CustomMappings = ({ connection }: { connection: IConnection }) => {
                         {!mapping?.value && (
                           <Button
                             size="small"
+                            style={
+                              session?.theme?.primaryColor
+                                ? { backgroundColor: session?.theme.primaryColor }
+                                : {}
+                            }
                             onClick={() => {
                               addModal(
                                 <FieldMappingModal

@@ -276,9 +276,7 @@ const FieldMappingModal = ({ connection, customMapping }) => {
               isLoading={isLoading}
               disabled={isLoading}
               style={
-                session?.theme?.primary_color
-                  ? { backgroundColor: session?.theme.primary_color }
-                  : {}
+                session?.theme?.primaryColor ? { backgroundColor: session?.theme.primaryColor } : {}
               }
             />
           </div>
