@@ -1,3 +1,4 @@
+import { jwt, token } from '../../../fixtures/session'
 import {
   fireEvent,
   render,
@@ -6,12 +7,11 @@ import {
   waitForElementToBeRemoved,
   within
 } from '../../../testUtils/testing-utils'
-import { jwt, token } from '../../../fixtures/session'
 
 import { ConnectionForm } from 'components'
+import client from 'lib/axios'
 import { IConnection } from 'types/Connection'
 import INTEGRATIONS from '../../../fixtures/integrations.json'
-import client from 'lib/axios'
 
 const router = {
   route: '/',
@@ -62,12 +62,14 @@ describe('Connection Form', () => {
 
       it('Renders Connection Form w settings', async () => {
         render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
-        expect(screen.getByRole('heading', { name: 'Microsoft Dynamics CRM' })).toBeInTheDocument()
-        expect(screen.getByDisplayValue('example')).toBeInTheDocument()
+        expect(screen.getByRole('heading', { name: 'Microsoft Dynamics CRM' })).toBeDefined()
+        expect(screen.getByDisplayValue('example')).toBeDefined()
 
-        const authorizeButton = screen.getByRole('button', { name: 'Authorize' })
-        expect(authorizeButton).toBeInTheDocument()
-        expect(authorizeButton).not.toBeDisabled()
+        const authorizeButton = screen.getByRole('button', {
+          name: 'Authorize'
+        }) as HTMLButtonElement
+        expect(authorizeButton).toBeDefined()
+        expect(authorizeButton.disabled).toBeFalsy()
       })
     })
 
@@ -78,10 +80,10 @@ describe('Connection Form', () => {
 
       it('Renders an Error Alert', async () => {
         render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
-        expect(screen.getByRole('alert')).toBeInTheDocument()
+        expect(screen.getByRole('alert')).toBeDefined()
         expect(
           screen.getByText('An error occurred during the authorization flow. Please try again.')
-        ).toBeInTheDocument()
+        ).toBeDefined()
       })
     })
 
@@ -112,15 +114,17 @@ describe('Connection Form', () => {
 
       it('Renders Connection Form w settings as enabled', async () => {
         render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
-        expect(screen.getByRole('heading', { name: 'Microsoft Dynamics CRM' })).toBeInTheDocument()
+        expect(screen.getByRole('heading', { name: 'Microsoft Dynamics CRM' })).toBeDefined()
         const warning = screen.getByText(
           'Microsoft Dynamics CRM requires Organisation Url to be set before authorizing.'
         )
-        expect(warning).toBeInTheDocument()
+        expect(warning).toBeDefined()
 
-        const authorizeButton = screen.getByRole('button', { name: 'Authorize' })
-        expect(authorizeButton).toBeInTheDocument()
-        expect(authorizeButton).toBeDisabled()
+        const authorizeButton = screen.getByRole('button', {
+          name: 'Authorize'
+        }) as HTMLButtonElement
+        expect(authorizeButton).toBeDefined()
+        expect(authorizeButton.disabled).toBeTruthy()
 
         const saveButton = screen.getByRole('button', { name: 'Save' })
         const settingInput = screen.getByTestId('organisation_url')
@@ -143,9 +147,9 @@ describe('Connection Form', () => {
 
     it('Renders Connection Form w settings as enabled', async () => {
       render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
-      expect(screen.getByText('Copper')).toBeInTheDocument()
-      expect(screen.getByDisplayValue('nick@apideck.com')).toBeInTheDocument()
-      expect(screen.getByDisplayValue('21cafde969594a339fcbb4f3ff2600aa')).toBeInTheDocument()
+      expect(screen.getByText('Copper')).toBeDefined()
+      expect(screen.getByDisplayValue('nick@apideck.com')).toBeDefined()
+      expect(screen.getByDisplayValue('21cafde969594a339fcbb4f3ff2600aa')).toBeDefined()
     })
 
     it('Uses Modal to confirm delete Connection', async () => {

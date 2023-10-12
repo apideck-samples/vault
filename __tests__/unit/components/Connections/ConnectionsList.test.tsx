@@ -3,6 +3,17 @@ import { IConnection } from 'types/Connection'
 import INTEGRATIONS from '../../../fixtures/integrations.json'
 import { fireEvent, render, screen, waitFor } from '../../../testUtils/testing-utils'
 
+jest.mock('next/router', () => ({
+  useRouter: jest.fn().mockReturnValue({
+    route: '/',
+    pathname: '/',
+    query: '',
+    asPath: '/',
+    prefetch: () => null,
+    push: () => null
+  })
+}))
+
 describe('Connections List', () => {
   describe('When no integrations have been added', () => {
     it('render message', async () => {
@@ -16,9 +27,9 @@ describe('Connections List', () => {
           createConnection={createConnection}
         />
       )
-      expect(screen.getByRole('heading', { name: 'lead integrations' })).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: '+ Add' })).toBeInTheDocument()
-      expect(screen.getByText('No lead integrations added yet.')).toBeInTheDocument()
+      expect(screen.getByRole('heading', { name: 'lead integrations' })).toBeDefined()
+      expect(screen.getByRole('button', { name: '+ Add' })).toBeDefined()
+      expect(screen.getByText('No lead integrations added yet.')).toBeDefined()
     })
   })
   describe('With existing Integrations', () => {
@@ -34,9 +45,9 @@ describe('Connections List', () => {
           createConnection={createConnection}
         />
       )
-      expect(screen.getByRole('heading', { name: 'lead integrations' })).toBeInTheDocument()
+      expect(screen.getByRole('heading', { name: 'lead integrations' })).toBeDefined()
       const addButton = screen.getByRole('button', { name: '+ Add' })
-      expect(addButton).toBeInTheDocument()
+      expect(addButton).toBeDefined()
 
       expect(screen.getAllByTestId('connection-link')).toHaveLength(4)
     })
@@ -54,12 +65,12 @@ describe('Connections List', () => {
       />
     )
 
-    expect(screen.getByRole('heading', { name: 'lead integrations' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'lead integrations' })).toBeDefined()
     const addButton = screen.getByRole('button', { name: '+ Add' })
     fireEvent.click(addButton)
 
     await waitFor(() => screen.getByTestId('modal-container'))
 
-    expect(screen.getByRole('heading', { name: 'Add lead integration' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Add lead integration' })).toBeDefined()
   })
 })
