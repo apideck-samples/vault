@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import useSWR, { useSWRConfig } from 'swr'
 import { extractLastAttribute } from 'utils/extractLastAttribute'
 
-import { CustomMapping } from 'types/Connection'
+import { CustomMapping, IConnection } from 'types/Connection'
 import { useSession } from 'utils/useSession'
 import FieldSelector from './FieldSelector'
 
@@ -284,102 +284,10 @@ const FieldMappingModal = ({ connection, customMapping }) => {
       </form>
     </div>
   )
-
-  return (
-    <div>
-      <div className="bg-gray-50 p-5 border-t border-b border-gray-200 fade-in">
-        <div className="mb-5">
-          <label className="block text-sm font-medium text-gray-600 mb-1 ml-[19px]">
-            {`${connection?.name} property`}
-          </label>
-          <FieldSelector
-            className="col-span-5"
-            onSelect={(mappingField: any) => setSelectedMapping(mappingField)}
-            isLoading={!schema && !customFields && !schemaError && !customFieldsError}
-            error={schemaError || customFieldsError}
-            buttonRef={buttonRef}
-            customFields={customFields}
-            triggerComponent={
-              <OriginFieldCard
-                customMapping={customMapping}
-                connection={connection}
-                selectedMapping={selectedMapping}
-                responseDataPath={responseDataPath}
-              />
-            }
-            triggerComponentProps={{
-              className: 'text-left w-full h-full'
-            }}
-            responseDataPath={responseDataPath}
-            properties={properties ? Object.entries(properties) : []}
-            customMapping={customMapping}
-          />
-        </div>
-        <div className="relative">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-5 h-5 right-6 -top-2 absolute text-gray-700"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5"
-            />
-          </svg>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-600 mb-1 ml-[19px]">
-            Response key
-          </label>
-          <div className="ring-1 ring-gray-200 rounded-2xl p-5 bg-white flex flex-col justify-between h-[192px]">
-            <h2 className="text-gray-900 font-semibold">
-              <div
-                className="flex items-center justify-between space-x-2.5 truncate"
-                style={{ minWidth: 170 }}
-              >
-                {session?.theme?.logo && (
-                  <img
-                    src={session?.theme?.logo}
-                    alt="logo"
-                    className="w-7 h-7 rounded-full ring-2 ring-gray-100"
-                  />
-                )}
-
-                {customMapping?.label || customMapping?.key}
-              </div>
-            </h2>
-            <p className="text-sm text-gray-600 line-clamp-2">
-              {customMapping?.description || customMapping?.key}
-            </p>
-            <p className="flex items-baseline">
-              <div className="inline-flex items-center px-2 py-1 text-xs font-medium text-center text-gray-600 bg-gray-50 ring-1 ring-gray-200/70 rounded-lg">
-                {`${customMapping.id.split('+')[0]} / ${customMapping.id.split('+')[1]}`}
-              </div>
-            </p>
-          </div>
-        </div>
-        <Button
-          text={'Save field mapping'}
-          onClick={createCustomMapping}
-          isLoading={isLoading}
-          disabled={!selectedMapping}
-          className="w-full mt-5"
-          style={
-            session?.theme?.primary_color ? { backgroundColor: session?.theme.primary_color } : {}
-          }
-        />
-      </div>
-    </div>
-  )
 }
 
 type OriginFieldCardProps = {
-  connection: Connection | null
+  connection: IConnection | null
   selectedMapping: any
   customMapping: CustomMapping
   open?: boolean
