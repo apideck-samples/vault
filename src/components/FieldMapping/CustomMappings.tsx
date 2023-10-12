@@ -49,7 +49,7 @@ const CustomMappings = ({ connection }: { connection: IConnection }) => {
       <div className="flow-root">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-10">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-10">
-            <table className="min-w-full divide-y divide-gray-200 border bg-white rounded-xl overflow-hidden ring-1 ring-gray-300/50 shadow">
+            <table className="min-w-full divide-y divide-gray-200 border bg-white rounded-lg overflow-hidden ring-1 ring-gray-300/40 shadow">
               <thead>
                 <tr>
                   <th
