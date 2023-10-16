@@ -1,10 +1,11 @@
-import ErrorBlock from 'components/shared/ErrorBlock'
+import { AxiosResponse } from 'axios'
 import LogsTable from 'components/Logs/LogsTable'
-import { Waypoint } from 'react-waypoint'
+import ErrorBlock from 'components/shared/ErrorBlock'
 import client from 'lib/axios'
-import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { useSWRInfinite } from 'swr'
+import { useEffect } from 'react'
+import { Waypoint } from 'react-waypoint'
+import useSWRInfinite from 'swr/infinite'
 import { useSession } from 'utils/useSession'
 
 const LogsPage = () => {
@@ -53,7 +54,7 @@ const LogsPage = () => {
 
   const isLoading = !data && !error
   const isLoadingMore = size > 0 && data && typeof data[size - 1] === 'undefined'
-  const logs = data?.map((page) => page?.data?.data).flat() || []
+  const logs = data?.map((page: AxiosResponse) => page?.data?.data).flat() || []
   return (
     <div>
       <h1 className="mb-4 text-lg font-medium text-gray-800 md:mb-6 lg:mb-8 md:text-2xl">Logs</h1>

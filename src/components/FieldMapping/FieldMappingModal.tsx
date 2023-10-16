@@ -35,7 +35,13 @@ const renderReadableJSONPath = (jsonPath: string, responseDataPath?: string): st
   return parts.length > 0 ? parts.join('.') : ''
 }
 
-const FieldMappingModal = ({ connection, customMapping }) => {
+const FieldMappingModal = ({
+  connection,
+  customMapping
+}: {
+  connection: IConnection
+  customMapping: CustomMapping
+}) => {
   const [isLoading, setIsLoading] = useState(false)
   const { addToast } = useToast()
   const { session } = useSession()

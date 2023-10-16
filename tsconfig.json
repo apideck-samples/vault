@@ -30,14 +30,31 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "paths": {
-      "*": ["./*", "./src/*", "./__tests__/*"]
+      "*": [
+        "./*",
+        "./src/*",
+        "./__tests__/*"
+      ]
     },
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "strict": false,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "incremental": true
   },
-  "exclude": ["node_modules/*", ".next/*"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "__tests__/testUtils/CustomEnvironment.js"]
+  "exclude": [
+    "node_modules/*",
+    ".next/*"
+  ],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "__tests__/testUtils/CustomEnvironment.js"
+  ]
 }

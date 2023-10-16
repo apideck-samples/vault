@@ -22,7 +22,8 @@ describe('Connection Card', () => {
       state: 'added',
       integration_state: 'configured',
       has_guide: false,
-      validation_support: false
+      validation_support: false,
+      custom_mappings: []
     }
 
     it('Renders Integration and indicates configuration required', async () => {
@@ -53,7 +54,8 @@ describe('Connection Card', () => {
       state: 'callable',
       integration_state: 'configured',
       has_guide: false,
-      validation_support: false
+      validation_support: false,
+      custom_mappings: []
     }
 
     it('Renders Integration as enabled', async () => {

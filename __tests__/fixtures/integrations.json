@@ -41,7 +41,8 @@
       "state": "added",
       "has_guide": false,
       "validation_support": false,
-      "integration_state": "configured"
+      "integration_state": "configured",
+      "custom_mappings": []
     },
     {
       "id": "lead+copper",
@@ -84,6 +85,7 @@
       "enabled": true,
       "state": "callable",
       "integration_state": "configured",
+      "custom_mappings": [],
       "has_guide": false,
       "validation_support": false
     },
@@ -107,6 +109,7 @@
       "enabled": true,
       "state": "callable",
       "integration_state": "configured",
+      "custom_mappings": [],
       "has_guide": false,
       "validation_support": false
     },
@@ -139,6 +142,7 @@
       "enabled": false,
       "state": "available",
       "integration_state": "configured",
+      "custom_mappings": [],
       "has_guide": false,
       "validation_support": false
     },
@@ -163,6 +167,7 @@
       "enabled": true,
       "state": "callable",
       "integration_state": "configured",
+      "custom_mappings": [],
       "has_guide": false,
       "validation_support": false
     }

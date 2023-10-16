@@ -102,7 +102,15 @@ const FieldSelector = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCustomFieldMapping])
 
-  const renderMenuItem = ({ title, type, properties, items, description, finder, value }: any) => {
+  const renderMenuItem = ({
+    title,
+    type,
+    properties,
+    items,
+    description,
+    finder,
+    value
+  }: any): any => {
     const isSelectable =
       (type === 'array' && !items?.properties) || // array of strings, numbers, etc.
       (type !== 'array' && type !== 'object' && type !== 'anyOf')
