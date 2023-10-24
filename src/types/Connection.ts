@@ -35,6 +35,7 @@ export interface IConnection {
   configuration?: FormField[]
   form_fields: FormField[]
   created_at: number
+  custom_mappings: CustomMapping[]
 }
 
 export interface UpdateConnectionInput {
@@ -49,4 +50,15 @@ export interface UpdateConnectionConfigInput {
 export interface ResourceConfig {
   resource: string
   defaults: Partial<FormField>[]
+}
+
+export interface CustomMapping {
+  description: string
+  id: string
+  key: string
+  label: string
+  required: false
+  value: string
+  consumer_id?: string
+  custom_field?: boolean
 }

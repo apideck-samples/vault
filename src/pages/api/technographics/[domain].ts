@@ -2,7 +2,7 @@ import { VercelRequest, VercelResponse } from '@vercel/node'
 
 import fetch from 'node-fetch'
 
-module.exports = async (req: VercelRequest, res: VercelResponse) => {
+export default async function (req: VercelRequest, res: VercelResponse) {
   if (req?.query?.domain) {
     const domain = req?.query?.domain
     const raw = await fetch(

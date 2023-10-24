@@ -1,10 +1,21 @@
-import { fireEvent, render, screen, waitFor } from '../../../testUtils/testing-utils'
 import { jwt, token } from '../../../fixtures/session'
+import { fireEvent, render, screen, waitFor } from '../../../testUtils/testing-utils'
 
-import CONFIG from '../../../fixtures/connection-config.json'
-import CONNECTIONS from '../../../fixtures/connections.json'
 import { ResourceForm } from 'components'
 import client from 'lib/axios'
+import CONFIG from '../../../fixtures/connection-config.json'
+import CONNECTIONS from '../../../fixtures/connections.json'
+
+jest.mock('next/router', () => ({
+  useRouter: jest.fn().mockReturnValue({
+    route: '/',
+    pathname: '/',
+    query: '',
+    asPath: '/',
+    prefetch: () => null,
+    push: () => null
+  })
+}))
 
 describe('Resource Form', () => {
   describe('With Salesforce CRM connector', () => {
@@ -28,7 +39,7 @@ describe('Resource Form', () => {
       )
 
       const placeholder = screen.getByTestId('resourcePlaceholder')
-      expect(placeholder).toBeInTheDocument()
+      expect(placeholder).toBeDefined()
     })
 
     it('should render a submit button', async () => {
@@ -41,9 +52,9 @@ describe('Resource Form', () => {
           token={token}
         />
       )
-      const submitButton = screen.getByRole('button', { name: 'Save' })
-      expect(submitButton).toBeInTheDocument()
-      expect(submitButton).not.toBeDisabled()
+      const submitButton = screen.getByRole('button', { name: 'Save' }) as HTMLButtonElement
+      expect(submitButton).toBeDefined()
+      expect(submitButton.disabled).toBeFalsy()
     })
 
     it('should submit the form and show a success message', async () => {
@@ -104,7 +115,7 @@ describe('Resource Form', () => {
         />
       )
 
-      expect(screen.getByTestId('required')).toBeInTheDocument()
+      expect(screen.getByTestId('required')).toBeDefined()
     })
   })
 })

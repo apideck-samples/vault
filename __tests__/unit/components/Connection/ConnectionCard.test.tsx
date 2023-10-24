@@ -22,16 +22,17 @@ describe('Connection Card', () => {
       state: 'added',
       integration_state: 'configured',
       has_guide: false,
-      validation_support: false
+      validation_support: false,
+      custom_mappings: []
     }
 
     it('Renders Integration and indicates configuration required', async () => {
       render(<ConnectionCard connection={connection} />)
-      expect(screen.getByText('Pipedrive')).toBeInTheDocument()
-      expect(screen.getByText('Needs configuration')).toBeInTheDocument()
+      expect(screen.getByText('Pipedrive')).toBeDefined()
+      expect(screen.getByText('Needs configuration')).toBeDefined()
       expect(
         screen.getByText(`Added ${formatDistanceToNow(connection.created_at)} ago`)
-      ).toBeInTheDocument()
+      ).toBeDefined()
     })
   })
 
@@ -53,16 +54,17 @@ describe('Connection Card', () => {
       state: 'callable',
       integration_state: 'configured',
       has_guide: false,
-      validation_support: false
+      validation_support: false,
+      custom_mappings: []
     }
 
     it('Renders Integration as enabled', async () => {
       render(<ConnectionCard connection={connection} />)
-      expect(screen.getByText('Pipedrive')).toBeInTheDocument()
-      expect(screen.getByText('Enabled')).toBeInTheDocument()
+      expect(screen.getByText('Pipedrive')).toBeDefined()
+      expect(screen.getByText('Enabled')).toBeDefined()
       expect(
         screen.getByText(`Added ${formatDistanceToNow(connection.created_at)} ago`)
-      ).toBeInTheDocument()
+      ).toBeDefined()
     })
   })
 })

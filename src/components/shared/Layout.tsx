@@ -229,87 +229,81 @@ const Layout: React.FC<IProps> = ({ children }) => {
                   </button>
                 </div>
                 <Link href="/">
-                  <a>
-                    {logo ? (
-                      <img
-                        className="mb-12 rounded"
-                        src={logo}
-                        alt={vaultName || 'Apideck Vault'}
-                        style={{ maxHeight: '28px' }}
-                      />
-                    ) : (
-                      <div
-                        className="mb-12 text-2xl font-medium"
-                        style={customTextColor ? { color: customTextColor } : {}}
-                      >
-                        {vaultName || 'Apideck Vault'}
-                      </div>
-                    )}
-                  </a>
+                  {logo ? (
+                    <img
+                      className="mb-12 rounded"
+                      src={logo}
+                      alt={vaultName || 'Apideck Vault'}
+                      style={{ maxHeight: '28px' }}
+                    />
+                  ) : (
+                    <div
+                      className="mb-12 text-2xl font-medium"
+                      style={customTextColor ? { color: customTextColor } : {}}
+                    >
+                      {vaultName || 'Apideck Vault'}
+                    </div>
+                  )}
                 </Link>
-                <Link href="/">
-                  <a
+                <Link
+                  href="/"
+                  className={classNames(
+                    'flex items-center mb-6 text-sm  group hover:text-gray-800',
+                    {
+                      'text-gray-800': router.pathname === '/',
+                      'text-gray-500': router.pathname !== '/',
+                      hidden: isolationMode
+                    }
+                  )}
+                  style={customTextColor ? { color: customTextColor } : {}}
+                >
+                  <HiHome color={customTextColor ? customTextColor : 'currentColor'} size={20} />
+                  <span className="ml-3 leading-none transition duration-150 ease-in-out transform group-hover:-translate-x-0.5">
+                    Integrations
+                  </span>
+                </Link>
+                {showSuggestions ? (
+                  <Link
+                    href="/suggestions"
                     className={classNames(
-                      'flex items-center mb-6 text-sm  group hover:text-gray-800',
+                      'flex items-center mb-6 text-sm group hover:text-gray-800',
                       {
-                        'text-gray-800': router.pathname === '/',
-                        'text-gray-500': router.pathname !== '/',
+                        'text-gray-800': router.pathname === '/suggestions',
+                        'text-gray-500': router.pathname !== '/suggestions',
                         hidden: isolationMode
                       }
                     )}
                     style={customTextColor ? { color: customTextColor } : {}}
                   >
-                    <HiHome color={customTextColor ? customTextColor : 'currentColor'} size={20} />
+                    <FiCompass
+                      color={customTextColor ? customTextColor : 'currentColor'}
+                      size={20}
+                    />
                     <span className="ml-3 leading-none transition duration-150 ease-in-out transform group-hover:-translate-x-0.5">
-                      Integrations
+                      Suggestions
                     </span>
-                  </a>
-                </Link>
-                {showSuggestions ? (
-                  <Link href="/suggestions">
-                    <a
-                      className={classNames(
-                        'flex items-center mb-6 text-sm group hover:text-gray-800',
-                        {
-                          'text-gray-800': router.pathname === '/suggestions',
-                          'text-gray-500': router.pathname !== '/suggestions',
-                          hidden: isolationMode
-                        }
-                      )}
-                      style={customTextColor ? { color: customTextColor } : {}}
-                    >
-                      <FiCompass
-                        color={customTextColor ? customTextColor : 'currentColor'}
-                        size={20}
-                      />
-
-                      <span className="ml-3 leading-none transition duration-150 ease-in-out transform group-hover:-translate-x-0.5">
-                        Suggestions
-                      </span>
-                    </a>
                   </Link>
                 ) : null}
                 {showLogs ? (
-                  <Link href="/logs">
-                    <a
-                      className={classNames(
-                        'flex items-center mb-6 text-sm  group hover:text-gray-800',
-                        {
-                          'text-gray-800': router.pathname === '/logs',
-                          'text-gray-500': router.pathname !== '/logs',
-                          hidden: isolationMode
-                        }
-                      )}
-                      style={customTextColor ? { color: customTextColor } : {}}
-                    >
-                      <HiOutlineDocumentText
-                        color={customTextColor ? customTextColor : 'currentColor'}
-                        size={20}
-                      />
-                      <span className="ml-3 leading-none transition duration-150 ease-in-out transform group-hover:-translate-x-0.5">
-                        Logs
-                      </span>
-                    </a>
+                  <Link
+                    href="/logs"
+                    className={classNames(
+                      'flex items-center mb-6 text-sm  group hover:text-gray-800',
+                      {
+                        'text-gray-800': router.pathname === '/logs',
+                        'text-gray-500': router.pathname !== '/logs',
+                        hidden: isolationMode
+                      }
+                    )}
+                    style={customTextColor ? { color: customTextColor } : {}}
+                  >
+                    <HiOutlineDocumentText
+                      color={customTextColor ? customTextColor : 'currentColor'}
+                      size={20}
+                    />
+                    <span className="ml-3 leading-none transition duration-150 ease-in-out transform group-hover:-translate-x-0.5">
+                      Logs
+                    </span>
                   </Link>
                 ) : null}
                 <a

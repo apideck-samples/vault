@@ -19,8 +19,5 @@ module.exports = {
         headers: securityHeaders
       }
     ]
-  },
-  experimental: {
-    productionBrowserSourceMaps: true
   }
 }
