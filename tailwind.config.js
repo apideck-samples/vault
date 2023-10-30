@@ -1,7 +1,12 @@
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-  content: ['./src/**/*.js', './src/**/*.tsx', './node_modules/@apideck/components/**/*.js'],
+  content: [
+    './src/**/*.js',
+    './src/**/*.tsx',
+    './node_modules/@apideck/wayfinder/**/*.js',
+    './node_modules/@apideck/components/**/*.js'
+  ],
   darkMode: 'class',
   theme: {
     fontFamily: {

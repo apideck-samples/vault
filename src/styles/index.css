@@ -1,4 +1,5 @@
 @import 'tailwind.css';
+@import '../../node_modules/@apideck/wayfinder/dist/styles.css';
 
 body {
   @apply antialiased text-gray-800 font-basier-circle;

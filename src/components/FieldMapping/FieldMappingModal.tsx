@@ -250,6 +250,7 @@ const FieldMappingModal = ({
               error={schemaError || customFieldsError}
               buttonRef={buttonRef}
               customFields={customFields}
+              connection={connection}
               triggerComponent={
                 <OriginFieldCard
                   customMapping={customMapping}
