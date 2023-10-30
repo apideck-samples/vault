@@ -70,8 +70,6 @@ const FieldSelector = ({
     }
   }, [session])
 
-  console.log('connection2', connection)
-
   const fetchResourceExample = async (resource?: string) => {
     try {
       return await client.get(
