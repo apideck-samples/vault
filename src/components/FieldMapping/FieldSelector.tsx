@@ -1,8 +1,10 @@
-import { Button, TextInput, useDebounce } from '@apideck/components'
+import { Button, TextInput, useDebounce, useModal } from '@apideck/components'
+import { WayFinder } from '@apideck/wayfinder'
 import { Menu, Transition } from '@headlessui/react'
 import classNames from 'classnames'
 
 import Fuse from 'fuse.js'
+import client from 'lib/axios'
 import {
   ChangeEvent,
   Fragment,
@@ -13,6 +15,11 @@ import {
   useRef,
   useState
 } from 'react'
+import useSWR from 'swr'
+import { IConnection } from 'types/Connection'
+import { extractLastAttribute } from 'utils/extractLastAttribute'
+import { useSession } from 'utils/useSession'
+import { findByDescription } from './FieldMappingModal'
 
 interface Props {
   onSelect: (field: any) => void
@@ -26,6 +33,7 @@ interface Props {
   responseDataPath?: string
   customMapping?: any
   error?: string
+  connection?: IConnection
 }
 
 const FieldSelector = ({
@@ -39,7 +47,8 @@ const FieldSelector = ({
   buttonRef,
   responseDataPath,
   customMapping,
-  error
+  error,
+  connection
 }: Props) => {
   const [selectedObjectProperty, setSelectedObjectProperty] = useState<any>(null)
   const [searchTerm, setSearchTerm] = useState('')
@@ -49,9 +58,39 @@ const FieldSelector = ({
   )
   const [list, setList] = useState<any>([])
   const debouncedSearchTerm = useDebounce(searchTerm, 250)
-  const [fieldMappingString, setFieldMappingString] = useState()
+  const [fieldMappingString, setFieldMappingString] = useState<string>()
   const [properties, setProperties] = useState<any>(propertiesProps)
   const searchInputRef: any = useRef()
+  const { session } = useSession()
+  const { addModal, removeModal } = useModal()
+
+  const headers = useMemo(() => {
+    return {
+      Authorization: `Bearer ${session?.jwt}`,
+      'X-APIDECK-APP-ID': `${session?.applicationId}`,
+      'X-APIDECK-CONSUMER-ID': `${session?.consumerId}`
+    }
+  }, [session])
+
+  const fetchResourceExample = async (resource?: string) => {
+    try {
+      return await client.get(
+        `/vault/connections/${connection?.unified_api}/${connection?.service_id}/${resource}/example`,
+        { headers }
+      )
+    } catch (error) {
+      console.log('error fetching resource example', error)
+      return error
+    }
+  }
+
+  const { data, isLoading: isLoadingExample } = useSWR(
+    connection?.id && mode === 'advanced' && ['example', customMapping?.id],
+    () => fetchResourceExample(customMapping?.id?.split('+')[1]),
+    { revalidateIfStale: false }
+  )
+
+  const exampleResponse = data?.data?.data?.example_response
 
   useEffect(() => {
     if (debouncedSearchTerm) {
@@ -356,12 +395,45 @@ const FieldSelector = ({
                         value={fieldMappingString}
                         onChange={(e: any) => setFieldMappingString(e.target.value)}
                       />
-                      <div className="flex justify-end">
+                      <div className="flex justify-end space-x-2 items-center mt-2">
+                        <Button
+                          variant="outline"
+                          size="small"
+                          text="Open WayFinder"
+                          disabled={isLoadingExample}
+                          isLoading={isLoadingExample}
+                          onClick={() => {
+                            addModal(
+                              <WayFinder
+                                onSelect={(jsonPath) => {
+                                  if (jsonPath) {
+                                    setFieldMappingString(jsonPath)
+                                    const mappingObject = findByDescription(properties, jsonPath)
+                                    onSelect({
+                                      title: extractLastAttribute(jsonPath),
+                                      mode: 'manual',
+                                      type: mappingObject?.type || 'Advanced',
+                                      description: jsonPath,
+                                      example: mappingObject?.example
+                                    })
+                                  }
+                                  removeModal()
+                                }}
+                                onClose={removeModal}
+                                defaultInput={JSON.stringify(exampleResponse, null, 2)}
+                                defaultJsonPath={fieldMappingString}
+                              />,
+                              {
+                                className: '!max-w-5xl !p-0',
+                                onClose: () => {}
+                              }
+                            )
+                          }}
+                        />
                         <Menu.Item>
                           <Button
                             text="Confirm"
                             size="small"
-                            className="mt-2"
                             disabled={!fieldMappingString}
                             onClick={() => {
                               onSelect({
