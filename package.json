@@ -19,7 +19,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@apideck/components": "^0.12.12",
-    "@apideck/wayfinder": "^0.1.12",
+    "@apideck/wayfinder": "^0.2.2",
     "@bugsnag/js": "^7.16.1",
     "@bugsnag/plugin-react": "^7.16.1",
     "@headlessui/react": "^1.7.17",

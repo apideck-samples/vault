@@ -26,10 +26,10 @@
     postinstall-postinstall "^2.1.0"
     use-clipboard-copy "^0.2.0"
 
-"@apideck/wayfinder@^0.1.12":
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/@apideck/wayfinder/-/wayfinder-0.1.12.tgz#2e7a6c86b9f3d71a1056bbbdbb4aa5f19aaa56c3"
-  integrity sha512-OxN3/3G9KSwRAfwtsy89PiF4gyt+RxiVJ3Hj1s8gHn8b5bxWp/gfe278ZpakcqzGDU87QNke//Fw3s7m5Uco9w==
+"@apideck/wayfinder@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@apideck/wayfinder/-/wayfinder-0.2.2.tgz#7b9debda5048b26e25802f7f0ce44d76efd16b1e"
+  integrity sha512-OzjX7zgvINch+C4jrj80XEs7Fmt4W45CGz3uryUqhf9grzL3RA6wvqXjoehFROmdXN5FXts2XQmNiPHcP7HQww==
   dependencies:
     "@monaco-editor/react" "^4.6.0"
     classnames "2.3.2"

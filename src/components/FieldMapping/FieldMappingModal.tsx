@@ -8,7 +8,7 @@ import { CustomMapping, IConnection } from 'types/Connection'
 import { useSession } from 'utils/useSession'
 import FieldSelector from './FieldSelector'
 
-const findByDescription = (obj: any, description: string): any => {
+export const findByDescription = (obj: any, description: string): any => {
   for (const key in obj) {
     if (obj[key] instanceof Object) {
       const result = findByDescription(obj[key], description)

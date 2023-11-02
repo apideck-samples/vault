@@ -17,7 +17,9 @@ import {
 } from 'react'
 import useSWR from 'swr'
 import { IConnection } from 'types/Connection'
+import { extractLastAttribute } from 'utils/extractLastAttribute'
 import { useSession } from 'utils/useSession'
+import { findByDescription } from './FieldMappingModal'
 
 interface Props {
   onSelect: (field: any) => void
@@ -406,17 +408,20 @@ const FieldSelector = ({
                                 onSelect={(jsonPath) => {
                                   if (jsonPath) {
                                     setFieldMappingString(jsonPath)
+                                    const mappingObject = findByDescription(properties, jsonPath)
                                     onSelect({
-                                      title: jsonPath,
+                                      title: extractLastAttribute(jsonPath),
                                       mode: 'manual',
-                                      type: 'Advanced',
-                                      description: jsonPath
+                                      type: mappingObject?.type || 'Advanced',
+                                      description: jsonPath,
+                                      example: mappingObject?.example
                                     })
                                   }
                                   removeModal()
                                 }}
                                 onClose={removeModal}
                                 defaultInput={JSON.stringify(exampleResponse, null, 2)}
+                                defaultJsonPath={fieldMappingString}
                               />,
                               {
                                 className: '!max-w-5xl !p-0',
