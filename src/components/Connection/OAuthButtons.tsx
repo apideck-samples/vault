@@ -45,6 +45,18 @@ const OAuthButtons = ({
       )
     }
 
+    if (connection.service_id === 'quickbooks') {
+      return (
+        <button
+          onClick={onAuthorize}
+          disabled={!!requiredAuth || isLoading}
+          className={classNames('h-[34px]', { 'animate-pulse': isLoading })}
+        >
+          <img src="/img/quickbooks-button.png" className="h-full" />
+        </button>
+      )
+    }
+
     return (
       <Button
         text={isAuthorized ? 'Re-authorize' : 'Authorize'}
