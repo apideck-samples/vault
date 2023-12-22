@@ -525,7 +525,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
                               data-testid={id}
                             />
                           )}
-                          {type === 'select' && (
+                          {(type === 'select' || type === 'multi-select') && (
                             <SearchSelect
                               field={id}
                               value={values[id]}
@@ -534,6 +534,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
                               options={options as IOptionType[]}
                               placeholder={disabled ? 'Available after authorization' : 'Select..'}
                               isCreatable={allowCustomValues}
+                              isMulti={type === 'multi-select'}
                             />
                           )}
                           {type === 'textarea' && (
