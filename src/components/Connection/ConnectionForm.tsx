@@ -29,6 +29,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FaExclamationTriangle } from 'react-icons/fa'
 import ReactMarkdown from 'react-markdown'
+import rehypeRaw from 'rehype-raw'
 import { mutate } from 'swr'
 import { isActionAllowed } from 'utils/isActionAllowed'
 
@@ -548,7 +549,9 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
                           )}
                           {description && (
                             <small className="inline-block mt-2 text-gray-600">
-                              <ReactMarkdown>{description}</ReactMarkdown>
+                              <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+                                {description}
+                              </ReactMarkdown>
                             </small>
                           )}
                         </div>
