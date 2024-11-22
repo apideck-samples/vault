@@ -1,5 +1,5 @@
 import Router, { useRouter } from 'next/router'
-import { ReactNode, useContext, useEffect, useState } from 'react'
+import { ReactNode, useContext, useEffect, useState, useMemo } from 'react'
 
 import classNames from 'classnames'
 import { Transition } from 'components'
@@ -24,6 +24,7 @@ const Layout: React.FC<IProps> = ({ children }) => {
   const [customTextColor, setCustomTextColor] = useState('')
   const [navIsOpen, setNavIsOpen] = useState(false)
   const [returnUrl, setReturnUrl] = useState('https://app.apideck.com')
+  const [isClient, setIsClient] = useState(false)
 
   const { session } = useSession()
 
@@ -73,7 +74,7 @@ const Layout: React.FC<IProps> = ({ children }) => {
   const hasConsumerMetadata = Object.keys(consumerMetadata).length > 0
 
   useEffect(() => {
-    const styles = { ...customStyles } as any
+    const styles = { ...customStyles }
     if (primaryColor) styles.borderColor = primaryColor
     if (bgColor) styles.backgroundColor = bgColor
     setCustomStyles(styles)
@@ -94,6 +95,23 @@ const Layout: React.FC<IProps> = ({ children }) => {
     }
   }, [navIsOpen])
 
+  useEffect(() => {
+    // Force client-side rendering only after hydration
+    setCustomStyles((prevStyles: Record<string, any>) => ({ ...prevStyles }))
+  }, [])
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  const title = useMemo(() => {
+    return vaultName ? `${vaultName} Vault` : 'Apideck Vault'
+  }, [vaultName])
+
+  if (!isClient) {
+    return null // or a loading spinner
+  }
+
   return (
     <div>
       <Head>
@@ -105,7 +123,7 @@ const Layout: React.FC<IProps> = ({ children }) => {
           }
         />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <title>{vaultName ? `${vaultName} Vault` : 'Apideck Vault'}</title>
+        <title>{title}</title>
         <link rel="icon" href={favicon ? favicon : '/favicon.ico'} />
       </Head>
 
@@ -118,9 +136,9 @@ const Layout: React.FC<IProps> = ({ children }) => {
       >
         <div className="flex items-center justify-between">
           {logo ? (
-            <img className="h-6 rounded" src={logo} alt={vaultName || 'Apideck Vault'} />
+            <img className="h-6 rounded" src={logo} alt={title} />
           ) : (
-            <div className="font-medium text-md">{vaultName || 'Apideck Vault'}</div>
+            <div className="font-medium text-md">{title}</div>
           )}
 
           <button
@@ -192,7 +210,7 @@ const Layout: React.FC<IProps> = ({ children }) => {
             <aside
               style={navIsOpen ? { background: customStyles.backgroundColor } : {}}
               className={classNames(
-                'flex flex-col justify-between px-4 sm:px-8 pt-3  lg:pt-32 pb-10 sm:pb-12 overflow-y-auto min-h-screen',
+                'flex flex-col justify-between px-4 sm:px-8 pt-3 lg:pt-32 pb-10 sm:pb-12 overflow-y-auto min-h-screen',
                 {
                   'bg-gray-100': navIsOpen
                 }
@@ -233,7 +251,7 @@ const Layout: React.FC<IProps> = ({ children }) => {
                     <img
                       className="mb-12 rounded"
                       src={logo}
-                      alt={vaultName || 'Apideck Vault'}
+                      alt={title}
                       style={{ maxHeight: '28px' }}
                     />
                   ) : (
@@ -241,7 +259,7 @@ const Layout: React.FC<IProps> = ({ children }) => {
                       className="mb-12 text-2xl font-medium"
                       style={customTextColor ? { color: customTextColor } : {}}
                     >
-                      {vaultName || 'Apideck Vault'}
+                      {title}
                     </div>
                   )}
                 </Link>
