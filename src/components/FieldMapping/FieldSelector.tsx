@@ -148,11 +148,42 @@ const FieldSelector = ({
     items,
     description,
     finder,
-    value
+    value,
+    options
   }: any): any => {
     const isSelectable =
-      (type === 'array' && !items?.properties) || // array of strings, numbers, etc.
+      (type === 'array' && !items?.properties && !options?.length) || // array of primitives
       (type !== 'array' && type !== 'object' && type !== 'anyOf')
+
+    // Handle array of options (enum values)
+    if (type === 'array' && options?.length) {
+      return options.map((option: any, index: number) => (
+        <Menu.Item key={`${title}-${index}`}>
+          {({ active }) => (
+            <button
+              type="button"
+              className={`${
+                active ? 'bg-primary-500 text-white' : 'text-gray-900'
+              } group flex w-full items-center px-4 py-2.5 justify-between`}
+              onClick={() => {
+                onSelect({
+                  isCustomFieldMapping,
+                  description: finder,
+                  finder,
+                  title: `${title}: ${option.label || option.value}`,
+                  type,
+                  example: option.value
+                })
+              }}
+            >
+              <span className="flex items-center">
+                <span className="truncate">{option.label || option.value}</span>
+              </span>
+            </button>
+          )}
+        </Menu.Item>
+      ))
+    }
 
     if (items?.anyOf) {
       const anyOfItem = {
@@ -195,12 +226,9 @@ const FieldSelector = ({
               })
             }}
           >
-            <div className="flex flex-col items-start truncate">
-              <span className="font-semibold text-sm">{title}</span>
-              <span className={`italic text-xs ${active ? 'text-primary-200' : 'text-gray-500'}`}>
-                {isCustomFieldMapping ? <span>Example: {value}</span> : type}
-              </span>
-            </div>
+            <span className="flex items-center">
+              <span className="truncate">{title}</span>
+            </span>
             {!isSelectable && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -208,7 +236,9 @@ const FieldSelector = ({
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="h-4 w-4"
+                className={`${
+                  active ? 'text-white' : 'text-gray-400'
+                } ml-3 h-5 w-5 transition duration-100`}
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
               </svg>
