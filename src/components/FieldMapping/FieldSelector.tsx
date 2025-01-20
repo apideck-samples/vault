@@ -162,7 +162,7 @@ const FieldSelector = ({
       if (Array.isArray(value)) {
         if (value.length === 0) return '[]'
         if (typeof value[0] === 'object') {
-          return `[${value.length} items]`
+          return `[${JSON.stringify(value[0], null, 2)}]`
         }
         return `[${value.slice(0, 2).join(', ')}${value.length > 2 ? '...' : ''}]`
       }

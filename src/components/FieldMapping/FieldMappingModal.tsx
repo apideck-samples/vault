@@ -310,6 +310,18 @@ const OriginFieldCard = ({
 }: OriginFieldCardProps) => {
   const { session } = useSession()
 
+  const formatExample = (example: any) => {
+    if (!example) return ''
+    if (Array.isArray(example)) {
+      if (typeof example[0] === 'object') {
+        return `[${JSON.stringify(example[0], null, 2)}]`
+      }
+      return `[${example.slice(0, 2).join(', ')}${example.length > 2 ? '...' : ''}]`
+    }
+    if (typeof example === 'boolean') return example.toString()
+    return example
+  }
+
   return (
     <div className="ring-1 ring-gray-200 rounded-2xl p-5 group shadow-sm hover:shadow-md transition duration-100 bg-white flex flex-col justify-between h-[192px]">
       <h2 className="text-gray-900 font-semibold">
@@ -381,9 +393,9 @@ const OriginFieldCard = ({
               </p>
             )}
             {!!selectedMapping?.example && (
-              <p className="text-sm text-gray-600 truncate leading-6 mb-1.5">
+              <p className="text-sm text-gray-600 leading-6 mb-1.5">
                 Example:{' '}
-                <span className="text-gray-600">{selectedMapping?.example?.toString()}</span>
+                <span className="text-gray-600">{formatExample(selectedMapping?.example)}</span>
               </p>
             )}
           </div>
