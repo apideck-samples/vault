@@ -155,6 +155,20 @@ const FieldSelector = ({
       (type === 'array' && !items?.properties && !options?.length) || // array of primitives
       (type !== 'array' && type !== 'object' && type !== 'anyOf')
 
+    // Format array value for display
+    const getDisplayValue = (value: any) => {
+      if (value === undefined || value === null) return ''
+      if (typeof value === 'boolean') return value.toString()
+      if (Array.isArray(value)) {
+        if (value.length === 0) return '[]'
+        if (typeof value[0] === 'object') {
+          return `[${value.length} items]`
+        }
+        return `[${value.slice(0, 2).join(', ')}${value.length > 2 ? '...' : ''}]`
+      }
+      return value
+    }
+
     // Handle array of options (enum values)
     if (type === 'array' && options?.length) {
       return options.map((option: any, index: number) => (
@@ -214,7 +228,11 @@ const FieldSelector = ({
                   finder,
                   title,
                   type,
-                  example: typeof value === 'string' ? value : undefined
+                  example: Array.isArray(value)
+                    ? value
+                    : typeof value === 'string'
+                    ? value
+                    : undefined
                 })
                 return
               }
@@ -226,8 +244,11 @@ const FieldSelector = ({
               })
             }}
           >
-            <span className="flex items-center">
-              <span className="truncate">{title}</span>
+            <span className="flex flex-col items-start truncate">
+              <span className="font-semibold text-sm">{title}</span>
+              <span className={`italic text-xs ${active ? 'text-primary-200' : 'text-gray-500'}`}>
+                {isCustomFieldMapping ? <span>Example: {getDisplayValue(value)}</span> : type}
+              </span>
             </span>
             {!isSelectable && (
               <svg
