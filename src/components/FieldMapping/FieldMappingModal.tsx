@@ -311,7 +311,7 @@ const OriginFieldCard = ({
   const { session } = useSession()
 
   return (
-    <div className="ring-1 ring-gray-200 rounded-2xl p-5 group shadow-sm hover:shadow-md transition duration-100 bg-white flex flex-col justify-between h-[192px]">
+    <div className="ring-1 ring-gray-200 rounded-2xl p-5 group shadow-sm hover:shadow-md transition duration-100 bg-white flex flex-col justify-between h-[192px] overflow-y-auto">
       <h2 className="text-gray-900 font-semibold">
         <div
           className="flex items-center justify-between space-x-2.5 truncate"
@@ -373,7 +373,7 @@ const OriginFieldCard = ({
       </h2>
       {selectedMapping ? (
         <>
-          <div>
+          <div className="flex-1 overflow-y-auto">
             {(!!selectedMapping?.type || customMapping?.custom_field) && (
               <p className="text-sm text-gray-600 truncate leading-6">
                 Type:{' '}
@@ -381,9 +381,25 @@ const OriginFieldCard = ({
               </p>
             )}
             {!!selectedMapping?.example && (
-              <p className="text-sm text-gray-600 truncate leading-6 mb-1.5">
+              <p className="text-sm text-gray-600 leading-6 mb-1.5">
                 Example:{' '}
-                <span className="text-gray-600">{selectedMapping?.example?.toString()}</span>
+                <span className="text-gray-600 break-all">
+                  {Array.isArray(selectedMapping.example) &&
+                  typeof selectedMapping.example[0] === 'object'
+                    ? (() => {
+                        const firstObj = selectedMapping.example[0]
+                        const nonNullKey = Object.entries(firstObj).find(
+                          ([_, val]) => val !== null
+                        )?.[0]
+                        const result = nonNullKey
+                          ? { [nonNullKey]: firstObj[nonNullKey] }
+                          : firstObj
+                        return `[${JSON.stringify(result, null, 2)}]`
+                      })()
+                    : typeof selectedMapping.example === 'object'
+                    ? `[${JSON.stringify(selectedMapping.example, null, 2)}]`
+                    : selectedMapping.example.toString()}
+                </span>
               </p>
             )}
           </div>
