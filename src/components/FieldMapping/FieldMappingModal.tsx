@@ -313,17 +313,17 @@ const OriginFieldCard = ({
   const formatExample = (example: any) => {
     if (!example) return ''
     if (Array.isArray(example)) {
-      if (typeof example[0] === 'object') {
-        return `[${JSON.stringify(example[0], null, 2)}]`
-      }
-      return `[${example.slice(0, 2).join(', ')}${example.length > 2 ? '...' : ''}]`
+      return `[${JSON.stringify(example[0], null, 2)}]`
+    }
+    if (typeof example === 'object') {
+      return JSON.stringify(example, null, 2)
     }
     if (typeof example === 'boolean') return example.toString()
     return example
   }
 
   return (
-    <div className="ring-1 ring-gray-200 rounded-2xl p-5 group shadow-sm hover:shadow-md transition duration-100 bg-white flex flex-col justify-between h-[192px]">
+    <div className="ring-1 ring-gray-200 rounded-2xl p-5 group shadow-sm hover:shadow-md transition duration-100 bg-white flex flex-col justify-between h-[192px] overflow-y-auto">
       <h2 className="text-gray-900 font-semibold">
         <div
           className="flex items-center justify-between space-x-2.5 truncate"
@@ -385,7 +385,7 @@ const OriginFieldCard = ({
       </h2>
       {selectedMapping ? (
         <>
-          <div>
+          <div className="flex-1 overflow-y-auto">
             {(!!selectedMapping?.type || customMapping?.custom_field) && (
               <p className="text-sm text-gray-600 truncate leading-6">
                 Type:{' '}
@@ -395,7 +395,9 @@ const OriginFieldCard = ({
             {!!selectedMapping?.example && (
               <p className="text-sm text-gray-600 leading-6 mb-1.5">
                 Example:{' '}
-                <span className="text-gray-600">{formatExample(selectedMapping?.example)}</span>
+                <span className="text-gray-600 break-all">
+                  {formatExample(selectedMapping?.example)}
+                </span>
               </p>
             )}
           </div>

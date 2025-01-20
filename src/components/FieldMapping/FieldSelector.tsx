@@ -228,11 +228,7 @@ const FieldSelector = ({
                   finder,
                   title,
                   type,
-                  example: Array.isArray(value)
-                    ? value
-                    : typeof value === 'string'
-                    ? value
-                    : undefined
+                  example: Array.isArray(value) ? [value[0]] : value
                 })
                 return
               }
