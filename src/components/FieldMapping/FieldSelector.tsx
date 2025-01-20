@@ -162,7 +162,25 @@ const FieldSelector = ({
       if (Array.isArray(value)) {
         if (value.length === 0) return '[]'
         if (typeof value[0] === 'object') {
-          return `[${JSON.stringify(value[0], null, 2)}]`
+          // Get all keys from first object
+          const keys = Object.keys(value[0])
+
+          // Try to find an object where the key has a non-null value
+          const bestExample = keys.reduce(
+            (acc: any, key: string) => {
+              if (acc[key] === null) {
+                // Find first object where this key is not null
+                const betterExample = value.find((item) => item[key] !== null)
+                if (betterExample) {
+                  acc[key] = betterExample[key]
+                }
+              }
+              return acc
+            },
+            { ...value[0] }
+          )
+
+          return `[${JSON.stringify(bestExample, null, 2)}]`
         }
         return `[${value.slice(0, 2).join(', ')}${value.length > 2 ? '...' : ''}]`
       }
@@ -222,13 +240,32 @@ const FieldSelector = ({
             } group flex w-full items-center px-4 py-2.5 justify-between`}
             onClick={(e) => {
               if (isSelectable) {
+                const formattedExample = Array.isArray(value)
+                  ? typeof value[0] === 'object'
+                    ? // Get all keys from first object
+                      Object.keys(value[0]).reduce(
+                        (acc: any, key: string) => {
+                          if (acc[key] === null) {
+                            // Find first object where this key is not null
+                            const betterExample = value.find((item) => item[key] !== null)
+                            if (betterExample) {
+                              acc[key] = betterExample[key]
+                            }
+                          }
+                          return acc
+                        },
+                        { ...value[0] }
+                      )
+                    : value[0]
+                  : value
+
                 onSelect({
                   isCustomFieldMapping,
                   description,
                   finder,
                   title,
                   type,
-                  example: Array.isArray(value) ? [value[0]] : value
+                  example: formattedExample
                 })
                 return
               }
