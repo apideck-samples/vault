@@ -384,7 +384,19 @@ const OriginFieldCard = ({
               <p className="text-sm text-gray-600 leading-6 mb-1.5">
                 Example:{' '}
                 <span className="text-gray-600 break-all">
-                  {typeof selectedMapping.example === 'object'
+                  {Array.isArray(selectedMapping.example) &&
+                  typeof selectedMapping.example[0] === 'object'
+                    ? (() => {
+                        const firstObj = selectedMapping.example[0]
+                        const nonNullKey = Object.entries(firstObj).find(
+                          ([_, val]) => val !== null
+                        )?.[0]
+                        const result = nonNullKey
+                          ? { [nonNullKey]: firstObj[nonNullKey] }
+                          : firstObj
+                        return `[${JSON.stringify(result, null, 2)}]`
+                      })()
+                    : typeof selectedMapping.example === 'object'
                     ? `[${JSON.stringify(selectedMapping.example, null, 2)}]`
                     : selectedMapping.example.toString()}
                 </span>
