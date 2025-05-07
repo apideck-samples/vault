@@ -13,7 +13,7 @@
       {
         "id": "api_key",
         "label": "API Key",
-        "value": "a1ffa05a296f99780689a6ebd44b7c966e5591ee13cd38e5116c26e22104ac1bfaa9e00a",
+        "value": "1234567890",
         "placeholder": "",
         "mask": false,
         "type": "text",
@@ -25,7 +25,7 @@
       {
         "id": "base_url",
         "label": "Base URL",
-        "value": "https://apideck1600217394.api-us1.com",
+        "value": "https://activecampaign.com",
         "placeholder": "",
         "mask": false,
         "type": "text",
@@ -39,7 +39,7 @@
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
     "settings": {
-      "base_url": "https://apideck1600217394.api-us1.com"
+      "base_url": "https://activecampaign.com"
     },
     "created_at": 1600517917071,
     "updated_at": 1600522377450,
@@ -61,7 +61,7 @@
       {
         "id": "api_key",
         "label": "API Key",
-        "value": "a1ffa05a296f99780689a6ebd44b7c966e5591ee13cd38e5116c26e22104ac1bfaa9e00a",
+        "value": "1234567890",
         "placeholder": "",
         "mask": false,
         "type": "text",
@@ -73,7 +73,7 @@
       {
         "id": "base_url",
         "label": "Base URL",
-        "value": "https://apideck1600217394.api-us1.com",
+        "value": "https://activecampaign.com",
         "placeholder": "",
         "mask": false,
         "type": "text",
@@ -87,7 +87,7 @@
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
     "settings": {
-      "base_url": "https://apideck1600217394.api-us1.com"
+      "base_url": "https://activecampaign.com"
     },
     "created_at": 1600517917071,
     "updated_at": 1600522377450,
@@ -159,7 +159,7 @@
       {
         "id": "api_key",
         "label": "API Key",
-        "value": "api_41sWZKUGq92NbMVjQRpexL.428nCcP0VEWMNGQ4UwnBNH",
+        "value": "1234567890",
         "placeholder": "",
         "mask": false,
         "type": "text",
@@ -192,7 +192,7 @@
       {
         "id": "api_key",
         "label": "API Key",
-        "value": "api_41sWZKUGq92NbMVjQRpexL.428nCcP0VEWMNGQ4UwnBNH",
+        "value": "1234567890",
         "placeholder": "",
         "mask": false,
         "type": "text",
@@ -241,7 +241,7 @@
       {
         "id": "api_key",
         "label": "API Key",
-        "value": "21cafde969594a339fcbb4f3ff2600aa",
+        "value": "1234567890",
         "placeholder": "",
         "mask": false,
         "type": "text",
@@ -253,7 +253,7 @@
       {
         "id": "email",
         "label": "Email",
-        "value": "sandbox@apideck.com",
+        "value": "contact@apideck.com",
         "placeholder": "",
         "mask": false,
         "type": "text",
@@ -266,7 +266,7 @@
     "resource_schema_support": [],
     "settings_required_for_authorization": [],
     "settings": {
-      "email": "sandbox@apideck.com"
+      "email": "contact@apideck.com"
     },
     "created_at": 1564934240188,
     "enabled": true,
@@ -363,7 +363,7 @@
       {
         "id": "api_key",
         "label": "API Key",
-        "value": "8ZNuWwkECUFb_BriqYYT_A",
+        "value": "1234567890",
         "placeholder": "",
         "mask": false,
         "type": "text",
@@ -860,7 +860,7 @@
       {
         "id": "api_key",
         "label": "API Key",
-        "value": "1ab15465-7a8e-4c1c-996c-a90e4f1aa086",
+        "value": "1234567890",
         "placeholder": "",
         "mask": false,
         "type": "text",
@@ -964,7 +964,7 @@
       {
         "id": "api_key",
         "label": "API Key",
-        "value": "PEBZRJwETMNIaFGixrTEWw2",
+        "value": "1234567890",
         "placeholder": "",
         "mask": false,
         "type": "text",
@@ -997,7 +997,7 @@
       {
         "id": "api_key",
         "label": "API Key",
-        "value": "rwZkajtOvV_saFIZOVys6OsjmqQMxlwDO_8eqP5yayQlW",
+        "value": "1234567890",
         "placeholder": "",
         "mask": false,
         "type": "text",
@@ -1030,7 +1030,7 @@
       {
         "id": "api_key",
         "label": "API Key",
-        "value": "rwZkajtOvV_saFIZOVys6OsjmqQMxlwDO_8eqP5yayQlW",
+        "value": "1234567890",
         "placeholder": "",
         "mask": false,
         "type": "text",
@@ -1063,7 +1063,7 @@
       {
         "id": "instance_url",
         "label": "Instance url",
-        "value": "https://eu26.salesforce.com",
+        "value": "https://salesforce.com",
         "placeholder": "",
         "mask": false,
         "type": "text",
@@ -1076,7 +1076,7 @@
     "resource_schema_support": ["leads"],
     "settings_required_for_authorization": [],
     "settings": {
-      "instance_url": "https://eu26.salesforce.com"
+      "instance_url": "https://salesforce.com"
     },
     "created_at": 1608729585144,
     "updated_at": 1608729599931,
@@ -1098,7 +1098,7 @@
       {
         "id": "instance_url",
         "label": "Instance url",
-        "value": "https://eu26.salesforce.com",
+        "value": "https://salesforce.com",
         "placeholder": "",
         "mask": false,
         "type": "text",
@@ -1132,7 +1132,7 @@
     "resource_schema_support": ["opportunities", "companies", "contacts", "leads"],
     "settings_required_for_authorization": [],
     "settings": {
-      "instance_url": "https://eu26.salesforce.com"
+      "instance_url": "https://salesforce.com"
     },
     "created_at": 1608729585144,
     "updated_at": 1614597951927,
