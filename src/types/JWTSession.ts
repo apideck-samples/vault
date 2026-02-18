@@ -13,6 +13,10 @@ export interface JWTSession {
   theme: Theme
   settings?: SessionSettings
   jwt?: string
+  data_scopes?: {
+    enabled?: boolean
+    resources?: Record<string, Record<string, { read: boolean; write: boolean }>>
+  }
 }
 
 export interface SessionSettings {

@@ -10,6 +10,35 @@ export type ConnectionState = 'available' | 'added' | 'authorized' | 'callable' 
 export type IntegrationState = 'configured' | 'needs_configuration' | 'disabled'
 export type OauthGrantType = 'client_credentials' | 'authorization_code'
 
+// Consent-related types
+export type ConsentState =
+  | 'implicit' // Grandfathered access for existing connections
+  | 'pending' // New connection awaiting consent decision
+  | 'granted' // User explicitly approved scopes
+  | 'denied' // User explicitly rejected scopes
+  | 'revoked' // User revoked previously granted consent
+  | 'requires_reconsent' // Scope expansion detected, re-auth needed
+
+export interface DataScopesField {
+  read: boolean
+  write: boolean
+}
+
+export type DataScopesFields = Record<string, Record<string, DataScopesField>>
+
+export interface DataScopes {
+  enabled: boolean
+  updated_at?: string
+  resources: '*' | DataScopesFields // '*' = all fields allowed
+}
+
+export interface ConsentRecord {
+  id: string
+  created_at: string
+  granted: boolean
+  resources: '*' | DataScopesFields
+}
+
 export interface IConnection {
   id: string
   service_id: string
@@ -36,6 +65,10 @@ export interface IConnection {
   form_fields: FormField[]
   created_at: number
   custom_mappings: CustomMapping[]
+  consent_state?: ConsentState
+  consents?: ConsentRecord[]
+  latest_consent?: ConsentRecord
+  application_data_scopes?: DataScopes
 }
 
 export interface UpdateConnectionInput {

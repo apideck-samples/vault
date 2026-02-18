@@ -2,6 +2,7 @@ import { ConnectionForm, ConnectionPlaceholder, ErrorBlock } from 'components'
 
 import { useToast } from '@apideck/components'
 import camelcaseKeys from 'camelcase-keys-deep'
+import { ConsentAlert } from 'components/Consent/ConsentAlert'
 import CustomMappings from 'components/FieldMapping/CustomMappings'
 import { decode } from 'jsonwebtoken'
 import client from 'lib/axios'
@@ -11,6 +12,7 @@ import { useEffect } from 'react'
 import useSWR from 'swr'
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
+import { hasApplicableScopes, requiresConsent } from 'utils/consent'
 import { useSession } from 'utils/useSession'
 
 interface IProps {
@@ -26,7 +28,8 @@ interface IProps {
 const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
   const { session, setSession } = useSession()
   const { addToast } = useToast()
-  const { query } = useRouter()
+  const router = useRouter()
+  const { query } = router
 
   useEffect(() => {
     if (jwt?.length && token) {
@@ -54,6 +57,13 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
   )
 
   const connection: IConnection = data?.data?.data
+
+  // Redirect to consent page if consent is required
+  useEffect(() => {
+    if (connection && requiresConsent(connection)) {
+      router.push(`/integrations/${unifiedApi}/${provider}/consent`)
+    }
+  }, [connection, unifiedApi, provider, router])
 
   useEffect(() => {
     if (query?.redirectToAppUrl && connection?.state === 'callable') {
@@ -85,6 +95,7 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
 
   return (
     <div>
+      {connection && hasApplicableScopes(connection) && <ConsentAlert connection={connection} />}
       <ConnectionForm connection={connection} token={session || token} jwt={session?.jwt || jwt} />
       {connection.state === 'callable' && connection.custom_mappings?.length > 0 && (
         <div className="mt-10 border rounded-md overflow-hidden">
