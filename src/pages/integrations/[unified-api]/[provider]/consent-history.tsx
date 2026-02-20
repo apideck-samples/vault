@@ -231,10 +231,7 @@ const ConsentHistoryPage = ({ jwt, token, unifiedApi, provider }: ConsentHistory
         <div className="px-5 py-4">
           <h2 className="font-medium">Revoke Access?</h2>
         </div>
-        <div
-          className="px-5 py-8 text-gray-600 border-t border-b"
-          style={{ fontSize: '0.9735rem' }}
-        >
+        <div className="px-5 py-8 text-sm text-gray-600 border-t border-b">
           Are you sure you want to revoke access? This will disable the integration and you will
           need to grant consent again to use it.
         </div>

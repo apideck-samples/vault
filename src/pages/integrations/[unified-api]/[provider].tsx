@@ -59,9 +59,10 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
   const connection: IConnection = data?.data?.data
 
   // Redirect to consent page if consent is required
+  // Use replace() so back button doesn't loop back to this page
   useEffect(() => {
     if (connection && requiresConsent(connection)) {
-      router.push(`/integrations/${unifiedApi}/${provider}/consent`)
+      router.replace(`/integrations/${unifiedApi}/${provider}/consent`)
     }
   }, [connection, unifiedApi, provider, router])
 

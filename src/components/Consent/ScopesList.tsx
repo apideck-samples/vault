@@ -11,6 +11,8 @@ interface ScopesListProps {
 export const ScopesList: FC<ScopesListProps> = ({ scopes, highlightedScopes = {} }) => {
   const [expandedResources, setExpandedResources] = useState<Set<string>>(new Set())
 
+  if (!scopes || typeof scopes !== 'object') return null
+
   const toggleResource = (resource: string) => {
     const newExpanded = new Set(expandedResources)
     if (newExpanded.has(resource)) {
@@ -38,6 +40,8 @@ export const ScopesList: FC<ScopesListProps> = ({ scopes, highlightedScopes = {}
               onClick={() => toggleResource(resource)}
               className="w-full px-4 py-3 bg-white hover:bg-gray-50 text-left flex items-center justify-between transition-colors"
               type="button"
+              aria-expanded={isExpanded}
+              aria-controls={`resource-${resource}-fields`}
             >
               <span className="font-medium text-gray-800">{formatResourceName(resource)}</span>
               <div className="flex items-center">
@@ -63,7 +67,10 @@ export const ScopesList: FC<ScopesListProps> = ({ scopes, highlightedScopes = {}
             </button>
 
             {isExpanded && (
-              <div className="px-4 py-2 bg-white divide-y overflow-y-auto max-h-80 border-t">
+              <div
+                id={`resource-${resource}-fields`}
+                className="px-4 py-2 bg-white divide-y overflow-y-auto max-h-80 border-t"
+              >
                 {Object.keys(fields).map((field) => {
                   const scope = fields[field]
                   const highlighted = isHighlighted(resource, field)
