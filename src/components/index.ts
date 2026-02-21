@@ -6,6 +6,7 @@ export {
 } from './ConfigurableResource'
 export { ConnectionForm, ConnectionPlaceholder, OAuthButtons, OAuthErrorAlert } from './Connection'
 export { ConnectionCard, ConnectionsList, ConnectionBadge, ListPlaceholder } from './Connections'
+export { ScopesList, ConsentAlert } from './Consent'
 export { SearchSelect, FilteredSelect } from './Inputs'
 export { AddModal, ConfirmModal, SessionExpiredModal } from './Modals'
 export { Alert, ErrorBlock, Layout, Portal, Transition } from './shared'

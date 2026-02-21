@@ -28,6 +28,7 @@ import HelpIcon from 'mdi-react/HelpCircleOutlineIcon'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FaExclamationTriangle } from 'react-icons/fa'
+import { hasApplicableScopes } from 'utils/consent'
 import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 import { mutate } from 'swr'
@@ -582,6 +583,34 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
             )
           }}
         </Formik>
+      )}
+
+      {hasApplicableScopes(connection) && (
+        <div className="mt-10 border rounded-md overflow-hidden">
+          <div className="px-5 py-4">
+            <h2 className="font-medium">Data Access Permissions</h2>
+          </div>
+          <div className="px-5 py-4 bg-gray-50 border-t">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-700 mb-1">
+                  {connection.consent_state === 'granted'
+                    ? 'You have granted data access permissions for this integration.'
+                    : 'Data access permissions are configured for this integration.'}
+                </p>
+                {connection.latest_consent?.created_at && (
+                  <p className="text-xs text-gray-500">
+                    Last updated:{' '}
+                    {new Date(connection.latest_consent.created_at).toLocaleDateString()}
+                  </p>
+                )}
+              </div>
+              <Link href={`/integrations/${unifiedApi}/${serviceId}/consent-history`}>
+                <Button variant="outline" text="View History" />
+              </Link>
+            </div>
+          </div>
+        </div>
       )}
 
       <ConfirmModal

@@ -9,9 +9,32 @@ interface IProps {
 }
 
 export const ConnectionBadge: FC<IProps> = ({
-  connection: { enabled, state },
+  connection: { enabled, state, consent_state },
   showConfig = true
 }) => {
+  // Check for consent states first
+  if (consent_state === 'pending' || consent_state === 'requires_reconsent') {
+    return (
+      <div className="flex items-center px-2 py-1 text-xs font-medium leading-none rounded-full bg-warning-lighter text-warning">
+        <span className="mr-1.5">
+          <FaExclamationTriangle />
+        </span>
+        <span className="inline-block">Consent required</span>
+      </div>
+    )
+  }
+
+  if (consent_state === 'denied' || consent_state === 'revoked') {
+    return (
+      <div className="flex items-center px-2 py-1 text-xs font-medium leading-none rounded-full bg-red-100 text-red-600">
+        <span className="mr-1.5">
+          <FaExclamationTriangle />
+        </span>
+        <span className="inline-block">Consent denied</span>
+      </div>
+    )
+  }
+
   if (!enabled) {
     return (
       <div className="flex items-center px-2 py-1 text-xs font-medium leading-none text-gray-500 bg-gray-100 rounded-full">
