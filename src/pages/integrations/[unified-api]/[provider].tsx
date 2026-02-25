@@ -9,10 +9,11 @@ import client from 'lib/axios'
 import HelpCircleOutlineIcon from 'mdi-react/HelpCircleOutlineIcon'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
 import { hasApplicableScopes, requiresConsent } from 'utils/consent'
+import { retrieveAndClearNonce } from 'utils/oauthNonce'
 import { useSession } from 'utils/useSession'
 
 interface IProps {
@@ -36,6 +37,62 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
       setSession({ ...token, jwt })
     }
   }, [jwt, setSession, token])
+
+  // Handle OAuth CSRF confirmation flow: parse URL fragments after redirect
+  useEffect(() => {
+    const hash = window.location.hash
+    if (!hash) return
+
+    const params = new URLSearchParams(hash.slice(1))
+    const nonce = params.get('nonce')
+    const confirmToken = params.get('confirm_token')
+    const serviceId = params.get('service_id')
+
+    if (!nonce || !confirmToken || !serviceId) return
+
+    const storedNonce = retrieveAndClearNonce(serviceId)
+
+    if (storedNonce !== nonce) {
+      addToast({
+        title: 'Authorization could not be verified. Please try again.',
+        type: 'error'
+      })
+      history.replaceState(null, '', window.location.href.split('#')[0])
+      return
+    }
+
+    const activeJwt = jwt || session?.jwt
+    const activeToken = token || session
+
+    if (!activeJwt || !activeToken) return
+
+    const confirmHeaders = {
+      Authorization: `Bearer ${activeJwt}`,
+      'X-APIDECK-APP-ID': `${activeToken.applicationId}`,
+      'X-APIDECK-CONSUMER-ID': `${activeToken.consumerId}`
+    }
+
+    client
+      .post(
+        `/vault/connections/${unifiedApi}/${serviceId}/confirm`,
+        { confirm_token: confirmToken },
+        { headers: confirmHeaders }
+      )
+      .then(() => {
+        mutate(`/vault/connections/${unifiedApi}/${provider}`)
+        mutate('/vault/connections')
+      })
+      .catch(() => {
+        addToast({
+          title: 'Authorization confirmation failed. Please try again.',
+          type: 'error'
+        })
+      })
+      .finally(() => {
+        history.replaceState(null, '', window.location.href.split('#')[0])
+      })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const fetcher = (url: string) => {
     return client.get(url, {

@@ -33,6 +33,8 @@ import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 import { mutate } from 'swr'
 import { isActionAllowed } from 'utils/isActionAllowed'
+import { generateNonce, storeNonce } from 'utils/oauthNonce'
+import { authorizeConnection as postAuthorize } from 'utils/authorizeConnection'
 
 interface IProps {
   connection: IConnection
@@ -186,7 +188,6 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
     unified_api: unifiedApi,
     auth_type: authType,
     revoke_url: revokeUrl,
-    authorize_url: authorizeUrl,
     form_fields: formFields,
     service_id: serviceId,
     has_guide: hasGuide
@@ -205,14 +206,8 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
     redirectUrl = parsedRedirect.href
   }
 
-  let authorizeUrlWithRedirect = ''
   let revokeUrlWithRedirect = ''
 
-  if (typeof authorizeUrl === 'string') {
-    const parsedAuthorizeUrl = new URL(authorizeUrl as string)
-    parsedAuthorizeUrl.searchParams.append('redirect_uri', redirectUrl)
-    authorizeUrlWithRedirect = parsedAuthorizeUrl.href
-  }
   if (isAuthorized && typeof revokeUrl === 'string') {
     const parsedRevokeUrl = new URL(revokeUrl)
     parsedRevokeUrl.searchParams.append('redirect_uri', redirectUrl)
@@ -323,7 +318,24 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
 
   const authorizeConnection = async () => {
     if (connection.oauth_grant_type === 'authorization_code') {
-      window.location.href = authorizeUrlWithRedirect
+      try {
+        setAuthorizeLoading(true)
+        const nonce = generateNonce()
+        storeNonce(serviceId, nonce)
+        const { authorize_url } = await postAuthorize(unifiedApi, serviceId, nonce, headers)
+        const parsedUrl = new URL(authorize_url)
+        parsedUrl.searchParams.append('redirect_uri', redirectUrl)
+        window.location.href = parsedUrl.href
+      } catch (error) {
+        setAuthorizeLoading(false)
+        addToast({
+          title: 'Something went wrong',
+          description:
+            'The integration could not be authorized. Please make sure your settings are correct and try again.',
+          type: 'error',
+          autoClose: true
+        })
+      }
       return
     }
 
