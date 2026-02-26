@@ -327,6 +327,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
         parsedUrl.searchParams.append('redirect_uri', redirectUrl)
         window.location.href = parsedUrl.href
       } catch (error) {
+        console.log(error)
         setAuthorizeLoading(false)
         addToast({
           title: 'Something went wrong',
