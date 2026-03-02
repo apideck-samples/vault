@@ -4,16 +4,27 @@ import { useEffect, useState } from 'react'
 import { Button } from '@apideck/components'
 import { OAuthErrorAlert } from 'components'
 
-const CallbackPage = ({ hasError, query }: { hasError: boolean; query: any }) => {
+const CallbackPage = ({
+  hasError,
+  confirmToken,
+  query
+}: {
+  hasError: boolean
+  confirmToken: string | null
+  query: any
+}) => {
   const [oauthError, setOAuthError] = useState<OAuthError | null>(null)
 
   useEffect(() => {
     if (hasError) {
       setOAuthError(createOAuthErrorFromQuery(query))
     } else {
+      if (confirmToken && window.opener) {
+        window.opener.postMessage({ type: 'oauth-confirm', confirmToken }, '*')
+      }
       window.close()
     }
-  }, [hasError, query])
+  }, [hasError, confirmToken, query])
 
   return (
     <div className="flex flex-col justify-between">
@@ -31,7 +42,9 @@ const CallbackPage = ({ hasError, query }: { hasError: boolean; query: any }) =>
 }
 
 export const getServerSideProps = async ({ query }: any): Promise<any> => {
-  return { props: { hasError: query && Object.keys(query).length > 0, query } }
+  const { confirm_token: confirmToken, ...rest } = query || {}
+  const hasError = Boolean(rest.error_type || rest.error || rest.error_description)
+  return { props: { hasError, confirmToken: confirmToken || null, query: rest } }
 }
 
 export default CallbackPage
