@@ -12,6 +12,16 @@ import { ConnectionForm } from 'components'
 import client from 'lib/axios'
 import { IConnection } from 'types/Connection'
 import INTEGRATIONS from '../../../fixtures/integrations.json'
+import { useRouter } from 'next/router'
+
+const mockAddToast = jest.fn()
+jest.mock('@apideck/components', () => {
+  const actual = jest.requireActual('@apideck/components')
+  return {
+    ...actual,
+    useToast: () => ({ addToast: mockAddToast })
+  }
+})
 
 const router = {
   route: '/',
@@ -166,6 +176,163 @@ describe('Connection Form', () => {
       fireEvent.click(deleteButton)
       waitForElementToBeRemoved(deleteButton)
       expect(deleteMock).toHaveBeenCalled()
+    })
+  })
+
+  describe('OAuth Confirm Flow', () => {
+    const connection = INTEGRATIONS.data.find((connector: any) => {
+      return connector.id === 'lead+microsoft-dynamics'
+    }) as IConnection
+
+    const replaceMock = jest.fn()
+
+    afterEach(() => {
+      jest.restoreAllMocks()
+      replaceMock.mockReset()
+      mockAddToast.mockReset()
+    })
+
+    it('calls POST /vault/oauth/confirm when confirmToken is present', async () => {
+      const postMock = jest.spyOn(client, 'post').mockResolvedValue({ data: {} })
+      ;(useRouter as jest.Mock).mockReturnValue({
+        route: '/',
+        pathname: '',
+        query: {},
+        asPath: '',
+        replace: replaceMock
+      })
+
+      render(
+        <ConnectionForm
+          connection={connection}
+          jwt={jwt}
+          token={token}
+          confirmToken="test-confirm-token"
+        />
+      )
+
+      await waitFor(() => {
+        expect(postMock).toHaveBeenCalledWith(
+          '/vault/oauth/confirm',
+          { confirm_token: 'test-confirm-token' },
+          {
+            headers: {
+              Authorization: `Bearer ${jwt}`,
+              'X-APIDECK-APP-ID': token.applicationId,
+              'X-APIDECK-CONSUMER-ID': token.consumerId
+            }
+          }
+        )
+      })
+    })
+
+    it('cleans URL after successful confirm', async () => {
+      jest.spyOn(client, 'post').mockResolvedValue({ data: {} })
+      ;(useRouter as jest.Mock).mockReturnValue({
+        route: '/',
+        pathname: '',
+        query: {},
+        asPath: '',
+        replace: replaceMock
+      })
+
+      render(
+        <ConnectionForm
+          connection={connection}
+          jwt={jwt}
+          token={token}
+          confirmToken="test-confirm-token"
+        />
+      )
+
+      await waitFor(() => {
+        expect(replaceMock).toHaveBeenCalledWith(
+          `/integrations/${connection.unified_api}/${connection.service_id}`,
+          undefined,
+          { shallow: true }
+        )
+      })
+    })
+
+    it('shows error toast when confirm fails with 403', async () => {
+      jest.spyOn(client, 'post').mockRejectedValue({
+        response: { status: 403 }
+      })
+      ;(useRouter as jest.Mock).mockReturnValue({
+        route: '/',
+        pathname: '',
+        query: {},
+        asPath: '',
+        replace: replaceMock
+      })
+
+      render(
+        <ConnectionForm
+          connection={connection}
+          jwt={jwt}
+          token={token}
+          confirmToken="test-confirm-token"
+        />
+      )
+
+      await waitFor(() => {
+        expect(mockAddToast).toHaveBeenCalledWith(
+          expect.objectContaining({
+            title: 'OAuth authorization could not be confirmed',
+            type: 'error'
+          })
+        )
+      })
+    })
+
+    it('shows expired toast when confirm fails with 404', async () => {
+      jest.spyOn(client, 'post').mockRejectedValue({
+        response: { status: 404 }
+      })
+      ;(useRouter as jest.Mock).mockReturnValue({
+        route: '/',
+        pathname: '',
+        query: {},
+        asPath: '',
+        replace: replaceMock
+      })
+
+      render(
+        <ConnectionForm
+          connection={connection}
+          jwt={jwt}
+          token={token}
+          confirmToken="test-confirm-token"
+        />
+      )
+
+      await waitFor(() => {
+        expect(mockAddToast).toHaveBeenCalledWith(
+          expect.objectContaining({
+            title: 'OAuth confirmation expired',
+            type: 'error'
+          })
+        )
+      })
+    })
+
+    it('does not call confirm when confirmToken is absent', async () => {
+      const postMock = jest.spyOn(client, 'post').mockResolvedValue({ data: {} })
+      ;(useRouter as jest.Mock).mockReturnValue({
+        ...router,
+        replace: replaceMock
+      })
+
+      render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
+
+      // Wait a tick to ensure useEffect had a chance to run
+      await waitFor(() => {
+        expect(postMock).not.toHaveBeenCalledWith(
+          '/vault/oauth/confirm',
+          expect.anything(),
+          expect.anything()
+        )
+      })
     })
   })
 })

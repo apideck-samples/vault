@@ -38,6 +38,7 @@ interface IProps {
   connection: IConnection
   jwt: string
   token: JWTSession
+  confirmToken?: string
 }
 
 const ConnectionFormFooter = ({
@@ -158,7 +159,7 @@ const ConnectionFormFooter = ({
   return null
 }
 
-const ConnectionForm = ({ connection, token, jwt }: IProps) => {
+const ConnectionForm = ({ connection, token, jwt, confirmToken }: IProps) => {
   const [saved, setSaved] = useState(false)
   const [formError, setFormError] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
@@ -179,6 +180,51 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
   useEffect(() => {
     setOAuthError(createOAuthErrorFromQuery(query))
   }, [query])
+
+  useEffect(() => {
+    if (!confirmToken) return
+
+    const confirmOAuth = async () => {
+      try {
+        await client.post('/vault/oauth/confirm', { confirm_token: confirmToken }, { headers })
+        mutate(`/vault/connections/${connection.unified_api}/${connection.service_id}`)
+        mutate('/vault/connections')
+        router.replace(
+          `/integrations/${connection.unified_api}/${connection.service_id}`,
+          undefined,
+          { shallow: true }
+        )
+      } catch (error) {
+        if (error?.response?.status === 401) {
+          setSessionExpired(true)
+        } else if (error?.response?.status === 403) {
+          addToast({
+            title: 'OAuth authorization could not be confirmed',
+            description: 'Please try again.',
+            type: 'error',
+            autoClose: true
+          })
+        } else if (error?.response?.status === 404) {
+          addToast({
+            title: 'OAuth confirmation expired',
+            description: 'Please authorize again.',
+            type: 'error',
+            autoClose: true
+          })
+        } else {
+          addToast({
+            title: 'OAuth confirmation failed',
+            description: 'Could not confirm authorization. Please try again.',
+            type: 'error',
+            autoClose: true
+          })
+        }
+      }
+    }
+
+    confirmOAuth()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [confirmToken])
 
   const {
     name,

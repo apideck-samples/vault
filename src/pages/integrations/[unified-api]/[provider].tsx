@@ -97,7 +97,12 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
   return (
     <div>
       {connection && hasApplicableScopes(connection) && <ConsentAlert connection={connection} />}
-      <ConnectionForm connection={connection} token={session || token} jwt={session?.jwt || jwt} />
+      <ConnectionForm
+        connection={connection}
+        token={session || token}
+        jwt={session?.jwt || jwt}
+        confirmToken={query.confirm_token as string | undefined}
+      />
       {connection.state === 'callable' && connection.custom_mappings?.length > 0 && (
         <div className="mt-10 border rounded-md overflow-hidden">
           <div className="px-5 py-4">
