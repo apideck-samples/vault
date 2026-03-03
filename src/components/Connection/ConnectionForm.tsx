@@ -369,6 +369,7 @@ const ConnectionForm = ({ connection, token, jwt, confirmToken }: IProps) => {
 
   const authorizeConnection = async () => {
     if (connection.oauth_grant_type === 'authorization_code') {
+      console.log(authorizeUrlWithRedirect)
       window.location.href = authorizeUrlWithRedirect
       return
     }

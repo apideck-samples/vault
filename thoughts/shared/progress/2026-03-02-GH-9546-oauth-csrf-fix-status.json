@@ -1,0 +1,31 @@
+{
+  "plan": "thoughts/shared/plans/2026-03-02-GH-9546-oauth-csrf-fix.md",
+  "issue": "GH-9546",
+  "current_phase": 3,
+  "total_phases": 3,
+  "phases": {
+    "1": {
+      "name": "Update Callback Page — postMessage confirm_token",
+      "status": "complete",
+      "files": [
+        "__tests__/unit/pages/oauth/callback.test.tsx",
+        "src/pages/oauth/callback.tsx"
+      ]
+    },
+    "2": {
+      "name": "Update Connection Page — Redirect Flow Confirm",
+      "status": "complete",
+      "files": [
+        "__tests__/unit/components/Connection/ConnectionForm.test.tsx",
+        "src/pages/integrations/[unified-api]/[provider].tsx",
+        "src/components/Connection/ConnectionForm.tsx"
+      ]
+    },
+    "3": {
+      "name": "Verify and Refactor",
+      "status": "complete",
+      "files": []
+    }
+  },
+  "status": "complete"
+}
