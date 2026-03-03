@@ -13,6 +13,7 @@ import useSWR from 'swr'
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
 import { hasApplicableScopes, requiresConsent } from 'utils/consent'
+import { verifyAndClearNonce, callConfirmEndpoint } from 'utils/oauthCsrf'
 import { useSession } from 'utils/useSession'
 
 interface IProps {
@@ -47,7 +48,7 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
     })
   }
 
-  const { data, error } = useSWR(
+  const { data, error, mutate } = useSWR(
     session?.jwt || jwt ? `/vault/connections/${unifiedApi}/${provider}` : null,
     fetcher,
     {
@@ -80,6 +81,50 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connection?.state, query?.redirectToAppUrl])
+
+  // OAuth CSRF confirm flow: verify nonce and confirm token after redirect return
+  useEffect(() => {
+    const { nonce, confirm_token, service_id } = query
+
+    if (!confirm_token || !nonce || !service_id) return
+
+    const confirmOAuth = async () => {
+      const nonceValid = verifyAndClearNonce(service_id as string, nonce as string)
+      if (!nonceValid) {
+        addToast({
+          title: 'Authorization error',
+          description: 'OAuth state verification failed. Please try authorizing again.',
+          type: 'error',
+          autoClose: true
+        })
+        return
+      }
+
+      try {
+        await callConfirmEndpoint({
+          serviceId: service_id as string,
+          unifiedApi: query['unified-api'] as string,
+          confirmToken: confirm_token as string,
+          jwt: (jwt || session?.jwt) as string,
+          applicationId: (token?.applicationId || session?.applicationId) as string,
+          consumerId: (token?.consumerId || session?.consumerId) as string
+        })
+        const cleanPath = `/integrations/${query['unified-api']}/${query.provider}`
+        router.replace(cleanPath, undefined, { shallow: true })
+        mutate()
+      } catch (error) {
+        addToast({
+          title: 'Authorization error',
+          description: 'Could not confirm the authorization. Please try again.',
+          type: 'error',
+          autoClose: true
+        })
+      }
+    }
+
+    confirmOAuth()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   if (!data && !error && !session && !jwt) {
     return <ErrorBlock error={{ status: 401 }} />
