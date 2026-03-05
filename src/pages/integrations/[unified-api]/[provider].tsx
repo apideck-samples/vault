@@ -83,13 +83,17 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
   }, [connection?.state, query?.redirectToAppUrl])
 
   // OAuth CSRF confirm flow: verify nonce and confirm token after redirect return
+  // Confirm params now arrive in URL fragment (not query) after unify Fix 3
   useEffect(() => {
-    const { nonce, confirm_token, service_id } = query
+    const hashParams = new URLSearchParams(window.location.hash.slice(1))
+    const nonce = hashParams.get('nonce')
+    const confirm_token = hashParams.get('confirm_token')
+    const service_id = hashParams.get('service_id')
 
     if (!confirm_token || !nonce || !service_id) return
 
     const confirmOAuth = async () => {
-      const nonceValid = verifyAndClearNonce(service_id as string, nonce as string)
+      const nonceValid = verifyAndClearNonce(service_id, nonce)
       if (!nonceValid) {
         addToast({
           title: 'Authorization error',
@@ -102,14 +106,14 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
 
       try {
         await callConfirmEndpoint({
-          serviceId: service_id as string,
-          unifiedApi: query['unified-api'] as string,
-          confirmToken: confirm_token as string,
+          serviceId: service_id,
+          unifiedApi,
+          confirmToken: confirm_token,
           jwt: (jwt || session?.jwt) as string,
           applicationId: (token?.applicationId || session?.applicationId) as string,
           consumerId: (token?.consumerId || session?.consumerId) as string
         })
-        const cleanPath = `/integrations/${query['unified-api']}/${query.provider}`
+        const cleanPath = router.asPath.split('#')[0]
         router.replace(cleanPath, undefined, { shallow: true })
         mutate()
       } catch (error) {
