@@ -17,17 +17,11 @@ describe('OAuth Callback Page', () => {
       writable: true,
       configurable: true
     })
+    // Reset hash fragment
+    window.location.hash = ''
   })
 
   describe('getServerSideProps', () => {
-    it('sets hasError to false when only CSRF params are present', async () => {
-      const result = await getServerSideProps({
-        query: { nonce: 'abc', confirm_token: 'tok', service_id: 'test-service' }
-      })
-
-      expect(result.props.hasError).toBe(false)
-    })
-
     it('sets hasError to true when error params are present', async () => {
       const result = await getServerSideProps({
         query: { error_type: 'auth_error', error_message: 'Something failed' }
@@ -41,20 +35,12 @@ describe('OAuth Callback Page', () => {
 
       expect(result.props.hasError).toBe(false)
     })
-
-    it('passes nonce, confirm_token, and service_id as props', async () => {
-      const result = await getServerSideProps({
-        query: { nonce: 'abc', confirm_token: 'tok', service_id: 'test-service' }
-      })
-
-      expect(result.props.query.nonce).toBe('abc')
-      expect(result.props.query.confirm_token).toBe('tok')
-      expect(result.props.query.service_id).toBe('test-service')
-    })
   })
 
-  describe('when nonce and confirm_token are present with window.opener', () => {
+  describe('when nonce and confirm_token are present in hash with window.opener', () => {
     beforeEach(() => {
+      window.location.hash =
+        '#nonce=test-nonce&confirm_token=test-token&service_id=test-service'
       Object.defineProperty(window, 'opener', {
         value: { postMessage: postMessageSpy },
         writable: true,
@@ -63,16 +49,7 @@ describe('OAuth Callback Page', () => {
     })
 
     it('posts oauth_complete message to opener', () => {
-      render(
-        <CallbackPage
-          hasError={false}
-          query={{
-            nonce: 'test-nonce',
-            confirm_token: 'test-token',
-            service_id: 'test-service'
-          }}
-        />
-      )
+      render(<CallbackPage hasError={false} query={{}} />)
 
       expect(postMessageSpy).toHaveBeenCalledWith(
         {
@@ -87,16 +64,7 @@ describe('OAuth Callback Page', () => {
     })
 
     it('closes the window after postMessage', () => {
-      render(
-        <CallbackPage
-          hasError={false}
-          query={{
-            nonce: 'test-nonce',
-            confirm_token: 'test-token',
-            service_id: 'test-service'
-          }}
-        />
-      )
+      render(<CallbackPage hasError={false} query={{}} />)
 
       expect(closeSpy).toHaveBeenCalled()
     })
@@ -150,7 +118,7 @@ describe('OAuth Callback Page', () => {
     })
   })
 
-  describe('when no relevant params (backwards compat)', () => {
+  describe('when hash is empty and no error params', () => {
     it('closes the window without postMessage', () => {
       render(<CallbackPage hasError={false} query={{}} />)
 
@@ -172,7 +140,9 @@ describe('OAuth Callback Page', () => {
       expect(closeSpy).toHaveBeenCalled()
     })
 
-    it('does not throw when CSRF params present but no opener', () => {
+    it('does not throw when CSRF params present in hash but no opener', () => {
+      window.location.hash =
+        '#nonce=test-nonce&confirm_token=test-token&service_id=test-service'
       Object.defineProperty(window, 'opener', {
         value: null,
         writable: true,
@@ -180,16 +150,7 @@ describe('OAuth Callback Page', () => {
       })
 
       expect(() => {
-        render(
-          <CallbackPage
-            hasError={false}
-            query={{
-              nonce: 'test-nonce',
-              confirm_token: 'test-token',
-              service_id: 'test-service'
-            }}
-          />
-        )
+        render(<CallbackPage hasError={false} query={{}} />)
       }).not.toThrow()
     })
   })
