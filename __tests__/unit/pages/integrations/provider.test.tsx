@@ -19,7 +19,8 @@ jest.mock('next/router', () => ({
     query: mockQuery,
     replace: mockReplace,
     pathname: '/integrations/[unified-api]/[provider]',
-    push: jest.fn()
+    push: jest.fn(),
+    asPath: '/integrations/crm/salesforce'
   }))
 }))
 
@@ -91,12 +92,17 @@ describe('Connection Detail Page - Confirm Flow', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     mockQuery = {}
+    window.location.hash = ''
     verifyNonceSpy.mockReturnValue(true)
     callConfirmSpy.mockResolvedValue({
       status_code: 200,
       status: 'OK',
       data: { confirmed: true }
     })
+  })
+
+  afterEach(() => {
+    window.location.hash = ''
   })
 
   const defaultProps = {
@@ -111,10 +117,9 @@ describe('Connection Detail Page - Confirm Flow', () => {
 
   describe('when confirm params are present and nonce matches', () => {
     beforeEach(() => {
+      window.location.hash =
+        '#nonce=test-nonce&confirm_token=test-confirm-token&service_id=salesforce'
       mockQuery = {
-        nonce: 'test-nonce',
-        confirm_token: 'test-confirm-token',
-        service_id: 'salesforce',
         'unified-api': 'crm',
         provider: 'salesforce'
       }
@@ -165,10 +170,9 @@ describe('Connection Detail Page - Confirm Flow', () => {
 
   describe('when confirm params are present but nonce does not match', () => {
     beforeEach(() => {
+      window.location.hash =
+        '#nonce=wrong-nonce&confirm_token=test-confirm-token&service_id=salesforce'
       mockQuery = {
-        nonce: 'wrong-nonce',
-        confirm_token: 'test-confirm-token',
-        service_id: 'salesforce',
         'unified-api': 'crm',
         provider: 'salesforce'
       }
@@ -200,6 +204,7 @@ describe('Connection Detail Page - Confirm Flow', () => {
 
   describe('when no confirm params are present', () => {
     beforeEach(() => {
+      window.location.hash = ''
       mockQuery = {
         'unified-api': 'crm',
         provider: 'salesforce'
@@ -221,10 +226,9 @@ describe('Connection Detail Page - Confirm Flow', () => {
 
   describe('when confirm endpoint fails', () => {
     beforeEach(() => {
+      window.location.hash =
+        '#nonce=test-nonce&confirm_token=test-confirm-token&service_id=salesforce'
       mockQuery = {
-        nonce: 'test-nonce',
-        confirm_token: 'test-confirm-token',
-        service_id: 'salesforce',
         'unified-api': 'crm',
         provider: 'salesforce'
       }
