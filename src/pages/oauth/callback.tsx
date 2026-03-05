@@ -8,7 +8,11 @@ const CallbackPage = ({ hasError, query }: { hasError: boolean; query: any }) =>
   const [oauthError, setOAuthError] = useState<OAuthError | null>(null)
 
   useEffect(() => {
-    const { nonce, confirm_token, service_id, error_type, error_message } = query || {}
+    // Success params now arrive in URL fragment (not query) after unify Fix 3
+    const hashParams = new URLSearchParams(window.location.hash.slice(1))
+    const nonce = hashParams.get('nonce')
+    const confirm_token = hashParams.get('confirm_token')
+    const service_id = hashParams.get('service_id')
 
     if (nonce && confirm_token && service_id && window.opener) {
       window.opener.postMessage(
@@ -22,13 +26,14 @@ const CallbackPage = ({ hasError, query }: { hasError: boolean; query: any }) =>
         '*'
       )
       window.close()
-    } else if (error_type && window.opener) {
+    } else if (query?.error_type && window.opener) {
+      // Error params remain in query — not moved to fragment
       window.opener.postMessage(
         {
           type: 'oauth_error',
-          error: error_type,
-          errorDescription: error_message,
-          serviceId: service_id
+          error: query.error_type,
+          errorDescription: query.error_message,
+          serviceId: query.service_id
         },
         '*'
       )
