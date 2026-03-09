@@ -38,7 +38,7 @@ export async function callAuthorizeEndpoint(params: {
     }
   )
 
-  return data.authorize_url
+  return data.data.authorize_url
 }
 
 export async function callConfirmEndpoint(params: {

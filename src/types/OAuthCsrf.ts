@@ -1,5 +1,7 @@
 export interface IAuthorizeResponse {
-  authorize_url: string
+  status_code: number
+  status: string
+  data: { authorize_url: string }
 }
 
 export interface IConfirmResponse {

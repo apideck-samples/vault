@@ -99,7 +99,11 @@ describe('oauthCsrf', () => {
 
     it('calls the correct endpoint with auth headers and body', async () => {
       ;(client.post as jest.Mock).mockResolvedValue({
-        data: { authorize_url: 'https://oauth.provider.com/authorize?code=123' }
+        data: {
+          status_code: 200,
+          status: 'OK',
+          data: { authorize_url: 'https://oauth.provider.com/authorize?code=123' }
+        }
       })
 
       await callAuthorizeEndpoint(params)
@@ -122,7 +126,11 @@ describe('oauthCsrf', () => {
 
     it('returns the authorize_url from the response', async () => {
       ;(client.post as jest.Mock).mockResolvedValue({
-        data: { authorize_url: 'https://oauth.provider.com/authorize?code=123' }
+        data: {
+          status_code: 200,
+          status: 'OK',
+          data: { authorize_url: 'https://oauth.provider.com/authorize?code=123' }
+        }
       })
 
       const url = await callAuthorizeEndpoint(params)
