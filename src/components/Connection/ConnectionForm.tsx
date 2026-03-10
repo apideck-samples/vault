@@ -329,7 +329,6 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
           applicationId: token.applicationId,
           consumerId: token.consumerId
         })
-        console.log(authorizeUrl)
         window.location.href = authorizeUrl
       } catch (error) {
         setAuthorizeLoading(false)
