@@ -38,5 +38,3 @@ yarn-error.log*
 
 # Optional eslint cache
 .eslintcache
-.claude
-thoughts
