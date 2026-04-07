@@ -1,5 +1,5 @@
 import Router, { useRouter } from 'next/router'
-import { ReactNode, useContext, useEffect, useState, useMemo } from 'react'
+import { ReactNode, useContext, useEffect, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 import { Transition } from 'components'
@@ -364,7 +364,9 @@ const Layout: React.FC<IProps> = ({ children }) => {
                 )}
                 <a
                   className="inline-flex items-center mb-8"
-                  href="https://www.apideck.com/products/vault"
+                  href={`https://www.apideck.com?utm_source=hosted-vault&utm_medium=referral&utm_campaign=powered_by${
+                    session?.applicationId ? `&customer_ref=${session.applicationId}` : ''
+                  }`}
                 >
                   <span
                     className="text-sm text-gray-600"
