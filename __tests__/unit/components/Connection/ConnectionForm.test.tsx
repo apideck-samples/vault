@@ -12,6 +12,7 @@ import { ConnectionForm } from 'components'
 import client from 'lib/axios'
 import { IConnection } from 'types/Connection'
 import INTEGRATIONS from '../../../fixtures/integrations.json'
+import * as oauthCsrf from 'utils/oauthCsrf'
 
 const router = {
   route: '/',
@@ -166,6 +167,77 @@ describe('Connection Form', () => {
       fireEvent.click(deleteButton)
       waitForElementToBeRemoved(deleteButton)
       expect(deleteMock).toHaveBeenCalled()
+    })
+  })
+
+  describe('OAuth CSRF Authorize Flow', () => {
+    const generateNonceSpy = jest.spyOn(oauthCsrf, 'generateAndStoreNonce')
+    const callAuthorizeSpy = jest.spyOn(oauthCsrf, 'callAuthorizeEndpoint')
+
+    let connection: IConnection
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+      generateNonceSpy.mockReturnValue('test-nonce-123')
+      callAuthorizeSpy.mockResolvedValue('https://oauth.provider.com/authorize?state=abc')
+
+      const baseConnection = INTEGRATIONS.data.find((connector: any) => {
+        return connector.id === 'lead+microsoft-dynamics'
+      }) as IConnection
+
+      connection = {
+        ...baseConnection,
+        state: 'added',
+        oauth_grant_type: 'authorization_code',
+        authorize_url: 'https://oauth.provider.com/authorize',
+        form_fields: [
+          {
+            id: 'organisation_url',
+            label: 'Organisation Url',
+            value: 'example',
+            placeholder: '',
+            mask: false,
+            type: 'text',
+            required: true,
+            description: '',
+            disabled: false,
+            options: [],
+            custom_field: false,
+            hidden: false
+          }
+        ]
+      }
+    })
+
+    it('calls generateAndStoreNonce when authorize is clicked', async () => {
+      render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
+
+      const authorizeButton = screen.getByRole('button', { name: 'Authorize' })
+      fireEvent.click(authorizeButton)
+
+      await waitFor(() => {
+        expect(generateNonceSpy).toHaveBeenCalledWith('microsoft-dynamics')
+      })
+    })
+
+    it('calls callAuthorizeEndpoint with correct params', async () => {
+      render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
+
+      const authorizeButton = screen.getByRole('button', { name: 'Authorize' })
+      fireEvent.click(authorizeButton)
+
+      await waitFor(() => {
+        expect(callAuthorizeSpy).toHaveBeenCalledWith(
+          expect.objectContaining({
+            serviceId: 'microsoft-dynamics',
+            unifiedApi: 'lead',
+            nonce: 'test-nonce-123',
+            jwt,
+            applicationId: token.applicationId,
+            consumerId: token.consumerId
+          })
+        )
+      })
     })
   })
 })

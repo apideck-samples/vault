@@ -33,6 +33,7 @@ import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 import { mutate } from 'swr'
 import { isActionAllowed } from 'utils/isActionAllowed'
+import { generateAndStoreNonce, callAuthorizeEndpoint } from 'utils/oauthCsrf'
 
 interface IProps {
   connection: IConnection
@@ -186,7 +187,6 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
     unified_api: unifiedApi,
     auth_type: authType,
     revoke_url: revokeUrl,
-    authorize_url: authorizeUrl,
     form_fields: formFields,
     service_id: serviceId,
     has_guide: hasGuide
@@ -205,14 +205,8 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
     redirectUrl = parsedRedirect.href
   }
 
-  let authorizeUrlWithRedirect = ''
   let revokeUrlWithRedirect = ''
 
-  if (typeof authorizeUrl === 'string') {
-    const parsedAuthorizeUrl = new URL(authorizeUrl as string)
-    parsedAuthorizeUrl.searchParams.append('redirect_uri', redirectUrl)
-    authorizeUrlWithRedirect = parsedAuthorizeUrl.href
-  }
   if (isAuthorized && typeof revokeUrl === 'string') {
     const parsedRevokeUrl = new URL(revokeUrl)
     parsedRevokeUrl.searchParams.append('redirect_uri', redirectUrl)
@@ -323,7 +317,28 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
 
   const authorizeConnection = async () => {
     if (connection.oauth_grant_type === 'authorization_code') {
-      window.location.href = authorizeUrlWithRedirect
+      try {
+        setAuthorizeLoading(true)
+        const nonce = generateAndStoreNonce(serviceId)
+        const authorizeUrl = await callAuthorizeEndpoint({
+          serviceId,
+          unifiedApi,
+          nonce,
+          redirectUri: redirectUrl,
+          jwt,
+          applicationId: token.applicationId,
+          consumerId: token.consumerId
+        })
+        window.location.href = authorizeUrl
+      } catch (error) {
+        setAuthorizeLoading(false)
+        addToast({
+          title: `Something went wrong`,
+          description: `The authorization could not be started. Please try again.`,
+          type: 'error',
+          autoClose: true
+        })
+      }
       return
     }
 
