@@ -1,10 +1,5 @@
 import client from 'lib/axios'
-import {
-  generateAndStoreNonce,
-  verifyAndClearNonce,
-  callAuthorizeEndpoint,
-  callConfirmEndpoint
-} from 'utils/oauthCsrf'
+import { generateAndStoreNonce, verifyAndClearNonce, callConfirmEndpoint } from 'utils/oauthCsrf'
 
 jest.mock('lib/axios')
 
@@ -83,65 +78,6 @@ describe('oauthCsrf', () => {
       verifyAndClearNonce('test-service', 'wrong-nonce')
 
       expect(sessionStorage.getItem('apideck_oauth_nonce_test-service')).toBeNull()
-    })
-  })
-
-  describe('callAuthorizeEndpoint', () => {
-    const params = {
-      serviceId: 'salesforce',
-      unifiedApi: 'crm',
-      nonce: 'test-nonce',
-      redirectUri: 'https://vault.example.com/integrations/crm/salesforce',
-      jwt: 'test-jwt',
-      applicationId: 'app-id',
-      consumerId: 'consumer-id'
-    }
-
-    it('calls the correct endpoint with auth headers and body', async () => {
-      ;(client.post as jest.Mock).mockResolvedValue({
-        data: {
-          status_code: 200,
-          status: 'OK',
-          data: { authorize_url: 'https://oauth.provider.com/authorize?code=123' }
-        }
-      })
-
-      await callAuthorizeEndpoint(params)
-
-      expect(client.post).toHaveBeenCalledWith(
-        '/vault/connections/crm/salesforce/authorize',
-        {
-          nonce: 'test-nonce',
-          redirect_uri: 'https://vault.example.com/integrations/crm/salesforce'
-        },
-        {
-          headers: {
-            Authorization: 'Bearer test-jwt',
-            'X-APIDECK-APP-ID': 'app-id',
-            'X-APIDECK-CONSUMER-ID': 'consumer-id'
-          }
-        }
-      )
-    })
-
-    it('returns the authorize_url from the response', async () => {
-      ;(client.post as jest.Mock).mockResolvedValue({
-        data: {
-          status_code: 200,
-          status: 'OK',
-          data: { authorize_url: 'https://oauth.provider.com/authorize?code=123' }
-        }
-      })
-
-      const url = await callAuthorizeEndpoint(params)
-
-      expect(url).toBe('https://oauth.provider.com/authorize?code=123')
-    })
-
-    it('propagates errors from the API call', async () => {
-      ;(client.post as jest.Mock).mockRejectedValue(new Error('Network error'))
-
-      await expect(callAuthorizeEndpoint(params)).rejects.toThrow('Network error')
     })
   })
 

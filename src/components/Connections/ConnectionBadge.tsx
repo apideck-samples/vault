@@ -9,7 +9,7 @@ interface IProps {
 }
 
 export const ConnectionBadge: FC<IProps> = ({
-  connection: { enabled, state, consent_state },
+  connection: { enabled, state, consent_state, health },
   showConfig = true
 }) => {
   // Check for consent states first
@@ -64,6 +64,17 @@ export const ConnectionBadge: FC<IProps> = ({
           <FaExclamationTriangle />
         </span>
         <span className="inline-block">Invalid configuration</span>
+      </div>
+    )
+  }
+
+  if (health === 'pending_confirmation') {
+    return (
+      <div className="flex items-center px-2 py-1 text-xs font-medium leading-none rounded-full bg-warning-lighter text-warning">
+        <span className="mr-1.5">
+          <FaExclamationTriangle />
+        </span>
+        <span className="inline-block">Pending confirmation</span>
       </div>
     )
   }
