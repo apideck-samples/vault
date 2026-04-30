@@ -83,7 +83,6 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
   }, [connection?.state, query?.redirectToAppUrl])
 
   // OAuth CSRF confirm flow: verify nonce and confirm token after redirect return
-  // Confirm params now arrive in URL fragment (not query) after unify Fix 3
   useEffect(() => {
     const hashParams = new URLSearchParams(window.location.hash.slice(1))
     const nonce = hashParams.get('nonce')

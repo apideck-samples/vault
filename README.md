@@ -57,7 +57,6 @@ If you add your API key, Application ID, and consumer ID to the `.env.local` fil
 
 ##### Example using curl
 
-Production
 ```
 curl -X POST https://unify.apideck.com/vault/sessions
     -H "Content-Type: application/json"
@@ -65,16 +64,6 @@ curl -X POST https://unify.apideck.com/vault/sessions
     -H "X-APIDECK-CONSUMER-ID: <consumer-id>"
     -H "X-APIDECK-APP-ID: <application-id>"
     -d '{"consumer_metadata": { "account_name" : "Sample", "user_name": "vault@sample", "image": "https://unavatar.now.sh/jake" }}'
-```
-
-Staging
-```
-curl -X POST https://deploy-preview-staging--unify.stagingapideck.com/vault/sessions -H "Content-Type: application/json" -H "Authorization: Bearer f7a82583-e42a-47ec-8325-f9e5ef231303-KAwRX5cg3DgAhvz5BKs8-9200e88f-b82e-4980-99ef-79aabd71ee48" -H "X-APIDECK-CONSUMER-ID: test-consumer" -H "X-APIDECK-APP-ID: 2222" -d '{"consumer_metadata": { "account_name" : "Sample", "user_name": "vault@sample", "image": "https://unavatar.now.sh/jake" }}'
-```
-
-Local
-```
-curl -X POST https://localhost:3050/vault/sessions -H "Content-Type: application/json" -H "Authorization: Bearer f7a82583-e42a-47ec-8325-f9e5ef231303-KAwRX5cg3DgAhvz5BKs8-9200e88f-b82e-4980-99ef-79aabd71ee48" -H "X-APIDECK-CONSUMER-ID: test-consumer" -H "X-APIDECK-APP-ID: 2222" -d '{"consumer_metadata": { "account_name" : "Sample", "user_name": "vault@sample", "image": "https://unavatar.now.sh/jake" }}'
 ```
 
 ##### Example using Postman
