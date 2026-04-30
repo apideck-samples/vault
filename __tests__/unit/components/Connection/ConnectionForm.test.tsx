@@ -218,14 +218,18 @@ describe('Connection Form', () => {
       })
     })
 
-    it('generates nonce and redirects with nonce appended to authorize_url', async () => {
-      render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
+    it('does not generate nonce for client_credentials grant type', async () => {
+      const clientCredConnection = {
+        ...connection,
+        oauth_grant_type: 'client_credentials' as const
+      }
+      render(<ConnectionForm connection={clientCredConnection} jwt={jwt} token={token} />)
 
       const authorizeButton = screen.getByRole('button', { name: 'Authorize' })
       fireEvent.click(authorizeButton)
 
       await waitFor(() => {
-        expect(generateNonceSpy).toHaveBeenCalledWith('microsoft-dynamics')
+        expect(generateNonceSpy).not.toHaveBeenCalled()
       })
     })
   })

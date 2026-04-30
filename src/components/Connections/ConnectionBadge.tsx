@@ -46,6 +46,17 @@ export const ConnectionBadge: FC<IProps> = ({
     )
   }
 
+  if (health === 'pending_confirmation') {
+    return (
+      <div className="flex items-center px-2 py-1 text-xs font-medium leading-none rounded-full bg-warning-lighter text-warning">
+        <span className="mr-1.5">
+          <FaExclamationTriangle />
+        </span>
+        <span className="inline-block">Pending confirmation</span>
+      </div>
+    )
+  }
+
   if (state === 'callable') {
     return (
       <div className="flex items-center px-2 py-1 text-xs font-medium leading-none rounded-full text-primary-600 bg-primary-100">
@@ -64,17 +75,6 @@ export const ConnectionBadge: FC<IProps> = ({
           <FaExclamationTriangle />
         </span>
         <span className="inline-block">Invalid configuration</span>
-      </div>
-    )
-  }
-
-  if (health === 'pending_confirmation') {
-    return (
-      <div className="flex items-center px-2 py-1 text-xs font-medium leading-none rounded-full bg-warning-lighter text-warning">
-        <span className="mr-1.5">
-          <FaExclamationTriangle />
-        </span>
-        <span className="inline-block">Pending confirmation</span>
       </div>
     )
   }
