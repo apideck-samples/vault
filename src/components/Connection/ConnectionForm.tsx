@@ -33,6 +33,7 @@ import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 import { mutate } from 'swr'
 import { isActionAllowed } from 'utils/isActionAllowed'
+import { generateAndStoreNonce } from 'utils/oauthCsrf'
 
 interface IProps {
   connection: IConnection
@@ -323,7 +324,10 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
 
   const authorizeConnection = async () => {
     if (connection.oauth_grant_type === 'authorization_code') {
-      window.location.href = authorizeUrlWithRedirect
+      const nonce = generateAndStoreNonce(serviceId)
+      const url = new URL(authorizeUrlWithRedirect)
+      url.searchParams.append('nonce', nonce)
+      window.location.href = url.href
       return
     }
 
