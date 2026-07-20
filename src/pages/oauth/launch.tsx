@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { Button } from '@apideck/components'
-import { LaunchStartMessage } from 'types/OAuthGrantHandoff'
+import { LaunchReadyMessage, LaunchStartMessage } from 'types/OAuthGrantHandoff'
 import {
   OAUTH_LAUNCH_READY,
   OAUTH_LAUNCH_START,
@@ -42,7 +42,8 @@ const LaunchPage = () => {
 
     const serviceId = new URLSearchParams(window.location.search).get('service_id')
 
-    const postReady = () => window.opener.postMessage({ type: OAUTH_LAUNCH_READY }, '*')
+    const readyMessage: LaunchReadyMessage = { type: OAUTH_LAUNCH_READY }
+    const postReady = () => window.opener.postMessage(readyMessage, '*')
     postReady()
     const readyTimer = setInterval(postReady, READY_REPEAT_INTERVAL_MS)
 
