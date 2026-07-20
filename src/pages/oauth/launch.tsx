@@ -24,7 +24,7 @@ import {
  *
  * The grant never appears in any URL — it travels only over the live opener
  * handshake and then only through `sessionStorage`. Source identity is checked
- * (`event.source === window.opener`); there is no `event.origin` allowlist.
+ * (message source must be the opener); there is no origin allowlist.
  */
 const LaunchPage = () => {
   const [launchError, setLaunchError] = useState(false)
