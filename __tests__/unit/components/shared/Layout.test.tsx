@@ -63,6 +63,7 @@ describe('Layout', () => {
       renderLayout({ ...token, redirectUri: 'javascript:alert(document.domain)' })
 
       expect(screen.getByText('Page content')).toBeTruthy()
+      expect(hrefOf('Terms')).toBe(token.theme.termsUrl)
       expect(screen.queryByRole('link', { name: 'Return to application' })).toBeNull()
     })
   })
@@ -121,6 +122,25 @@ describe('Layout', () => {
       })
 
       expect(consumerCard().textContent).toContain('Acme')
+      expect(consumerCard().textContent).toContain('jane@acme.com')
+    })
+
+    it('shows the email when userName is only whitespace', () => {
+      renderLayout({
+        ...token,
+        consumerMetadata: { accountName: 'Acme', userName: '   ', email: 'jane@acme.com' }
+      })
+
+      expect(consumerCard().textContent).toContain('jane@acme.com')
+    })
+
+    it('ignores a non-string metadata value instead of crashing', () => {
+      renderLayout({
+        ...token,
+        consumerMetadata: { accountName: ({} as unknown) as string, email: 'jane@acme.com' }
+      })
+
+      expect(screen.getByText('Page content')).toBeTruthy()
       expect(consumerCard().textContent).toContain('jane@acme.com')
     })
 

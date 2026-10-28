@@ -66,6 +66,18 @@ describe('formatConsumerIdentity', () => {
     ).toBe('nick@apideck.com · Apideck Sandbox')
   })
 
+  it('treats an email that differs from userName only in case as the same value', () => {
+    expect(formatConsumerIdentity(session({ userName: 'Nick@x.com', email: 'nick@x.com' }))).toBe(
+      'Nick@x.com'
+    )
+    expect(
+      formatConsumerIdentity(
+        session({ userName: 'Jane Doe', email: 'Jane@Acme.com', accountName: 'jane@acme.com' })
+      )
+    ).toBe('Jane Doe (Jane@Acme.com)')
+    expect(formatConsumerIdentity(session({ userName: 'ACME', accountName: 'Acme' }))).toBe('ACME')
+  })
+
   it('does not repeat an account equal to the primary value', () => {
     expect(formatConsumerIdentity(session({ userName: 'Acme', accountName: 'Acme' }))).toBe('Acme')
     expect(

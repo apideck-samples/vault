@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { FiCompass } from 'react-icons/fi'
 import { HiChevronLeft, HiHome, HiOutlineDocumentText } from 'react-icons/hi'
 import { Theme } from 'types/JWTSession'
+import { nonBlankText } from 'utils/consumerIdentity'
 import { ThemeContext } from 'utils/context'
 import { parseHttpUrl, returnToAppHref } from 'utils/safeUrl'
 import { useSession } from 'utils/useSession'
@@ -70,10 +71,11 @@ const Layout: React.FC<IProps> = ({ children }) => {
     sidepanelBackgroundColor: bgColor,
     sidepanelTextColor: textColor
   } = theme
-  const { userName, email, accountName, image } = consumerMetadata
-  const hasConsumerMetadata = [userName, email, accountName, image].some(
-    (value) => typeof value === 'string' && value.trim() !== ''
-  )
+  const userName = nonBlankText(consumerMetadata.userName)
+  const email = nonBlankText(consumerMetadata.email)
+  const accountName = nonBlankText(consumerMetadata.accountName)
+  const image = nonBlankText(consumerMetadata.image)
+  const hasConsumerMetadata = Boolean(userName || email || accountName || image)
   const returnUrl = returnToAppHref(session?.redirectUri)
 
   useEffect(() => {

@@ -161,6 +161,18 @@ describe('ConnectionForm customer redirects', () => {
       )
     })
 
+    it('redirects to a same-origin redirectAfterAuthUrl when it is the only redirect value', async () => {
+      mockQuery = { redirectAfterAuthUrl: SAME_ORIGIN_URL }
+      render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
+
+      await saveAndWaitForToast()
+
+      expect(navigateSpy).toHaveBeenCalledTimes(1)
+      expect(navigateSpy).toHaveBeenCalledWith(
+        `${SAME_ORIGIN_URL}?authorizedConnection=microsoft-dynamics`
+      )
+    })
+
     it('shows the ready toast without redirect for a cross-origin redirectToAppUrl', async () => {
       mockQuery = { redirectToAppUrl: CROSS_ORIGIN_URL }
       render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)

@@ -79,9 +79,10 @@ export const targetOrigin = (value: unknown): string | null => {
   return url.origin
 }
 
-/** Appends `authorizedConnection` to the URL and returns its href. */
+/** The href of a copy of the URL with `authorizedConnection` appended; the URL is not modified. */
 export const withAuthorizedConnection = (url: URL, serviceId: string): string => {
-  url.searchParams.append('authorizedConnection', serviceId)
+  const target = new URL(url.href)
+  target.searchParams.append('authorizedConnection', serviceId)
 
-  return url.href
+  return target.href
 }

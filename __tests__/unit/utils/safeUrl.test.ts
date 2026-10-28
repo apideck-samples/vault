@@ -231,5 +231,13 @@ describe('safeUrl', () => {
         withAuthorizedConnection(new URL('https://app.example.com/done?tab=crm'), 'salesforce')
       ).toBe('https://app.example.com/done?tab=crm&authorizedConnection=salesforce')
     })
+
+    it('does not modify the URL it is given', () => {
+      const url = new URL('https://app.example.com/done?tab=crm')
+
+      withAuthorizedConnection(url, 'salesforce')
+
+      expect(url.href).toBe('https://app.example.com/done?tab=crm')
+    })
   })
 })
