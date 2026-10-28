@@ -13,6 +13,17 @@ export interface OAuthError {
   }
 }
 
+const GENERIC_MESSAGE = 'An error occurred during the authorization flow. Please try again.'
+
+// Copy for unify error types belongs to the client; query text is shown only under
+// "Technical Details".
+const MESSAGES_BY_ERROR_TYPE: Record<string, string> = {
+  OAuthConnectionDeclinedError:
+    'The connection was cancelled. Start again from your application if you want to connect.',
+  OAuthBrowserBindingError:
+    'This connection has to be finished in the same browser where it was started. Start again from your application.'
+}
+
 export const createOAuthErrorFromQuery = (query: ParsedUrlQuery): OAuthError | null => {
   const queryRecord = query as Record<string, string>
 
@@ -30,7 +41,9 @@ export const createOAuthErrorFromQuery = (query: ParsedUrlQuery): OAuthError | n
   }
 
   return {
-    message: 'An error occurred during the authorization flow. Please try again.',
+    message: Object.prototype.hasOwnProperty.call(MESSAGES_BY_ERROR_TYPE, queryRecord.error_type)
+      ? MESSAGES_BY_ERROR_TYPE[queryRecord.error_type]
+      : GENERIC_MESSAGE,
     ref: queryRecord.ref,
     details
   }
