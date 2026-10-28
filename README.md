@@ -51,6 +51,13 @@ The body of your request should include the `redirect_uri`, which is used for th
   redirect_uri: 'https://app.apideck.com',
 ```
 
+There are two "Return to application" links:
+
+- The sidebar link goes to the session `redirect_uri` when it is an http(s) URL, and is hidden for any other value. When the session has no `redirect_uri`, it goes to `https://app.apideck.com`.
+- In isolation mode, the connection page shows a link to the `redirectAfterAuthUrl` query parameter, only when it is an http(s) URL on the same origin as the session `redirect_uri`.
+
+The `redirectToAppUrl` and `redirectAfterAuthUrl` query parameters are only followed when they are http(s) URLs on the same origin as the session `redirect_uri`; any other value, or any value on a session without `redirect_uri`, is ignored.
+
 After making the request, you should receive a response that includes the `session_uri` that has the bearer token that is needed to run the sample project. Copy the `session_uri`, paste it in your browser and replace `https://vault.apideck.com` with `localhost:3003`. Your URL should look like this: `http://localhost:3003/session/<your-bearer-token>`.
 
 If you add your API key, Application ID, and consumer ID to the `.env.local` file you can also start a session from the UI (only during development). When you start the application and get prompt with the "session invalid" message, you can click the "Create session" button to make an API request to the Vault API and get redirected to the `/session/<token>` route.

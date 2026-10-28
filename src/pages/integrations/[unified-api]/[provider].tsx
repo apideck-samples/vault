@@ -13,7 +13,9 @@ import useSWR from 'swr'
 import { IConnection } from 'types/Connection'
 import { JWTSession } from 'types/JWTSession'
 import { hasApplicableScopes, requiresConsent } from 'utils/consent'
+import { navigateTo } from 'utils/navigate'
 import { verifyAndClearNonce, callConfirmEndpoint } from 'utils/oauthCsrf'
+import { allowedAppUrl, withAuthorizedConnection } from 'utils/safeUrl'
 import { useSession } from 'utils/useSession'
 
 interface IProps {
@@ -69,14 +71,19 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
 
   useEffect(() => {
     if (query?.redirectToAppUrl && connection?.state === 'callable') {
+      // Only follow a target on the same origin as the session redirect URI paired with the jwt
+      const target = allowedAppUrl(query.redirectToAppUrl, (token || session)?.redirectUri)
+      if (!target) {
+        addToast({ title: 'Connection is ready', type: 'success', autoClose: true })
+        return
+      }
+
       addToast({
         title: 'Connection is ready',
         description: 'You will now get redirected back to the application.'
       })
       setTimeout(() => {
-        const parsedRedirect = new URL(query.redirectToAppUrl as string)
-        parsedRedirect.searchParams.append('authorizedConnection', connection.service_id)
-        window.location.href = parsedRedirect.href
+        navigateTo(withAuthorizedConnection(target, connection.service_id))
       }, 3000)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -182,7 +189,10 @@ export const getServerSideProps = async ({ res, query }: any): Promise<any> => {
 
   // After authorization, redirect to the provided application URL
   // if connection is callable and redirect URL is present in the query params
-  if (typeof query.redirectToAppUrl === 'string' && jwt && token?.applicationId) {
+  // The target is checked against the decoded (unverified) token before the GET; the 301 is only
+  // sent after unify accepted the same jwt and answered with a callable connection
+  const redirectTarget = allowedAppUrl(query.redirectToAppUrl, token?.redirectUri)
+  if (redirectTarget && jwt && token?.applicationId) {
     const response = await client.get(
       `/vault/connections/${query['unified-api']}/${query['provider']}`,
       {
@@ -195,11 +205,8 @@ export const getServerSideProps = async ({ res, query }: any): Promise<any> => {
     )
     const connection: IConnection = response?.data?.data
     if (connection?.state === 'callable') {
-      const parsedRedirect = new URL(query.redirectToAppUrl)
-      parsedRedirect.searchParams.append('authorizedConnection', connection.service_id)
-
       res.writeHead(301, {
-        Location: parsedRedirect.href
+        Location: withAuthorizedConnection(redirectTarget, connection.service_id)
       })
       res.end()
     }
@@ -210,8 +217,7 @@ export const getServerSideProps = async ({ res, query }: any): Promise<any> => {
       jwt: jwt || null,
       token: token || null,
       unifiedApi: query['unified-api'],
-      provider: query['provider'],
-      redirectAfterAuthUrl: query?.redirectAfterAuthUrl || null
+      provider: query['provider']
     }
   }
 }

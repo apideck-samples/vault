@@ -2,6 +2,7 @@ import { Alert, Button, TextArea, TextInput, Toggle, useToast } from '@apideck/c
 import {
   ConfigurableResources,
   ConfirmModal,
+  ConsumerIdentity,
   OAuthButtons,
   OAuthErrorAlert,
   SearchSelect
@@ -33,7 +34,9 @@ import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 import { mutate } from 'swr'
 import { isActionAllowed } from 'utils/isActionAllowed'
+import { navigateTo } from 'utils/navigate'
 import { generateAndStoreNonce } from 'utils/oauthCsrf'
+import { allowedAppUrl, parseHttpUrl, withAuthorizedConnection } from 'utils/safeUrl'
 
 interface IProps {
   connection: IConnection
@@ -197,12 +200,14 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
 
   let redirectUrl = `${window.location.origin}/integrations/${unifiedApi}/${serviceId}`
 
-  if (autoRedirect || query?.redirectAfterAuthUrl) {
+  // Only a validated customer URL is carried through the authorize round trip
+  const returnToAppUrl = autoRedirect
+    ? parseHttpUrl(token?.redirectUri)
+    : allowedAppUrl(query?.redirectAfterAuthUrl, token?.redirectUri)
+
+  if (returnToAppUrl) {
     const parsedRedirect = new URL(redirectUrl)
-    parsedRedirect.searchParams.append(
-      'redirectToAppUrl',
-      autoRedirect ? token?.redirectUri : (query?.redirectAfterAuthUrl as string)
-    )
+    parsedRedirect.searchParams.append('redirectToAppUrl', returnToAppUrl.href)
     redirectUrl = parsedRedirect.href
   }
 
@@ -271,21 +276,23 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
       const shouldRedirect =
         (autoRedirect || query.redirectToAppUrl || query.redirectAfterAuthUrl) && !isToggle
       if (shouldRedirect) {
-        const redirectUrl = (query.redirectToAppUrl ||
-          query.redirectAfterAuthUrl ||
-          token?.redirectUri) as string
+        // The first present candidate decides; a rejected one never falls back to the next
+        const candidate = query.redirectToAppUrl || query.redirectAfterAuthUrl || token?.redirectUri
+        const target = allowedAppUrl(candidate, token?.redirectUri)
         const connection: IConnection = response?.data?.data
         if (connection?.state === 'callable') {
-          addToast({
-            title: 'Connection is ready',
-            description: 'You will now get redirected back to the application.'
-          })
+          if (!target) {
+            addToast({ title: 'Connection is ready', type: 'success', autoClose: true })
+          } else {
+            addToast({
+              title: 'Connection is ready',
+              description: 'You will now get redirected back to the application.'
+            })
 
-          setTimeout(() => {
-            const parsedRedirect = new URL(redirectUrl)
-            parsedRedirect.searchParams.append('authorizedConnection', connection.service_id)
-            window.location.href = parsedRedirect.href
-          }, 3000)
+            setTimeout(() => {
+              navigateTo(withAuthorizedConnection(target, connection.service_id))
+            }, 3000)
+          }
         }
       }
     } catch (error) {
@@ -327,7 +334,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
       const nonce = generateAndStoreNonce(serviceId)
       const url = new URL(authorizeUrlWithRedirect)
       url.searchParams.append('nonce', nonce)
-      window.location.href = url.href
+      navigateTo(url.href)
       return
     }
 
@@ -357,10 +364,11 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
 
   const renderBackButton = () => {
     if (router?.query?.isolation || isolationMode) {
-      if (router?.query?.redirectAfterAuthUrl) {
+      const returnUrl = allowedAppUrl(router?.query?.redirectAfterAuthUrl, token?.redirectUri)
+      if (returnUrl) {
         return (
           <a
-            href={router.query.redirectAfterAuthUrl as string}
+            href={returnUrl.href}
             className="inline-flex items-center self-start justify-start text-sm leading-none text-gray-600 group hover:text-gray-800"
             style={{ height: '24px' }}
           >
@@ -435,6 +443,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
             <div>
               <h1 className="font-medium text-gray-800 text-md md:text-xl">{name}</h1>
               <div className="text-sm text-gray-700 capitalize">{`${unifiedApi} Connection`}</div>
+              <ConsumerIdentity session={token} />
             </div>
           </div>
           <div className="flex items-center h-12 space-x-2 md:space-x-3">

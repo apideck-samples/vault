@@ -2,20 +2,18 @@ import { Button } from '@apideck/components'
 import { useContext } from 'react'
 import { Theme } from 'types/JWTSession'
 import { ThemeContext } from 'utils'
+import { navigateTo } from 'utils/navigate'
+import { returnToAppHref } from 'utils/safeUrl'
 import ModalContainer from './ModalContainer'
 
 interface IProps {
   open: boolean
   setOpen: (input: boolean) => void
-  redirectUri: string
+  redirectUri?: string
 }
 
-const SessionExpiredModal = ({
-  open,
-  setOpen,
-  redirectUri = 'https://app.apideck.com'
-}: IProps) => {
-  const handleClick = () => (window.location.href = redirectUri)
+const SessionExpiredModal = ({ open, setOpen, redirectUri }: IProps) => {
+  const href = returnToAppHref(redirectUri)
   const { primaryColor } = useContext(ThemeContext) as Theme
 
   return (
@@ -27,11 +25,13 @@ const SessionExpiredModal = ({
         Looks like your current session is expired. Please try again.
       </div>
       <div className="flex items-center justify-end px-5 py-2">
-        <Button
-          text="Return to application"
-          onClick={() => handleClick()}
-          style={primaryColor ? { backgroundColor: primaryColor } : {}}
-        />
+        {href && (
+          <Button
+            text="Return to application"
+            onClick={() => navigateTo(href)}
+            style={primaryColor ? { backgroundColor: primaryColor } : {}}
+          />
+        )}
       </div>
     </ModalContainer>
   )
