@@ -40,7 +40,7 @@ const Layout: React.FC<IProps> = ({ children }) => {
   theme = persistedTheme ? JSON.parse(persistedTheme) : {}
 
   if (session && Object.keys(session).length > 0) {
-    consumerMetadata = session.consumerMetadata || defaults.consumerMetadata
+    consumerMetadata = session.consumerMetadata || {}
     consumerId = session.consumerId
     theme = session.theme || defaults.theme
     if (typeof window !== 'undefined') window.localStorage.setItem('theme', JSON.stringify(theme))
@@ -70,8 +70,10 @@ const Layout: React.FC<IProps> = ({ children }) => {
     sidepanelBackgroundColor: bgColor,
     sidepanelTextColor: textColor
   } = theme
-  const { userName, accountName, image } = consumerMetadata
-  const hasConsumerMetadata = Object.keys(consumerMetadata).length > 0
+  const { userName, email, accountName, image } = consumerMetadata
+  const hasConsumerMetadata = [userName, email, accountName, image].some(
+    (value) => typeof value === 'string' && value.trim() !== ''
+  )
   const returnUrl = returnToAppHref(session?.redirectUri)
 
   useEffect(() => {
@@ -359,7 +361,9 @@ const Layout: React.FC<IProps> = ({ children }) => {
                           {accountName}
                         </div>
                       )}
-                      {userName && <div className="text-sm leading-none truncate">{userName}</div>}
+                      {(userName || email) && (
+                        <div className="text-sm leading-none truncate">{userName || email}</div>
+                      )}
                     </div>
                   </div>
                 )}

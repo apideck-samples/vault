@@ -2,6 +2,7 @@ import { Alert, Button, TextArea, TextInput, Toggle, useToast } from '@apideck/c
 import {
   ConfigurableResources,
   ConfirmModal,
+  ConsumerIdentity,
   OAuthButtons,
   OAuthErrorAlert,
   SearchSelect
@@ -442,6 +443,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
             <div>
               <h1 className="font-medium text-gray-800 text-md md:text-xl">{name}</h1>
               <div className="text-sm text-gray-700 capitalize">{`${unifiedApi} Connection`}</div>
+              <ConsumerIdentity session={token} />
             </div>
           </div>
           <div className="flex items-center h-12 space-x-2 md:space-x-3">

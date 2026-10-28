@@ -1,10 +1,4 @@
 export const defaults = {
-  consumerMetadata: {
-    accountName: 'Account Name',
-    userName: 'User name',
-    email: 'test@test.com',
-    image: 'https://unavatar.now.sh/jake'
-  },
   theme: {
     favicon: '',
     primaryColor: '',
