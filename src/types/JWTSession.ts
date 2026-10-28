@@ -9,7 +9,7 @@ export interface JWTSession {
   }
   exp: number
   iat: number
-  redirectUri: string
+  redirectUri?: string
   theme: Theme
   settings?: SessionSettings
   jwt?: string

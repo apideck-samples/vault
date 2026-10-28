@@ -7,6 +7,7 @@ import camelcaseKeys from 'camelcase-keys-deep'
 import client from 'lib/axios'
 import { decode } from 'jsonwebtoken'
 import { useRouter } from 'next/router'
+import { allowedAppUrl } from 'utils/safeUrl'
 import { useSession } from 'utils/useSession'
 import { useToast } from '@apideck/components'
 
@@ -55,13 +56,12 @@ const AddResource = ({ jwt, token }: IProps) => {
               type: 'success',
               autoClose: true
             })
-            push(
-              `/integrations/${query['unified-api']}/${query.provider}?isolation=true${
-                query.redirectAfterAuthUrl
-                  ? `&redirectAfterAuthUrl=${query.redirectAfterAuthUrl}`
-                  : ''
-              }`
-            )
+            const params = new URLSearchParams({ isolation: 'true' })
+            const returnUrl = allowedAppUrl(query.redirectAfterAuthUrl, session?.redirectUri)
+            if (returnUrl) {
+              params.append('redirectAfterAuthUrl', returnUrl.href)
+            }
+            push(`/integrations/${query['unified-api']}/${query.provider}?${params.toString()}`)
           } else {
             setError(response.data?.error)
           }

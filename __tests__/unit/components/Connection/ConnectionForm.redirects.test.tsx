@@ -58,7 +58,7 @@ const connection: IConnection = {
   ]
 }
 
-const autoRedirectToken = (redirectUri: string = token.redirectUri): JWTSession => ({
+const autoRedirectToken = (redirectUri = token.redirectUri): JWTSession => ({
   ...token,
   redirectUri,
   settings: { ...token.settings, autoRedirect: true }

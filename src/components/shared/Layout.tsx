@@ -10,6 +10,7 @@ import { FiCompass } from 'react-icons/fi'
 import { HiChevronLeft, HiHome, HiOutlineDocumentText } from 'react-icons/hi'
 import { Theme } from 'types/JWTSession'
 import { ThemeContext } from 'utils/context'
+import { parseHttpUrl, returnToAppHref } from 'utils/safeUrl'
 import { useSession } from 'utils/useSession'
 import SandboxBanner from './SandboxBanner'
 
@@ -23,7 +24,6 @@ const Layout: React.FC<IProps> = ({ children }) => {
   const [customStyles, setCustomStyles] = useState<any>({ backgroundColor: '#edf2f7' })
   const [customTextColor, setCustomTextColor] = useState('')
   const [navIsOpen, setNavIsOpen] = useState(false)
-  const [returnUrl, setReturnUrl] = useState('https://app.apideck.com')
   const [isClient, setIsClient] = useState(false)
 
   const { session } = useSession()
@@ -72,6 +72,7 @@ const Layout: React.FC<IProps> = ({ children }) => {
   } = theme
   const { userName, accountName, image } = consumerMetadata
   const hasConsumerMetadata = Object.keys(consumerMetadata).length > 0
+  const returnUrl = returnToAppHref(session?.redirectUri)
 
   useEffect(() => {
     const styles = { ...customStyles }
@@ -79,10 +80,8 @@ const Layout: React.FC<IProps> = ({ children }) => {
     if (bgColor) styles.backgroundColor = bgColor
     setCustomStyles(styles)
     if (textColor) setCustomTextColor(textColor)
-
-    if (session?.redirectUri) setReturnUrl(session.redirectUri)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bgColor, primaryColor, textColor, session?.redirectUri])
+  }, [bgColor, primaryColor, textColor])
 
   useEffect(() => {
     if (!navIsOpen) return
@@ -324,21 +323,23 @@ const Layout: React.FC<IProps> = ({ children }) => {
                     </span>
                   </Link>
                 ) : null}
-                <a
-                  className="flex items-center text-sm text-gray-500 group hover:text-gray-800"
-                  href={returnUrl}
-                  style={customTextColor ? { color: customTextColor } : {}}
-                >
-                  <HiChevronLeft
-                    className="text-gray-600 transition duration-150 ease-in-out group-hover:text-gray-800"
-                    color={customTextColor ? customTextColor : 'currentColor'}
-                    size={20}
-                  />
+                {returnUrl && (
+                  <a
+                    className="flex items-center text-sm text-gray-500 group hover:text-gray-800"
+                    href={returnUrl}
+                    style={customTextColor ? { color: customTextColor } : {}}
+                  >
+                    <HiChevronLeft
+                      className="text-gray-600 transition duration-150 ease-in-out group-hover:text-gray-800"
+                      color={customTextColor ? customTextColor : 'currentColor'}
+                      size={20}
+                    />
 
-                  <span className="ml-3 leading-none transition duration-150 ease-in-out transform group-hover:-translate-x-0.5">
-                    Return to application
-                  </span>
-                </a>
+                    <span className="ml-3 leading-none transition duration-150 ease-in-out transform group-hover:-translate-x-0.5">
+                      Return to application
+                    </span>
+                  </a>
+                )}
               </div>
               <div data-consumer-id={consumerId}>
                 {hasConsumerMetadata && !hideConsumerCard && (
@@ -394,9 +395,8 @@ const Layout: React.FC<IProps> = ({ children }) => {
                       className="text-sm text-gray-500 hover:text-gray-800"
                       style={customTextColor ? { color: customTextColor } : {}}
                       href={
-                        termsUrl
-                          ? termsUrl
-                          : 'https://termsfeed.com/terms-conditions/957c85c1b089ae9e3219c83eff65377e'
+                        parseHttpUrl(termsUrl)?.href ??
+                        'https://termsfeed.com/terms-conditions/957c85c1b089ae9e3219c83eff65377e'
                       }
                     >
                       Terms
@@ -407,7 +407,8 @@ const Layout: React.FC<IProps> = ({ children }) => {
                       className="text-sm text-gray-500 hover:text-gray-800"
                       style={customTextColor ? { color: customTextColor } : {}}
                       href={
-                        privacyUrl ? privacyUrl : 'https://compliance.apideck.com/privacy-policy'
+                        parseHttpUrl(privacyUrl)?.href ??
+                        'https://compliance.apideck.com/privacy-policy'
                       }
                     >
                       Privacy
