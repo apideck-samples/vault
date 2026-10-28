@@ -19,6 +19,13 @@ jest.mock('utils/useSession', () => ({
 const DEFAULT_TERMS_URL = 'https://termsfeed.com/terms-conditions/957c85c1b089ae9e3219c83eff65377e'
 const DEFAULT_PRIVACY_URL = 'https://compliance.apideck.com/privacy-policy'
 
+const JANE_METADATA = {
+  accountName: 'Acme',
+  userName: 'Jane Doe',
+  email: 'jane@acme.com',
+  image: 'https://example.com/jane.png'
+}
+
 const renderLayout = (session: Partial<JWTSession>) => {
   mockSession = session
   render(
@@ -80,6 +87,54 @@ describe('Layout', () => {
 
       expect(hrefOf('Terms')).toBe(token.theme.termsUrl)
       expect(hrefOf('Privacy')).toBe(token.theme.privacyUrl)
+    })
+  })
+
+  describe('consumer card', () => {
+    const consumerCard = () => document.querySelector('[data-consumer-id]') as HTMLElement
+
+    it('renders no consumer card and no placeholder values without consumerMetadata', () => {
+      renderLayout({ ...token, consumerMetadata: undefined })
+
+      expect(screen.getByText('Page content')).toBeTruthy()
+      const text = document.body.textContent as string
+      expect(text).not.toContain('Account Name')
+      expect(text).not.toContain('User name')
+      expect(text).not.toContain('test@test.com')
+      expect(document.querySelector('img[src*="unavatar.now.sh"]')).toBeNull()
+      expect(consumerCard().querySelector('img')).toBeNull()
+    })
+
+    it('renders the consumer card from session metadata', () => {
+      renderLayout({ ...token, consumerMetadata: JANE_METADATA })
+
+      expect(consumerCard().textContent).toContain('Acme')
+      expect(consumerCard().textContent).toContain('Jane Doe')
+      const avatar = screen.getByAltText('Jane Doe')
+      expect(avatar.getAttribute('src')).toBe(JANE_METADATA.image)
+    })
+
+    it('shows the email in the card when there is no userName', () => {
+      renderLayout({
+        ...token,
+        consumerMetadata: { accountName: 'Acme', email: 'jane@acme.com' }
+      })
+
+      expect(consumerCard().textContent).toContain('Acme')
+      expect(consumerCard().textContent).toContain('jane@acme.com')
+    })
+
+    it('hides the card when hideConsumerCard is true', () => {
+      renderLayout({
+        ...token,
+        consumerMetadata: JANE_METADATA,
+        settings: { ...token.settings, hideConsumerCard: true }
+      })
+
+      expect(screen.getByText('Page content')).toBeTruthy()
+      expect(consumerCard().textContent).not.toContain('Jane Doe')
+      expect(consumerCard().textContent).not.toContain('Acme')
+      expect(screen.queryByAltText('Jane Doe')).toBeNull()
     })
   })
 })
