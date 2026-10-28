@@ -17,14 +17,14 @@ describe('createOAuthErrorFromQuery', () => {
     expect(error?.details.error_type).toBe('SomethingUnknownError')
   })
 
-  it('uses the cancelled message for OAuthConnectionDeclinedError', () => {
+  it('uses the generic message for the retired OAuthConnectionDeclinedError', () => {
     const error = createOAuthErrorFromQuery({
       ...baseQuery,
       error_type: 'OAuthConnectionDeclinedError'
     })
 
     expect(error?.message).toBe(
-      'The connection was cancelled. Start again from your application if you want to connect.'
+      'An error occurred during the authorization flow. Please try again.'
     )
   })
 

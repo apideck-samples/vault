@@ -18,8 +18,6 @@ const GENERIC_MESSAGE = 'An error occurred during the authorization flow. Please
 // Copy for unify error types belongs to the client; query text is shown only under
 // "Technical Details".
 const MESSAGES_BY_ERROR_TYPE: Record<string, string> = {
-  OAuthConnectionDeclinedError:
-    'The connection was cancelled. Start again from your application if you want to connect.',
   OAuthBrowserBindingError:
     'This connection has to be finished in the same browser where it was started. Start again from your application.'
 }

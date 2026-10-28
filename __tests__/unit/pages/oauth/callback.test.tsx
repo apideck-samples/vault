@@ -12,8 +12,6 @@ const LOST_OPENER_MESSAGE =
   'This window lost its connection to the app that opened it. Close it and start the connection again.'
 const UNSAFE_TARGET_MESSAGE =
   'This window cannot safely hand the connection back to the app that opened it. Close it and start the connection again.'
-const DECLINED_MESSAGE =
-  'The connection was cancelled. Start again from your application if you want to connect.'
 const BROWSER_BINDING_MESSAGE =
   'This connection has to be finished in the same browser where it was started. Start again from your application.'
 const GENERIC_MESSAGE = 'An error occurred during the authorization flow. Please try again.'
@@ -279,19 +277,6 @@ describe('OAuth Callback Page', () => {
       expect(closeSpy).not.toHaveBeenCalled()
       expect(screen.getByRole('alert').textContent).toContain(GENERIC_MESSAGE)
       expect(screen.getByRole('button', { name: 'Close window' })).toBeTruthy()
-    })
-
-    it('describes OAuthConnectionDeclinedError as cancelled', () => {
-      render(
-        <CallbackPage
-          hasError={true}
-          query={{ ...ERROR_QUERY, error_type: 'OAuthConnectionDeclinedError' }}
-        />
-      )
-
-      expect(postMessageSpy).not.toHaveBeenCalled()
-      expect(closeSpy).not.toHaveBeenCalled()
-      expect(screen.getByRole('alert').textContent).toContain(DECLINED_MESSAGE)
     })
 
     it('describes OAuthBrowserBindingError as needing the same browser', () => {
