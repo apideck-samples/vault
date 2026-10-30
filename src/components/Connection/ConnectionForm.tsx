@@ -412,7 +412,9 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
             <span>
               Configure the {connection.name} integration in the{' '}
               <a
-                href={`https://platform.apideck.com/configuration/${connection.unified_api}/${connection.service_id}`}
+                href={`${
+                  process.env.NEXT_PUBLIC_PLATFORM_URL || 'https://platform.apideck.com'
+                }/configuration/${connection.unified_api}/${connection.service_id}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline hover:opacity-80"
