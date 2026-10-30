@@ -7,7 +7,9 @@ const securityHeaders = [
   { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubdomains; always' },
   {
     key: 'Permissions-Policy',
-    value: 'fullscreen=(self "https://vault.apideck.com"), geolocation=*, camera=()'
+    value: `fullscreen=(self "${
+      process.env.NEXT_PUBLIC_VAULT_URL || 'https://vault.apideck.com'
+    }"), geolocation=*, camera=()`
   }
 ]
 
