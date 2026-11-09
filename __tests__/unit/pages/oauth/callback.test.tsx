@@ -242,17 +242,65 @@ describe('OAuth Callback Page', () => {
     })
   })
 
+  // As before GH-9546: react-vault shows its "Authorization failed" toast on oauth_error
   describe('errors (opener present)', () => {
     beforeEach(() => {
       withOpener()
     })
 
-    it('does not post an error to the opener', () => {
-      render(<CallbackPage hasError={true} query={ERROR_QUERY} />)
-
-      expect(postMessageSpy).not.toHaveBeenCalled()
+    const expectedErrorMessage = (errorType: string) => ({
+      type: 'oauth_error',
+      error: errorType,
+      errorDescription: 'Something failed',
+      serviceId: 's'
     })
 
+    it('posts oauth_error to the opener and closes the window', () => {
+      render(<CallbackPage hasError={true} query={ERROR_QUERY} />)
+
+      expect(postMessageSpy).toHaveBeenCalledTimes(1)
+      expect(postMessageSpy).toHaveBeenCalledWith(
+        expectedErrorMessage('OAuthInvalidStateError'),
+        '*'
+      )
+      expect(closeSpy).toHaveBeenCalled()
+      expect(screen.queryByRole('alert')).toBeNull()
+    })
+
+    it('posts the error, never oauth_complete, when a confirm fragment is also present', () => {
+      window.location.hash = VALID_CONFIRM_HASH
+
+      render(<CallbackPage hasError={true} query={ERROR_QUERY} />)
+
+      expect(postMessageSpy).toHaveBeenCalledTimes(1)
+      expect(postMessageSpy.mock.calls[0][0].type).toBe('oauth_error')
+    })
+
+    it('posts OAuthBrowserBindingError to the opener', () => {
+      render(
+        <CallbackPage
+          hasError={true}
+          query={{ ...ERROR_QUERY, error_type: 'OAuthBrowserBindingError' }}
+        />
+      )
+
+      expect(postMessageSpy).toHaveBeenCalledWith(
+        expectedErrorMessage('OAuthBrowserBindingError'),
+        '*'
+      )
+    })
+
+    it('shows only Close window when error_message has no error_type', () => {
+      render(<CallbackPage hasError={true} query={{ error_message: 'Something failed' }} />)
+
+      expect(postMessageSpy).not.toHaveBeenCalled()
+      expect(closeSpy).not.toHaveBeenCalled()
+      expect(screen.queryByRole('alert')).toBeNull()
+      expect(screen.getByRole('button', { name: 'Close window' })).toBeTruthy()
+    })
+  })
+
+  describe('errors (no opener)', () => {
     it('does not close the window on error', () => {
       render(<CallbackPage hasError={true} query={ERROR_QUERY} />)
 
@@ -268,17 +316,6 @@ describe('OAuth Callback Page', () => {
       expect(screen.getByRole('button', { name: 'Close window' })).toBeTruthy()
     })
 
-    it('ignores a confirm fragment when error params are present', () => {
-      window.location.hash = VALID_CONFIRM_HASH
-
-      render(<CallbackPage hasError={true} query={ERROR_QUERY} />)
-
-      expect(postMessageSpy).not.toHaveBeenCalled()
-      expect(closeSpy).not.toHaveBeenCalled()
-      expect(screen.getByRole('alert').textContent).toContain(GENERIC_MESSAGE)
-      expect(screen.getByRole('button', { name: 'Close window' })).toBeTruthy()
-    })
-
     it('describes OAuthBrowserBindingError as needing the same browser', () => {
       render(
         <CallbackPage
@@ -287,18 +324,7 @@ describe('OAuth Callback Page', () => {
         />
       )
 
-      expect(postMessageSpy).not.toHaveBeenCalled()
-      expect(closeSpy).not.toHaveBeenCalled()
       expect(screen.getByRole('alert').textContent).toContain(BROWSER_BINDING_MESSAGE)
-    })
-
-    it('shows only Close window when error_message has no error_type', () => {
-      render(<CallbackPage hasError={true} query={{ error_message: 'Something failed' }} />)
-
-      expect(postMessageSpy).not.toHaveBeenCalled()
-      expect(closeSpy).not.toHaveBeenCalled()
-      expect(screen.queryByRole('alert')).toBeNull()
-      expect(screen.getByRole('button', { name: 'Close window' })).toBeTruthy()
     })
   })
 

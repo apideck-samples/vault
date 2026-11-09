@@ -22,9 +22,25 @@ const CallbackPage = ({ hasError, query }: { hasError: boolean; query: any }) =>
   const [handoffError, setHandoffError] = useState<HandoffError | null>(null)
 
   useEffect(() => {
-    // Errors come first and are never posted to the opener: they carry no
-    // target_origin, so the alert stays in this window (GH-9546 decision 1).
+    // Errors come first. With an opener (react-vault, Vault JS) the error is posted to it and the
+    // window closes, as before GH-9546, so the app can show it. The message holds only the error
+    // type, message and service id, never a token, so it can go to any origin. Without an opener
+    // the alert stays in this window.
     if (hasError) {
+      if (window.opener && query?.error_type) {
+        window.opener.postMessage(
+          {
+            type: 'oauth_error',
+            error: query?.error_type,
+            errorDescription: query?.error_message,
+            serviceId: query?.service_id
+          },
+          '*'
+        )
+        window.close()
+        return
+      }
+
       setOAuthError(createOAuthErrorFromQuery(query))
       return
     }
