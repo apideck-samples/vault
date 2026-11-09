@@ -1,13 +1,10 @@
 import {
-  allowedAppUrl,
   docsUrl,
   parseHttpUrl,
   returnToAppHref,
   targetOrigin,
   withAuthorizedConnection
 } from 'utils/safeUrl'
-
-const SESSION_REDIRECT_URI = 'https://app.example.com/vault'
 
 describe('safeUrl', () => {
   describe('parseHttpUrl', () => {
@@ -58,69 +55,6 @@ describe('safeUrl', () => {
       expect(parseHttpUrl(null)).toBeNull()
       expect(parseHttpUrl(['https://app.example.com/vault'])).toBeNull()
       expect(parseHttpUrl(42)).toBeNull()
-    })
-  })
-
-  describe('allowedAppUrl', () => {
-    it('allows the same origin with another path and query', () => {
-      expect(
-        allowedAppUrl('https://app.example.com/settings?tab=integrations', SESSION_REDIRECT_URI)
-          ?.href
-      ).toBe('https://app.example.com/settings?tab=integrations')
-    })
-
-    it('treats an explicit default port as the same origin', () => {
-      expect(allowedAppUrl('https://app.example.com:443/done', SESSION_REDIRECT_URI)?.href).toBe(
-        'https://app.example.com/done'
-      )
-    })
-
-    it('rejects another host', () => {
-      expect(allowedAppUrl('https://evil.example/landing', SESSION_REDIRECT_URI)).toBeNull()
-    })
-
-    it('rejects a host that only starts with the session host (app.example.com.evil.com)', () => {
-      expect(
-        allowedAppUrl('https://app.example.com.evil.com/done', SESSION_REDIRECT_URI)
-      ).toBeNull()
-    })
-
-    it('rejects another scheme', () => {
-      expect(allowedAppUrl('http://app.example.com/done', SESSION_REDIRECT_URI)).toBeNull()
-    })
-
-    it('rejects another port', () => {
-      expect(allowedAppUrl('https://app.example.com:8443/done', SESSION_REDIRECT_URI)).toBeNull()
-    })
-
-    it('rejects when the session redirectUri is absent', () => {
-      expect(allowedAppUrl('https://app.example.com/done', undefined)).toBeNull()
-      expect(allowedAppUrl('https://app.example.com/done', null)).toBeNull()
-      expect(allowedAppUrl('https://app.example.com/done', '')).toBeNull()
-    })
-
-    it('rejects when the session redirectUri is javascript: or unparseable', () => {
-      expect(allowedAppUrl('https://app.example.com/done', 'javascript:alert(1)')).toBeNull()
-      expect(allowedAppUrl('javascript:alert(1)', 'javascript:alert(2)')).toBeNull()
-      expect(allowedAppUrl('https://app.example.com/done', 'not a url')).toBeNull()
-    })
-
-    it('rejects a same-host candidate with credentials', () => {
-      expect(
-        allowedAppUrl('https://user:pass@app.example.com/done', SESSION_REDIRECT_URI)
-      ).toBeNull()
-    })
-
-    it('returns a new URL each call', () => {
-      const first = allowedAppUrl('https://app.example.com/done', SESSION_REDIRECT_URI)
-      const second = allowedAppUrl('https://app.example.com/done', SESSION_REDIRECT_URI)
-
-      expect(first).toBeInstanceOf(URL)
-      expect(second).toBeInstanceOf(URL)
-      expect(first).not.toBe(second)
-
-      first?.searchParams.append('authorizedConnection', 'salesforce')
-      expect(second?.href).toBe('https://app.example.com/done')
     })
   })
 

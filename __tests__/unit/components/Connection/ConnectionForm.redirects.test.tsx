@@ -111,8 +111,16 @@ describe('ConnectionForm customer redirects', () => {
       expect(authorizeRedirectUri().searchParams.get('redirectToAppUrl')).toBe(SAME_ORIGIN_URL)
     })
 
-    it('drops a cross-origin redirectAfterAuthUrl', () => {
+    // Any valid http(s) URL is kept, as before GH-9546: unify checks it under enforced protection
+    it('adds a cross-origin redirectAfterAuthUrl', () => {
       mockQuery = { redirectAfterAuthUrl: CROSS_ORIGIN_URL }
+      render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
+
+      expect(authorizeRedirectUri().searchParams.get('redirectToAppUrl')).toBe(CROSS_ORIGIN_URL)
+    })
+
+    it('drops a javascript: redirectAfterAuthUrl', () => {
+      mockQuery = { redirectAfterAuthUrl: 'javascript:alert(document.domain)' }
       render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
 
       expect(authorizeRedirectUri().searchParams.has('redirectToAppUrl')).toBe(false)
@@ -173,8 +181,19 @@ describe('ConnectionForm customer redirects', () => {
       )
     })
 
-    it('shows the ready toast without redirect for a cross-origin redirectToAppUrl', async () => {
+    it('redirects to a cross-origin redirectToAppUrl', async () => {
       mockQuery = { redirectToAppUrl: CROSS_ORIGIN_URL }
+      render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
+
+      await saveAndWaitForToast()
+
+      expect(navigateSpy).toHaveBeenCalledWith(
+        `${CROSS_ORIGIN_URL}?authorizedConnection=microsoft-dynamics`
+      )
+    })
+
+    it('shows the ready toast without redirect for a javascript: redirectToAppUrl', async () => {
+      mockQuery = { redirectToAppUrl: 'javascript:alert(document.domain)' }
       render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
 
       await saveAndWaitForToast()
@@ -184,7 +203,7 @@ describe('ConnectionForm customer redirects', () => {
     })
 
     it('does not fall back to token.redirectUri when redirectToAppUrl is rejected', async () => {
-      mockQuery = { redirectToAppUrl: CROSS_ORIGIN_URL }
+      mockQuery = { redirectToAppUrl: 'javascript:alert(document.domain)' }
       render(<ConnectionForm connection={connection} jwt={jwt} token={autoRedirectToken()} />)
 
       await saveAndWaitForToast()
@@ -215,11 +234,13 @@ describe('ConnectionForm customer redirects', () => {
       )
     })
 
-    it('renders no link for a cross-origin redirectAfterAuthUrl', () => {
+    it('renders Return to application for a cross-origin redirectAfterAuthUrl', () => {
       mockQuery = { isolation: 'true', redirectAfterAuthUrl: CROSS_ORIGIN_URL }
       render(<ConnectionForm connection={connection} jwt={jwt} token={token} />)
 
-      expect(screen.queryByRole('link', { name: 'Return to application' })).toBeNull()
+      expect(screen.getByRole('link', { name: 'Return to application' }).getAttribute('href')).toBe(
+        CROSS_ORIGIN_URL
+      )
     })
 
     it('renders no link for a javascript: redirectAfterAuthUrl', () => {

@@ -36,7 +36,7 @@ import { mutate } from 'swr'
 import { isActionAllowed } from 'utils/isActionAllowed'
 import { navigateTo } from 'utils/navigate'
 import { generateAndStoreNonce } from 'utils/oauthCsrf'
-import { allowedAppUrl, parseHttpUrl, withAuthorizedConnection } from 'utils/safeUrl'
+import { parseHttpUrl, withAuthorizedConnection } from 'utils/safeUrl'
 
 interface IProps {
   connection: IConnection
@@ -203,7 +203,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
   // Only a validated customer URL is carried through the authorize round trip
   const returnToAppUrl = autoRedirect
     ? parseHttpUrl(token?.redirectUri)
-    : allowedAppUrl(query?.redirectAfterAuthUrl, token?.redirectUri)
+    : parseHttpUrl(query?.redirectAfterAuthUrl)
 
   if (returnToAppUrl) {
     const parsedRedirect = new URL(redirectUrl)
@@ -278,7 +278,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
       if (shouldRedirect) {
         // The first present candidate decides; a rejected one never falls back to the next
         const candidate = query.redirectToAppUrl || query.redirectAfterAuthUrl || token?.redirectUri
-        const target = allowedAppUrl(candidate, token?.redirectUri)
+        const target = parseHttpUrl(candidate)
         const connection: IConnection = response?.data?.data
         if (connection?.state === 'callable') {
           if (!target) {
@@ -364,7 +364,7 @@ const ConnectionForm = ({ connection, token, jwt }: IProps) => {
 
   const renderBackButton = () => {
     if (router?.query?.isolation || isolationMode) {
-      const returnUrl = allowedAppUrl(router?.query?.redirectAfterAuthUrl, token?.redirectUri)
+      const returnUrl = parseHttpUrl(router?.query?.redirectAfterAuthUrl)
       if (returnUrl) {
         return (
           <a

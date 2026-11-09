@@ -77,8 +77,14 @@ describe('Enable Connection Page', () => {
     expect(pushed.hash).toBe('')
   })
 
-  it('drops a cross-origin redirectAfterAuthUrl', async () => {
-    const pushed = await renderAndReadPushedPath('https://evil.example/landing')
+  it('keeps a cross-origin redirectAfterAuthUrl', async () => {
+    const pushed = await renderAndReadPushedPath('https://other.example/landing')
+
+    expect(pushed.searchParams.get('redirectAfterAuthUrl')).toBe('https://other.example/landing')
+  })
+
+  it('drops a javascript: redirectAfterAuthUrl', async () => {
+    const pushed = await renderAndReadPushedPath('javascript:alert(document.domain)')
 
     expect(pushed.pathname).toBe('/integrations/crm/salesforce')
     expect(pushed.searchParams.get('isolation')).toBe('true')

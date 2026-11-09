@@ -31,20 +31,6 @@ export const parseHttpUrl = (value: unknown): URL | null => {
 }
 
 /**
- * The candidate as a new URL when it and the session redirect URI are both valid http(s) URLs
- * on the same origin. Otherwise null, including when the session has no redirect URI.
- */
-export const allowedAppUrl = (candidate: unknown, sessionRedirectUri: unknown): URL | null => {
-  const sessionUrl = parseHttpUrl(sessionRedirectUri)
-  if (!sessionUrl) return null
-
-  const url = parseHttpUrl(candidate)
-  if (!url || url.origin !== sessionUrl.origin) return null
-
-  return url
-}
-
-/**
  * Href for "Return to application": the Apideck app when the session has no redirect URI,
  * the redirect URI when it is a valid http(s) URL, otherwise null (hide the link).
  */

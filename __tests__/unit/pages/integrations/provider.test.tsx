@@ -316,16 +316,14 @@ describe('redirectToAppUrl (client)', () => {
     )
   })
 
-  it('does not redirect to a cross-origin redirectToAppUrl but shows the ready toast without the redirect description', () => {
-    renderWithRedirect('https://evil.example/landing')
+  // Any valid http(s) URL is followed, as before GH-9546: unify checks it under enforced protection
+  it('redirects to a cross-origin redirectToAppUrl', () => {
+    renderWithRedirect('https://other.example/landing')
     advancePastRedirectDelay()
 
-    expect(navigateSpy).not.toHaveBeenCalled()
-    expect(mockAddToast).toHaveBeenCalledWith({
-      title: 'Connection is ready',
-      type: 'success',
-      autoClose: true
-    })
+    expect(navigateSpy).toHaveBeenCalledWith(
+      'https://other.example/landing?authorizedConnection=salesforce'
+    )
   })
 
   it('does not redirect to a javascript: redirectToAppUrl', () => {
@@ -352,7 +350,7 @@ describe('redirectToAppUrl (client)', () => {
     })
   })
 
-  it('uses the session redirectUri when the page has no token', () => {
+  it('redirects when the page has no token', () => {
     mockSession = { ...baseSession, redirectUri: 'https://app.example.com/vault' }
 
     renderWithRedirect('https://app.example.com/apps/done', {
@@ -392,14 +390,14 @@ describe('getServerSideProps', () => {
     expect(context.res.end).toHaveBeenCalled()
   })
 
-  it('does not fetch or redirect for a cross-origin redirectToAppUrl', async () => {
-    const context = buildContext({ jwt, redirectToAppUrl: 'https://evil.example/landing' })
+  it('answers 301 for a cross-origin redirectToAppUrl', async () => {
+    const context = buildContext({ jwt, redirectToAppUrl: 'https://other.example/landing' })
 
     await getServerSideProps(context)
 
-    expect(client.get).not.toHaveBeenCalled()
-    expect(context.res.writeHead).not.toHaveBeenCalled()
-    expect(context.res.end).not.toHaveBeenCalled()
+    expect(context.res.writeHead).toHaveBeenCalledWith(301, {
+      Location: 'https://other.example/landing?authorizedConnection=salesforce'
+    })
   })
 
   it('does not redirect for a javascript: redirectToAppUrl', async () => {
@@ -422,7 +420,7 @@ describe('getServerSideProps', () => {
     expect(context.res.writeHead).not.toHaveBeenCalled()
   })
 
-  it('does not redirect when the token has no redirectUri', async () => {
+  it('redirects when the token has no redirectUri', async () => {
     const context = buildContext({
       jwt: unsignedJwt({
         application_id: 'cfaZrORgaH2PMQpIcjTpfhERIpIEUJHev09ucjTp',
@@ -433,8 +431,9 @@ describe('getServerSideProps', () => {
 
     await getServerSideProps(context)
 
-    expect(client.get).not.toHaveBeenCalled()
-    expect(context.res.writeHead).not.toHaveBeenCalled()
+    expect(context.res.writeHead).toHaveBeenCalledWith(301, {
+      Location: 'http://localhost:3000/apps/done?authorizedConnection=salesforce'
+    })
   })
 
   it('no longer returns redirectAfterAuthUrl in props', async () => {
