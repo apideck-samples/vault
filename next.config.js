@@ -7,8 +7,9 @@ const securityHeaders = [
   { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubdomains; always' },
   {
     key: 'Permissions-Policy',
+    // origin only: a slash or path would make browsers drop the whole header
     value: `fullscreen=(self "${
-      process.env.NEXT_PUBLIC_VAULT_URL || 'https://vault.apideck.com'
+      new URL(process.env.NEXT_PUBLIC_VAULT_URL || 'https://vault.apideck.com').origin
     }"), geolocation=*, camera=()`
   }
 ]
