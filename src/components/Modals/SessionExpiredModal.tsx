@@ -13,7 +13,7 @@ interface IProps {
 const SessionExpiredModal = ({
   open,
   setOpen,
-  redirectUri = 'https://app.apideck.com'
+  redirectUri = process.env.NEXT_PUBLIC_APP_URL || 'https://app.apideck.com'
 }: IProps) => {
   const handleClick = () => (window.location.href = redirectUri)
   const { primaryColor } = useContext(ThemeContext) as Theme

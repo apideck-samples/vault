@@ -27,6 +27,7 @@ This project uses the Vault API. Visit https://developers.apideck.com/apis/vault
 - Add your API key: `UNIFY_API_KEY=<your-api-key>`
 - Your env should also include `NEXT_PUBLIC_UNIFY_API_URL=https://unify.apideck.com`
 - Optional: Add a Busnag API key to activate [Bugsnag](https://www.bugsnag.com/) error monitoring.
+- Optional, for a non-EU deployment: set `NEXT_PUBLIC_VAULT_URL`, `NEXT_PUBLIC_PLATFORM_URL` and `NEXT_PUBLIC_APP_URL` to that region's hosts (defaults are the EU hosts in `.env.example`). They are read at build time, so set them before `next build` and rebuild after changing them.
 
 #### Step 2: Install dependencies
 

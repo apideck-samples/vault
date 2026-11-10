@@ -23,7 +23,9 @@ const Layout: React.FC<IProps> = ({ children }) => {
   const [customStyles, setCustomStyles] = useState<any>({ backgroundColor: '#edf2f7' })
   const [customTextColor, setCustomTextColor] = useState('')
   const [navIsOpen, setNavIsOpen] = useState(false)
-  const [returnUrl, setReturnUrl] = useState('https://app.apideck.com')
+  const [returnUrl, setReturnUrl] = useState(
+    process.env.NEXT_PUBLIC_APP_URL || 'https://app.apideck.com'
+  )
   const [isClient, setIsClient] = useState(false)
 
   const { session } = useSession()
