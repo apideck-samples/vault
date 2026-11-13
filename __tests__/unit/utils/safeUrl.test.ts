@@ -1,6 +1,7 @@
 import {
   docsUrl,
   parseHttpUrl,
+  parseReturnUrl,
   returnToAppHref,
   targetOrigin,
   withAuthorizedConnection
@@ -58,6 +59,60 @@ describe('safeUrl', () => {
     })
   })
 
+  describe('parseHttpUrl and app deep links', () => {
+    it('rejects a custom scheme', () => {
+      expect(parseHttpUrl('myapp://vault/done')).toBeNull()
+    })
+  })
+
+  describe('parseReturnUrl', () => {
+    it('accepts an https URL on any origin', () => {
+      expect(parseReturnUrl('https://other.example.com/done')?.href).toBe(
+        'https://other.example.com/done'
+      )
+    })
+
+    it('accepts an app deep link', () => {
+      expect(parseReturnUrl('myapp://vault/done')?.href).toBe('myapp://vault/done')
+      expect(parseReturnUrl('com.acme.app:/oauth/done')?.href).toBe('com.acme.app:/oauth/done')
+    })
+
+    it('rejects javascript:, data: and vbscript: in any case', () => {
+      expect(parseReturnUrl('javascript:alert(1)')).toBeNull()
+      expect(parseReturnUrl('JavaScript:alert(1)')).toBeNull()
+      expect(parseReturnUrl('data:text/html,<script>alert(1)</script>')).toBeNull()
+      expect(parseReturnUrl('vbscript:msgbox(1)')).toBeNull()
+    })
+
+    it('rejects javascript: hidden by a tab, newline or leading space', () => {
+      expect(parseReturnUrl('java\tscript:alert(1)')).toBeNull()
+      expect(parseReturnUrl('java\nscript:alert(1)')).toBeNull()
+      expect(parseReturnUrl(' javascript:alert(1)')).toBeNull()
+    })
+
+    it('rejects a URL with username or password', () => {
+      expect(parseReturnUrl('https://user:pass@app.example.com/done')).toBeNull()
+      expect(parseReturnUrl('myapp://user@vault/done')).toBeNull()
+    })
+
+    it('rejects relative, unparseable, empty and non-string values', () => {
+      expect(parseReturnUrl('/integrations/crm/salesforce')).toBeNull()
+      expect(parseReturnUrl('//evil.example/landing')).toBeNull()
+      expect(parseReturnUrl('not a url')).toBeNull()
+      expect(parseReturnUrl('')).toBeNull()
+      expect(parseReturnUrl(undefined)).toBeNull()
+      expect(parseReturnUrl(['myapp://vault/done'])).toBeNull()
+    })
+  })
+
+  describe('withAuthorizedConnection on an app deep link', () => {
+    it('appends authorizedConnection', () => {
+      expect(withAuthorizedConnection(new URL('myapp://vault/done?x=1'), 'salesforce')).toBe(
+        'myapp://vault/done?x=1&authorizedConnection=salesforce'
+      )
+    })
+  })
+
   describe('returnToAppHref', () => {
     it('returns https://app.apideck.com when redirectUri is undefined, null or empty', () => {
       expect(returnToAppHref(undefined)).toBe('https://app.apideck.com')
@@ -68,6 +123,10 @@ describe('safeUrl', () => {
     it('returns an http(s) redirectUri', () => {
       expect(returnToAppHref('https://app.example.com/vault')).toBe('https://app.example.com/vault')
       expect(returnToAppHref('http://localhost:3000/vault')).toBe('http://localhost:3000/vault')
+    })
+
+    it('returns an app deep-link redirectUri', () => {
+      expect(returnToAppHref('myapp://vault/done')).toBe('myapp://vault/done')
     })
 
     it('returns null for javascript:', () => {

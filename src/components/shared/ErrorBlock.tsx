@@ -1,7 +1,7 @@
 import { Button } from '@apideck/components'
 import { JWTSession } from 'types/JWTSession'
 import { createVaultSession } from 'utils/createVaultSession'
-import { parseHttpUrl } from 'utils/safeUrl'
+import { parseReturnUrl } from 'utils/safeUrl'
 
 interface IMessageProps {
   redirectUri?: string
@@ -34,7 +34,7 @@ const ErrorMessage = ({ redirectUri, message }: IMessageProps) => {
 const ErrorBlock = ({ error, token }: IErrorProps) => {
   const status = error?.status || 500
   const exp = token?.exp
-  const redirectUri = parseHttpUrl(token?.redirectUri)?.href
+  const redirectUri = parseReturnUrl(token?.redirectUri)?.href
 
   let errorTitle = 'Something went wrong.'
   let errorMessage = 'Something went wrong loading the page. Please try again later.'

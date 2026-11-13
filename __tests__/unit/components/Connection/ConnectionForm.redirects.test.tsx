@@ -132,6 +132,18 @@ describe('ConnectionForm customer redirects', () => {
       expect(authorizeRedirectUri().searchParams.get('redirectToAppUrl')).toBe(token.redirectUri)
     })
 
+    it('adds an app deep-link token.redirectUri when autoRedirect is set', () => {
+      render(
+        <ConnectionForm
+          connection={connection}
+          jwt={jwt}
+          token={autoRedirectToken('myapp://vault/done')}
+        />
+      )
+
+      expect(authorizeRedirectUri().searchParams.get('redirectToAppUrl')).toBe('myapp://vault/done')
+    })
+
     it('drops a javascript: token.redirectUri when autoRedirect is set', () => {
       render(
         <ConnectionForm
@@ -210,6 +222,23 @@ describe('ConnectionForm customer redirects', () => {
 
       expect(mockAddToast).toHaveBeenCalledWith(readyToastWithoutRedirect)
       expect(navigateSpy).not.toHaveBeenCalled()
+    })
+
+    it('redirects to an app deep-link token.redirectUri when only autoRedirect is set', async () => {
+      render(
+        <ConnectionForm
+          connection={connection}
+          jwt={jwt}
+          token={autoRedirectToken('myapp://vault/done')}
+        />
+      )
+
+      await saveAndWaitForToast()
+
+      expect(navigateSpy).toHaveBeenCalledTimes(1)
+      expect(navigateSpy).toHaveBeenCalledWith(
+        'myapp://vault/done?authorizedConnection=microsoft-dynamics'
+      )
     })
 
     it('redirects to token.redirectUri when only autoRedirect is set', async () => {

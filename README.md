@@ -54,10 +54,10 @@ The body of your request should include the `redirect_uri`, which is used for th
 
 There are two "Return to application" links:
 
-- The sidebar link goes to the session `redirect_uri` when it is an http(s) URL, and is hidden for any other value. When the session has no `redirect_uri`, it goes to `https://app.apideck.com`.
-- In isolation mode, the connection page shows a link to the `redirectAfterAuthUrl` query parameter, only when it is an http(s) URL on the same origin as the session `redirect_uri`.
+- The sidebar link goes to the session `redirect_uri` when it is a valid return URL (see below), and is hidden for any other value. When the session has no `redirect_uri`, it goes to `NEXT_PUBLIC_APP_URL` (default `https://app.apideck.com`).
+- In isolation mode, the connection page shows a link to the `redirectAfterAuthUrl` query parameter when it is a valid return URL.
 
-The `redirectToAppUrl` and `redirectAfterAuthUrl` query parameters are only followed when they are http(s) URLs on the same origin as the session `redirect_uri`; any other value, or any value on a session without `redirect_uri`, is ignored.
+A valid return URL is any absolute URL, on any origin, without a username or password and not using the `javascript:`, `data:` or `vbscript:` scheme. App deep links such as `myapp://vault/done` are valid. This rule applies to the session `redirect_uri` and to the `redirectToAppUrl` and `redirectAfterAuthUrl` query parameters; any other value is ignored. Hosted Vault does not check the URL against the application's registered redirect URLs; for applications in `enforced` mode, unify does that at authorize.
 
 After making the request, you should receive a response that includes the `session_uri` that has the bearer token that is needed to run the sample project. Copy the `session_uri`, paste it in your browser and replace `https://vault.apideck.com` with `localhost:3003`. Your URL should look like this: `http://localhost:3003/session/<your-bearer-token>`.
 

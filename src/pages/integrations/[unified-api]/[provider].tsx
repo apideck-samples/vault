@@ -15,7 +15,7 @@ import { JWTSession } from 'types/JWTSession'
 import { hasApplicableScopes, requiresConsent } from 'utils/consent'
 import { navigateTo } from 'utils/navigate'
 import { verifyAndClearNonce, callConfirmEndpoint } from 'utils/oauthCsrf'
-import { parseHttpUrl, withAuthorizedConnection } from 'utils/safeUrl'
+import { parseReturnUrl, withAuthorizedConnection } from 'utils/safeUrl'
 import { useSession } from 'utils/useSession'
 
 interface IProps {
@@ -72,7 +72,7 @@ const Connection = ({ token, jwt, unifiedApi, provider }: IProps) => {
   useEffect(() => {
     if (query?.redirectToAppUrl && connection?.state === 'callable') {
       // Only follow a valid http(s) target, never javascript: or a URL with credentials
-      const target = parseHttpUrl(query.redirectToAppUrl)
+      const target = parseReturnUrl(query.redirectToAppUrl)
       if (!target) {
         addToast({ title: 'Connection is ready', type: 'success', autoClose: true })
         return
@@ -191,7 +191,7 @@ export const getServerSideProps = async ({ res, query }: any): Promise<any> => {
   // if connection is callable and redirect URL is present in the query params
   // Only a valid http(s) target is followed; the 301 is only sent after unify accepted the jwt and
   // answered with a callable connection
-  const redirectTarget = parseHttpUrl(query.redirectToAppUrl)
+  const redirectTarget = parseReturnUrl(query.redirectToAppUrl)
   if (redirectTarget && jwt && token?.applicationId) {
     const response = await client.get(
       `/vault/connections/${query['unified-api']}/${query['provider']}`,
