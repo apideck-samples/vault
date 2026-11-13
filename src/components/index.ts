@@ -4,7 +4,13 @@ export {
   ResourceLink,
   ResourcePlaceholder
 } from './ConfigurableResource'
-export { ConnectionForm, ConnectionPlaceholder, OAuthButtons, OAuthErrorAlert } from './Connection'
+export {
+  ConnectionForm,
+  ConnectionPlaceholder,
+  ConsumerIdentity,
+  OAuthButtons,
+  OAuthErrorAlert
+} from './Connection'
 export { ConnectionCard, ConnectionsList, ConnectionBadge, ListPlaceholder } from './Connections'
 export { ScopesList, ConsentAlert } from './Consent'
 export { SearchSelect, FilteredSelect } from './Inputs'

@@ -2,6 +2,8 @@ import { Button } from '@apideck/components'
 import { Alert } from 'components'
 import React, { useState } from 'react'
 import { OAuthError } from 'utils'
+import { navigateTo } from 'utils/navigate'
+import { docsUrl } from 'utils/safeUrl'
 
 interface IProps {
   error: OAuthError
@@ -9,6 +11,7 @@ interface IProps {
 
 export const OAuthErrorAlert: React.FC<IProps> = ({ error }) => {
   const [showErrorDetails, setShowErrorDetails] = useState<boolean>(false)
+  const moreInfoUrl = docsUrl(error.ref)
 
   return (
     <Alert
@@ -18,15 +21,11 @@ export const OAuthErrorAlert: React.FC<IProps> = ({ error }) => {
       description={error.message}
     >
       <div className="flex items-center mt-4">
-        <Button
-          variant="danger"
-          className="mr-2"
-          onClick={() => {
-            location.href = error.ref
-          }}
-        >
-          More Info
-        </Button>
+        {moreInfoUrl && (
+          <Button variant="danger" className="mr-2" onClick={() => navigateTo(moreInfoUrl)}>
+            More Info
+          </Button>
+        )}
         <Button
           variant="danger-outline"
           className="border-none shadow-none hover:shadow-none hover:underline"

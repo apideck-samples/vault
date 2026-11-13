@@ -1,0 +1,103 @@
+// Rules for URLs that come from query parameters or the (unverified) session JWT.
+//
+// Every navigation or link to a customer URL goes through these helpers. A return URL
+// (session `redirect_uri`, `redirectToAppUrl`, `redirectAfterAuthUrl`) may use any origin and
+// any scheme, including an app deep link such as `myapp://vault/done`, except the script-running
+// schemes `javascript:`, `data:` and `vbscript:`. Other links (terms, privacy, docs, the OAuth
+// `target_origin`) must be http(s). No URL with a username or password is ever followed.
+// Hosted Vault does not know the application's protection mode; for `enforced` applications,
+// unify checks the return URL against the registered redirect URLs at authorize.
+//
+// APIDECK_DOCS_ORIGIN mirrors unify's DOCS_ENDPOINT, which builds the error `ref` as
+// `${DOCS_ENDPOINT}/errors#<type>` (unify src/core/domain/UseCaseError.ts:34-36) and is
+// `https://developers.apideck.com` in every environment (unify terraform/modules/lambda/main.tf:47).
+
+// Read at build time; set per region (see README).
+export const APIDECK_APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://app.apideck.com'
+export const APIDECK_DOCS_ORIGIN = 'https://developers.apideck.com'
+
+// Schemes that run script in the page instead of navigating to the customer's app.
+const SCRIPT_SCHEMES = new Set(['javascript:', 'data:', 'vbscript:'])
+
+/**
+ * An absolute URL without username or password, or null.
+ * Takes `unknown` because Next query values can be arrays and the session is unverified.
+ */
+const parseAbsoluteUrl = (value: unknown): URL | null => {
+  if (typeof value !== 'string' || value === '') return null
+
+  let url: URL
+  try {
+    url = new URL(value)
+  } catch {
+    return null
+  }
+
+  if (url.username !== '' || url.password !== '') return null
+
+  return url
+}
+
+/** An absolute http(s) URL without username or password, or null. */
+export const parseHttpUrl = (value: unknown): URL | null => {
+  const url = parseAbsoluteUrl(value)
+  if (!url || (url.protocol !== 'http:' && url.protocol !== 'https:')) return null
+
+  return url
+}
+
+/**
+ * A URL to send the user back to the customer's app: any absolute URL without username or
+ * password whose scheme is not `javascript:`, `data:` or `vbscript:`, or null. Custom schemes
+ * stay allowed so mobile and desktop apps keep receiving their deep link.
+ */
+export const parseReturnUrl = (value: unknown): URL | null => {
+  const url = parseAbsoluteUrl(value)
+  if (!url || SCRIPT_SCHEMES.has(url.protocol)) return null
+
+  return url
+}
+
+/**
+ * Href for "Return to application": the Apideck app when the session has no redirect URI,
+ * the redirect URI when it is a valid return URL (see `parseReturnUrl`), otherwise null
+ * (hide the link).
+ */
+export const returnToAppHref = (sessionRedirectUri: unknown): string | null => {
+  if (
+    sessionRedirectUri === undefined ||
+    sessionRedirectUri === null ||
+    sessionRedirectUri === ''
+  ) {
+    return APIDECK_APP_URL
+  }
+
+  return parseReturnUrl(sessionRedirectUri)?.href ?? null
+}
+
+/** The href of an https URL on Apideck's docs host, otherwise null. */
+export const docsUrl = (value: unknown): string | null => {
+  const url = parseHttpUrl(value)
+  if (!url || url.protocol !== 'https:' || url.origin !== APIDECK_DOCS_ORIGIN) return null
+
+  return url.href
+}
+
+/**
+ * The origin of a bare http(s) origin string (a trailing slash is tolerated), otherwise null.
+ * `'*'` and `'null'` never parse.
+ */
+export const targetOrigin = (value: unknown): string | null => {
+  const url = parseHttpUrl(value)
+  if (!url || url.pathname !== '/' || url.search !== '' || url.hash !== '') return null
+
+  return url.origin
+}
+
+/** The href of a copy of the URL with `authorizedConnection` appended; the URL is not modified. */
+export const withAuthorizedConnection = (url: URL, serviceId: string): string => {
+  const target = new URL(url.href)
+  target.searchParams.append('authorizedConnection', serviceId)
+
+  return target.href
+}
